@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<style>
+			* {
+				font-family: Monospace;
+				font-weight: bold;
+			}
+
+			a {
+				text-decoration: none;
+				color: #66CCFF;
+			}
+
+			a:visited {
+				color: #66CCFF;
+			}
+
+			a:hover {
+				color: red;
+			}
+
+			html, body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				background: -webkit-linear-gradient(#272D32, #2b3238, #272D32); /* For Safari 5.1 to 6.0 */
+				background: -o-linear-gradient(#272D32, #2b3238, #272D32); /* For Opera 11.1 to 12.0 */
+				background: -moz-linear-gradient(#272D32, #2b3238, #272D32); /* For Firefox 3.6 to 15 */
+				background: linear-gradient(#272D32, #2b3238, #272D32); /* Standard syntax (must be last) */
+			}
+
+			#login_img {
+				position: absolute;
+				top: calc(50% - 130px);
+				left: calc(50% - 400px);
+			}
+
+			#login_form {
+				position: absolute;
+				top: calc(50% - 160px);
+				right: calc(50% - 320px);
+			}
+
+			.login_forms {
+				width: 330px;
+				height: 50px;
+			}
+
+			.login_forms p {
+				background: #3e3f40;
+				width: 50px;
+				height: 50px;
+				float: left;
+				border-radius: 3px 0px 0px 3px;
+			}
+
+			.login_forms p img {
+				margin-top: 9px;
+				margin-left: 8px;
+				width: 30px;
+			}
+
+			.login_forms p input[type=text], .login_forms p input[type=password] {
+				width: 260px;
+				height: 50px;
+				float: left;
+				font-size: 18px;
+				padding: 0 16px;
+				background-color: #3b4148;
+				color: white;
+				font-weight: bolder;
+				border-radius: 0px 3px 3px 0px;
+				border: 0px;
+			}
+
+			.login_forms input[type=button] {
+				width: 345px;
+				height: 50px;
+				float: left;
+				border-radius: 3px;
+				font-size: 20px;
+				background: #CBEAD6;
+			}
+
+			input[type=button]:hover {
+				background: #8DD1A3;
+			}
+
+			#login_form span {
+				font-size: 15px;
+				color: white;
+			}
+			
+			#img_androboy{
+				-webkit-transition: all 2s ease;
+			}
+
+			#img_androboy:hover {
+				-webkit-transform: rotate(720deg);
+				-webkit-transition: all 2s ease;
+			}
+
+		</style>
+		
+		<script>
+			$(function(){
+				$("#btn_login").click(function(){
+					var user_id = $("#form_id").val();
+					var user_pwd = $("#form_pwd").val();
+					if(user_id != "" && user_pwd != ""){
+						$.post("/login", {id : user_id, pwd : user_pwd}, function(data){
+							if(data == "login_successed"){
+								window.location = "/main?id=" +user_id;
+							}
+							else{
+								alert("Please Chk Id / Pwd");
+							}
+						});
+					}
+					else{
+						alert("Please Chk Id / Pwd");
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="login_img">
+			<span><img id="img_androboy" src="img/android.png" style="width : 300px;"/></span>
+		</div>
+		<div id="login_form">
+			<div class="login_forms">
+				<p><img src="img/id.png"/>
+				</p>
+				<p>
+					<input type="text" placeholder="User ID" name="user_id" id="form_id"/>
+				</p>
+			</div>
+			<br>
+			<br>
+			<div class="login_forms">
+				<p><img src="img/password.png"/>
+				</p>
+				<p>
+					<input type="password" placeholder="Password" name="user_pwd" id="form_pwd"/>
+				</p>
+			</div>
+			<br>
+			<br>
+			<br>
+			<div class="login_forms">
+				<input type="button" value="Login" id="btn_login"/>
+			</div>
+			<br>
+			<br>
+			<span>Don't you have an account? &nbsp;<a href="/signUp"><b>"Sign Up Now"</b></a></span>
+		</div>
+	</body>
+</html>

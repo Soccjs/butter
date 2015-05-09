@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<style>
+			* {
+				font-family: Monospace;
+				font-weight: bold;
+			}
+
+			a {
+				text-decoration: none;
+				color: #66CCFF;
+			}
+
+			a:visited {
+				color: #66CCFF;
+			}
+
+			a:hover {
+				color: red;
+			}
+
+			html, body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				background: -webkit-linear-gradient(#272D32, #2b3238, #272D32); /* For Safari 5.1 to 6.0 */
+				background: -o-linear-gradient(#272D32, #2b3238, #272D32); /* For Opera 11.1 to 12.0 */
+				background: -moz-linear-gradient(#272D32, #2b3238, #272D32); /* For Firefox 3.6 to 15 */
+				background: linear-gradient(#272D32, #2b3238, #272D32); /* Standard syntax (must be last) */
+			}
+
+			#join_form {
+				position: absolute;
+				top: calc(50% - 210px);
+				right: calc(50% - 320px);
+			}
+
+			.join_forms {
+				width: 330px;
+				height: 50px;
+			}
+
+			.join_forms p {
+				background: #3e3f40;
+				width: 50px;
+				height: 50px;
+				float: left;
+				border-radius: 3px 0px 0px 3px;
+			}
+
+			.join_forms p img {
+				margin-top: 9px;
+				margin-left: 8px;
+				width: 30px;
+			}
+
+			.join_forms p input[type=text], .join_forms p input[type=password] {
+				width: 260px;
+				height: 50px;
+				float: left;
+				font-size: 18px;
+				padding: 0 16px;
+				background-color: #3b4148;
+				color: white;
+				font-weight: bolder;
+				border-radius: 0px 3px 3px 0px;
+				border: 0px;
+			}
+
+			.join_forms input[type=button] {
+				width: 345px;
+				height: 50px;
+				float: left;
+				border-radius: 3px;
+				font-size: 20px;
+				background: #CBEAD6;
+			}
+
+			input[type=button]:hover {
+				background: #8DD1A3;
+			}
+
+			#join_form span {
+				font-size: 15px;
+				color: white;
+			}
+			
+			.join_img {
+				position: absolute;
+				top: 470px;
+				left: -220px;
+				width: 800px;
+			}
+			.join_img-change {
+				-webkit-transform: translate(100px, -100px);
+				-webkit-transition: all 2s ease;
+			}
+
+			#hr{
+				position: absolute;
+				top : 80px;
+				left: calc(50% - 60px);
+				width: 0px;
+				height: 80%;
+				border: 1px solid #4C4C4C;
+			}
+		</style>
+		
+		<script>
+			$(function() {
+				$(".join_img").toggleClass("join_img-change");
+				
+				$("#btn_join").click(function() {
+					var user_id = $("#form_id").val();
+					var user_pwd = $("#form_pwd").val();
+					var user_pwd_confirm = $("#form_pwd_confirm").val();
+					var user_email = $("#form_email").val();
+					if (user_id != "" && user_pwd != "" && user_pwd_confirm != "" && user_email != "" && user_pwd == user_pwd_confirm) {
+						$.post("/join", {
+							id : user_id,
+							pwd : user_pwd,
+							email : user_email
+						}, function(data) {
+							if (data == "join_successed") {
+								window.location = "../";
+							} else {
+								// case1. 이미 존재하는 아이디입니다
+								alert("Please Chk Id / Pwd");
+							}
+						});
+					} else {
+						alert("Please Chk Id / Pwd");
+					}
+				});
+			});
+		</script>
+	</head>
+	<body style="overflow: hidden; position: fixed;">
+		<div id="join_img">
+			<img class="join_img" src="img/androboy_join.png">
+		</div>
+		<div id="hr"></div>
+		<div id="join_form">
+			<div class="join_forms">
+				<p><img src="img/id.png"/>
+				</p>
+				<p>
+					<input type="text" placeholder="User ID" name="user_id" id="form_id"/>
+				</p>
+			</div>
+			<br>
+			<br>
+			<div class="join_forms">
+				<p><img src="img/password.png"/>
+				</p>
+				<p>
+					<input type="password" placeholder="Password" name="user_pwd" id="form_pwd"/>
+				</p>
+			</div>
+			<br>
+			<br>
+			<div class="join_forms">
+				<p><img src="img/password.png"/>
+				</p>
+				<p>
+					<input type="password" placeholder="Password Confirm" name="user_pwd_confirm" id="form_pwd_confirm"/>
+				</p>
+			</div>
+			<br>
+			<br>
+			<div class="join_forms">
+				<p><img src="img/password.png"/>
+				</p>
+				<p>
+					<input type="text" placeholder="Email Address" name="user_email" id="form_email"/>
+				</p>
+			</div>
+			<br>
+			<br>
+			<br>
+			<div class="join_forms">
+				<input type="button" value="Join" id="btn_join"/>
+			</div>
+			<br>
+			<br>
+		</div>
+	</body>
+</html>
