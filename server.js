@@ -3,10 +3,11 @@ var path = require('path');
 
 var cheerio = require('cheerio');
 
-var db = require('./db.js')();
-var git = require('./git.js');
-var gitTree = require('./git_log.js')();
-var importclass = require('./imports.js')();
+var db = require('./lib/db.js')();
+var git = require('./lib/git.js');
+var gitTree = require('./lib/git_log.js')();
+var importclass = require('./lib/imports.js')();
+var filetree = require('./lib/jqueryFileTree_srv.js');
 
 // express 4.0
 var express = require('express');
@@ -15,7 +16,6 @@ var serve_static = require('serve-static');
 // body-parser - getting params when post method is requested
 var bodyParser = require('body-parser');
 // jQuery File Tree - make file tree for client for browsing
-var filetree = require('./lib/jqueryFileTree_srv.js');
 
 // make server
 var sys = require('sys');
@@ -962,8 +962,7 @@ app.post('/openFile', function(req, res){
 
 io.on('connection', function(socket) {
 
-	// ****************************************************** 2.26
-	var context = "[/editor] : ";
+		var context = "[/editor] : ";
 	console.log(context, "a user connected (socket.io) / ip address: " + socket.handshake.address);
 
 

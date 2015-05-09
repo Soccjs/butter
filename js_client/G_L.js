@@ -1,7 +1,7 @@
 // global variables
 var isShownBtmMenu = false;			// boolean for bottom menu
 var isPerInfoVisible = false;		// boolean for personal_info menu
-var tree_root = "/home/choidora/Documents/test_folder/";
+var tree_root = "/home/soccjs/Documents/butter/";
 var isShownimportMenu=false;
 var _GLOBAL = {};
 
@@ -58,117 +58,6 @@ $(document).ready(function() {
 	//로그인 처음 되면 리빙룸에 있도록 in
 	socket.emit("in",{id: _GLOBAL.id});
 	
-
-	//////////////////////////
-	// USER IN - 포스트잇 추가
-	//////////////////////////
-	//data : {project: _GLOBAL.project, id:_GLOBAL.id, file_name: file}
-	socket.on("room_in_draw", function(data) {
-		var position = 0;
-
-		for(var i in userIndexArray) {
-			if(userIndexArray[i] == 0) {
-				position = i;
-				break;
-			}
-		}
-
-		if(position == 0) {	
-			$("#user_0").css("visibility", "visible");
-			$("#user_0 > p").html(data.id);
-			userIndexArray[position] = 1;
-		} else if(position == 1) {
-			$("#user_1").css("visibility", "visible");
-			$("#user_1 > p").html(data.id);
-			userIndexArray[position] = 1;
-		} else if(position == 2) {
-			$("#user_2").css("visibility", "visible");
-			$("#user_2 > p").html(data.id);
-			userIndexArray[position] = 1;
-		} else if(position == 3) {
-			$("#user_3").css("visibility", "visible");
-			$("#user_3 > p").html(data.id);
-			userIndexArray[position] = 1;
-		}
-
-	});
-
-
-	//////////////////////////
-	// USER OUT - 포스트잇 삭제
-	//////////////////////////
-	socket.on("room_out_delete", function(id_data) {
-		
-		$("#user_container > div").each(function(index){
-			//console.log(filePathArr[filePathArr.length - 1] + "/" + $(this).text().slice(1, $(this).text().length));
-			var tmp = $(this).children("p").text();
-			if(id_data == tmp){
-				//alert(index + "!!!!");  //******지워지는index찍는부분
-				userIndexArray[index] = 0;
-
-				if(index == 0) {	
-					$("#user_0").css("visibility", "hidden");
-				} else if(index == 1) {
-					$("#user_1").css("visibility", "hidden");
-				} else if(index == 2) {
-					$("#user_2").css("visibility", "hidden");
-				} else if(index == 3) {
-					$("#user_3").css("visibility", "hidden");
-				}
-
-			}
-		});
-
-	});
-
-
-	/////////////////////////////////////////
-	// USER WORKLIST - 포스트잇에 id
-	/////////////////////////////////////////
-
-	$(".users_label").click(function(e){
-		var t = e.target;
-		$(t).parent().toggleClass("users_open", 700, 'easeInOutBack');
-		var usr_id = $(t).parent().children("p").text();
-		
-		socket.emit("workList_request", {project: _GLOBAL.project, id: usr_id});	//usr_id제대로 바껴서 들어가는지 확인 (V)
-
-		/////////////////////////////////////////
-		// USER WORKLIST - 포스트잇에 workList추가
-		/////////////////////////////////////////
-		$("#user_contents_inner").text("///WORKLIST///" );
-		// data : {id: data.id, works: CurrentProjectsArray[i].workArray}
-		socket.on("workList_response", function(data) {
-			console.log("workList_response data check////////////////////////");
-			var str = "///WORKLIST///" ;
-			// 데이타 받아서 그려준다.
-			for(var i in data.works) {
-				//************내꺼만 그려준다. 이부분 제대로 되나 체크 (V)
-				if(usr_id == data.works[i].name)
-					str += ("\n" + data.works[i].work);
-			}
-			
-			$("#user_contents_inner").text(str);
-		});
-
-		$("#user_contents_inner").text(str);
-	});
-
-
-	
-	$(".users > p").mouseenter(function(e){
-		var pos = $(e.target).parent().position();
-		$("#user_contents").css("top", pos.top);
-		$("#user_contents").removeClass("uc_off");
-		$("#user_contents").addClass("uc_on");
-	});
-	
-	$(".users > p").mouseleave(function(e){
-		$("#user_contents").removeClass("uc_on");
-		$("#user_contents").addClass("uc_off");
-		var t = e.target;
-		$(t).parent().toggleClass("users_open", 700, 'easeInOutBack');
-	});
 
 
 	function make_editor(data, file, flag, _working_flag){
@@ -289,7 +178,7 @@ $(document).ready(function() {
 
 	// Using jQuery File Tree - fileTree({root : root dir, script : serverside file}, callback func when chosing file})
 	function make_fileTree(folder_path){
-		$('#left_tree').fileTree({root : folder_path, script : 'req_filetree'}, function(file) {
+		$('#left_tree').fileTree({root : "folder_path", script : 'req_filetree'}, function(file) {
 			// When file opening...send data to server with 'post'
 			$.post('openFile', {path : file}, function(data) {
 					make_editor(data, file, 1, 1);
@@ -626,7 +515,7 @@ $(document).ready(function() {
 	// Context Menu
 
 	// Put Dir,File path for make/delete Dir,File
-	$("#left_tree").on("mouseenter", "a", function(e){
+	$("#left_tree").on("mouseenter", "a", function(e){				//right curser => mouse enter
 		$("#left_tree_hoverdItem").val($(e.target).attr('rel'));
 	});
 
@@ -699,8 +588,9 @@ $(document).ready(function() {
 				}},
 				"sep1": "---------",
 				"graphical": {name: "graphical_layout", icon: "graphical_layout", callback: function(){
-						
-							window.open('./G_L.html',"_blank");//'/main?id=' + req.session.user_id
+							__filePath = $("#left_tree_hoverdItem").val();
+							console.log(__filePath);
+							window.open("./G_L.html","_blank");
 						
 				}}
 	        }
