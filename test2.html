@@ -1,42 +1,23 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<link href="css/G_L.css" rel="stylesheet">
-		<link href="css/jqueryFileTree.css" rel="stylesheet">
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-		<link rel="stylesheet" href="css/jquery.contextMenu.css" />
-		<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Karla:700' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
-		<script src="//code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
-		<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-		<script src="/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script src="/ace-builds/src/ext-language_tools.js"></script>
-	
-		<script src="js_client/G_L.js" type="text/javascript"></script>
+ <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import materialize.css-->
+      <link href="css/test2.css" rel="stylesheet">
 
-		<script src="lib/jquery.easing.js" type="text/javascript"></script>
-		<script src="lib/jqueryFileTree.js" type="text/javascript"></script>
-		<script src="lib/jquery.contextMenu.js"></script>
-		<script src="lib/jquery.ui.position.js"></script>
-		<script src="lib/socket.js"></script>
-		<script src="lib/autocomplete.js"></script>
-        <script src="lib/lists.js"></script>
-        
-        <link type="text/css" rel="stylesheet" href="./materialize/css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="./materialize/css/materialize.min.css"  media="screen,projection"/>
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	</head>
+    </head>
 
-	<body>
-	   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	   <script type="text/javascript" src="./materialize/js/materialize.min.js"></script>
+    <body>
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	  <script type="text/javascript" src="./materialize/js/materialize.min.js"></script>
 	   <script src="./materialize/js/init.js"></script>
 
 
-	    <script> $('.button-collapse').sideNav({
+	  <script> $('.button-collapse').sideNav({
       menuWidth: 300, // Default is 240
       edge: 'right', // Choose the horizontal origin
       closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
@@ -110,83 +91,8 @@
   <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 </ul>
 
-
-		<div class="overlay_off" id="spinner_container">
-			<div class="square">
-				<div class="spin"></div>
-			</div>
-		</div>
-		
-		<div id="container">
-			
-			<div id="right">
-				<div id="right_topbar">
-					<ul id="right_topbar_sortable">
-						<li class="file_selected" iSSSSAAAd="li_dummy">
-							<span class="ui-icon ui-icon-circle-close"></span>&nbsp;<a>dummy...</a>
-						</li>
-					</ul>
-				</div>
-				<div id="right_editor"></div>
-				<div id="right_drag"></div>
-				<div id="right_log">
-					<div id="right_log_inner" style="background: #FFFFFF">
-						
-					</div>
-				</div>	
-			</div>
-		</div>
-
-			<div class="git_btn_container" style="z-index: 9999999">
-			<figure class="git_button">
-				<img  src="img/git.png"/>
-			</figure>
-		</div>
-
-		<div class="git_commit git_smallBtn" id="git_commit" title="commit">
-			<figure>
-				<img src="img/commit.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
-			</figure>
-		</div>
-
-		<div class="git_push git_smallBtn" id="git_push" title="push">
-			<figure>
-				<img src="img/push.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
-			</figure>
-		</div>
-
-		<div class="git_pull git_smallBtn" id="git_pull" title="pull">
-			<figure>
-				<img src="img/pull.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
-			</figure>
-		</div>
-<!--AUTO COMPLETE-->
-    <div id="autocomplete_listbox">
-        <div class="blur"></div>
-        <ul id="methods_list">
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-        </ul>
-    </div>		
-		
-
-	
-		<div id="personal_info">
-			<img src="img/personal.png">
-		</div>
+<!-- tired-->
 
 
-		
-		<div id="mini_popup">
-				&nbsp;&nbsp;<span><img src="img/check.png" id="mini_popup_img"/>&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="mini_popup_text">File Saved</span>
-		</div>
-		
-
-		
-		
-	</body>
-</html>
+    </body>
+  </html> 
