@@ -161,11 +161,6 @@ app.get('/delete_file', function(req, res){
 	});
 });
 
-app.get('/graphical', function(req, res){
-	var path = req.param("path");
-	console.log("path"+path);
-	
-});
 
 // method - get /signUp : Sign Up for new User
 app.get('/signUp', function(req, res){
@@ -587,6 +582,35 @@ app.get('/updatetarget', function(req, res){
 
 });
 
+app.get('/btm_menu_graphic', function(request, response){
+
+	var context = "[/btm_menu_graphic] : ";
+
+	console.log(context, "connected");
+
+	var user_id = request.param("id");
+	var project_name = request.param("project");
+
+	var path = "./user_data/projects/" + project_name + "/_" + user_id + "/bin/";
+	
+	
+	});
+
+/*
+	graphic
+
+*/
+app.post('/graphical', function(req, res){
+
+	var context = "[/graphical] : ";
+
+	var user_id = req.body.id;
+	var project = req.body.project_name;
+	var path = req.body.project_path;
+
+	console.log(context, user_id, "graphical request");
+	res.send("G_L");
+});
 
 /**********
  LOGIN

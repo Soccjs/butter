@@ -43,14 +43,14 @@
     });</script>
 
 
-    <ul id="nav-mobile" class="side-nav fixed" style="width: 240px;">
+    <ul id="nav-mobile" class="side-nav fixed" style="width: 300px;">
       
     <li class="logo"><a id="logo-container" href="http://materializecss.com/" class="brand-logo" style = "height : 130px;">
             <object id="front-page-logo" type="image/png" data="./img/smile.png">Your browser does not support SVG</object></a></li>
 
 
-	  <ul id="slide-out" class="side-nav fixed" style="top : 130px;">
-	    <li><a href="#!">First Sidebar Link</a></li>
+	  <ul id="slide-out" class="side-nav fixed" style="top : 130px; width:300px">
+	    <li><a href="#!">EditText</a></li>
 	    <li><a href="#!">Second Sidebar Link</a></li>
 	   
 	    <li class="no-padding">
@@ -85,8 +85,8 @@
                 </ul>
               </div>
             </li>
-            <li class="bold active"><a class="collapsible-header active waves-effect waves-red" style = "height : 64px;">JavaScript</a>
-              <div class="collapsible-body" style="display: block;">
+            <li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">JavaScript</a>
+              <div class="collapsible-body" style="">
                 <ul>
                   <li><a href="http://materializecss.com/collapsible.html">Collapsible</a></li>
                   <li><a href="http://materializecss.com/dialogs.html">Dialogs</a></li>
@@ -118,23 +118,26 @@
 		</div>
 		
 		<div id="container">
+			<div id="right_topbar"></div>
+			<div id="left"></div>
 			
 			<div id="right">
-				<div id="right_topbar">
 					<ul id="right_topbar_sortable">
 						<li class="file_selected" iSSSSAAAd="li_dummy">
 							<span class="ui-icon ui-icon-circle-close"></span>&nbsp;<a>dummy...</a>
 						</li>
 					</ul>
-				</div>
+				
 				<div id="right_editor"></div>
-				<div id="right_drag"></div>
-				<div id="right_log">
-					<div id="right_log_inner" style="background: #FFFFFF">
+				
+				
+			</div>
+			<div id="right_drag"></div>
+			<div id="right_log">
+					<div id="right_log_inner" style="background: #ddd">
 						
 					</div>
 				</div>	
-			</div>
 		</div>
 
 			<div class="git_btn_container" style="z-index: 9999999">

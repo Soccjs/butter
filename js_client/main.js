@@ -472,6 +472,19 @@ $(document).ready(function() {
 		isShownBtmMenu = false;
 		window.location = "/btm_menu_apk?id=" + _GLOBAL.id + "&project=" + _GLOBAL.project;
 	});
+	$("#btm_menu_graphic").click(function(){
+		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
+		isShownBtmMenu = false;
+		$.post("/graphical", {
+					id : _GLOBAL.id,
+					pname : _GLOBAL.project,
+				}, function(data) {
+					if (data == "G_L") {
+						console.log("이동");
+						location.replace("./G_L.html");
+					} 
+				});
+	});
 	
 
 	$("#dialog_select_project_proj").scroll();

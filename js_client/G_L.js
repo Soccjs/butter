@@ -189,13 +189,6 @@ $(document).ready(function() {
 
 	// Draggable settings...
 	$("#left_drag").css("left", "288px");
-	$("#left_drag").draggable({
-		axis : "x",
-		drag : function(event, ui) {
-			$("#left").width(ui.position.left + 12);
-			$("#right").css('margin-left', ui.position.left + 12 + "px");
-		}
-	});
 
 	// Sortable settings...
 	$("#right_topbar_sortable").on("click", "span", function(){
