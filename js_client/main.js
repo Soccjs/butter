@@ -481,7 +481,7 @@ $(document).ready(function() {
 				}, function(data) {
 					if (data == "G_L") {
 						console.log("이동");
-						location.replace("./G_L.html");
+						window.location.href=("./G_L.html?id=" + _GLOBAL.id + "&project=" + _GLOBAL.project);
 					} 
 				});
 	});

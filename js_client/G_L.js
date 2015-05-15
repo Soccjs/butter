@@ -575,17 +575,12 @@ $(document).ready(function() {
 						});
 					}
 				}},
-				
+					"sep1": "---------",
 				"refresh": {name: "Refresh", icon: "refresh", callback: function(){
 					make_fileTree(fileTreePath);
 				}},
-				"sep1": "---------",
-				"graphical": {name: "graphical_layout", icon: "graphical_layout", callback: function(){
-							__filePath = $("#left_tree_hoverdItem").val();
-							console.log(__filePath);
-							window.open("./G_L.html","_blank");
-						
-				}}
+			
+				
 	        }
 		});
 	});

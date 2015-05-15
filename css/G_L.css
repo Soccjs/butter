@@ -37,6 +37,9 @@ html, body {
   left: 0;
   overflow: hidden;
   z-index: 0;
+  background: url('../img/phone.png') 50% 25%, #ddd ;
+  background-repeat: no-repeat;
+
 }
 
 #right {
