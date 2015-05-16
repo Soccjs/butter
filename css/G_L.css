@@ -41,6 +41,22 @@ html, body {
   background-repeat: no-repeat;
 
 }
+#gallery {
+
+}  .gallery.custom-state-active { background: #eee; }
+  
+#trash {
+  position: fixed;
+  margin-left: 127px;
+  margin-top: 110px;
+  width: 20%;
+  height: 40%;
+  background: #FFF;
+  padding: 1%;
+}  #trash h4 {  }
+  #trash h4 .ui-icon {  }
+  #trash .gallery h5 { display: none; }
+
 
 #right {
 	margin-top: 50px;
