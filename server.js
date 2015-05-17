@@ -959,7 +959,6 @@ app.post('/openFile', function(req, res){
 
 	var __PROJECT_BASE_DIR = "./user_data/projects/";
 	var filePath = req.body.path;
-
 	if(filePath){
 		if (filePath.search(__PROJECT_BASE_DIR) == -1) {
 			filePath = __PROJECT_BASE_DIR + req.body.path;

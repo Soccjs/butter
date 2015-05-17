@@ -51,9 +51,13 @@ $(document).ready(function() {
 			$("#spinner_container").css("z-index", "-9999");
 		}
 	});
+	
+	_GLOBAL.file=getParameterByName('path');
+		$.post('openFile', {path : _GLOBAL.file}, function(data) {
+					make_editor(data, _GLOBAL.file, 1, 1);	
 
-
-
+						//파일트리에서 열면: read-only
+		});
 
 	//로그인 처음 되면 리빙룸에 있도록 in
 	socket.emit("in",{id: _GLOBAL.id});
@@ -75,7 +79,7 @@ $(document).ready(function() {
 		});
 		editor.setTheme('ace/theme/tomorrow_night_eighties');
 		editor.setShowPrintMargin(false);
-		editor.getSession().setMode("ace/mode/java");
+		editor.getSession().setMode("ace/mode/xml");
 		document.getElementById("right_editor_inner").style.fontSize = "15px";
 
 		//_working_flag설정
@@ -178,12 +182,10 @@ $(document).ready(function() {
 
 	// Using jQuery File Tree - fileTree({root : root dir, script : serverside file}, callback func when chosing file})
 	function make_fileTree(folder_path){
-		$('#left_tree').fileTree({root : "folder_path", script : 'req_filetree'}, function(file) {
-			// When file opening...send data to server with 'post'
-			$.post('openFile', {path : file}, function(data) {
+
+		$.post('openFile', {path : file}, function(data) {
 					make_editor(data, file, 1, 1);
 					//파일트리에서 열면: read-only
-				});
 		});
 	}
 
@@ -253,107 +255,6 @@ $(document).ready(function() {
 	$("#right_topbar_sortable").disableSelection();
 	$("#li_dummy").remove();
 
-	// Bottom Menu
-	$("#left_bottom_menu").click(function(){
-		console.log("Hi");
-		if(isShownBtmMenu == false){
-			$("#btm_menu").animate({top : "90%"}, {duration: 1000, easing: 'easeInOutBack'});
-			isShownBtmMenu = true;
-		}
-
-		else{
-			$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-			isShownBtmMenu = false;
-		}
-	});
-
-	// Bottom Menu - Select Project
-	$("#btm_menu_sel_project").click(function(){
-		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-			isShownBtmMenu = false;
-		$.get("/select_project?id=" + getParameterByName('id'), function(data, status){
-			if(data != null){
-				var temp = "<br>";
-				for(var i in data){
-					temp += "<a>" + data[i] + "</a><br><br>";
-				}
-				$("#dialog_select_project_proj").html(temp);
-			}
-			$("#dialog_select_project").dialog({
-				dialogClass : "bottom_dialog",
-				modal : true,
-				resizable : true,
-				width : 800,
-				height : 770,
-				show : {
-					effect : "fade",
-					duration : 500
-				},
-				hide : {
-					effect : "fade",
-					duration : 500
-				},
-				beforeClose : function() {
-					$("#dialog_select_project_info_contents").html("");
-					$("#dialog_selected_project").val("");
-				}
-			});
-		});
-	});
-
-	$("#btm_menu_run").click(function(){
-		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-			isShownBtmMenu = false;
-		$.get("/btm_menu_run?id=" + _GLOBAL.id + "&project=" + _GLOBAL.project, function(data, status){
-
-				$("#mini_popup_img").attr("src", "img/check.png");
-				$("#mini_popup_text").text("Run Project Successed");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-				$("#right_log_inner").append(data);
-				});
-			make_fileTree(fileTreePath); 
-		});
-	});
-	
-	$("#btm_menu_export").click(function(){
-		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-		isShownBtmMenu = false;
-		window.location = "/btm_menu_export?id=" + _GLOBAL.id + "&project=" + _GLOBAL.project;
-	});
-	$("#btm_menu_import").click(function(){
-		console.log("in!");
-		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-		isShownBtmMenu = false;
-
-		$("#dialog_importProject").dialog({
-			dialogClass : "bottom_dialog",
-			modal : true,
-			resizable : true,
-			width : 400,
-			height : 280,
-			show : {
-				effect : "fade",
-				duration : 500
-			},
-			hide : {
-				effect : "fade",
-				duration : 500
-			}
-		});
-	});	
-	$("#submit").click(function(data){
-		$("#uploadSearch").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-		isShownBtmMenu = false;
-	});	
-
-	$("#btm_menu_apk").click(function(){
-		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-		isShownBtmMenu = false;
-		window.location = "/btm_menu_apk?id=" + _GLOBAL.id + "&project=" + _GLOBAL.project;
-	});
 	
 
 	$("#dialog_select_project_proj").scroll();
@@ -699,82 +600,8 @@ $(document).ready(function() {
 		$("#personal_info_menu").css("visibility", "hidden");
 	});
 
-	$("#btm_menu_add_project").click(function(){
-		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-		isShownBtmMenu = false;
-		$("#dialog_createProject").dialog({
-				dialogClass : "bottom_dialog",
-				modal : true,
-				resizable : false,
-				width : 360,
-				height : 390,
-				show : {
-					effect : "fade",
-					duration : 500
-				},
-				hide : {
-					effect : "fade",
-					duration : 500
-				},
-				beforeClose : function() {
-				}
-			});
-
-			$("#form_create_id").val(_GLOBAL.id);
-	});
-
-
-	// project_create.html
-
-	$("#btn_pcreate").click(function() {
-		var user_id = $("#form_create_id").val();
-		var project_name = $("#form_pname").val();
-		var project_desc = $("#form_pdesc").val();
-
-		if (project_name.search('/'))
-			if (user_id != "" && project_name != "" && project_desc != "") {
-				$.post("/project_create", {
-					id : user_id,
-					pname : project_name,
-					pdesc : project_desc
-				}, function(data) {
-					if (data == "project_create_successed") {
-
-						$("#form_create_id").val("");
-						$("#form_pname").val("");
-						$("#form_pdesc").val("");
-						$("#dialog_createProject").dialog("close");
-
-						$("#mini_popup_img").attr("src", "img/check.png");
-						$("#mini_popup_text").text("Create Project Complete");
-						$("#mini_popup").fadeIn("slow", function() {
-							setTimeout(function() {
-								$("#mini_popup").fadeOut("slow");
-							}, pupup_time);
-						});
-
-					} else {
-						// case1. 이미 존재하는 프로젝트입니다.
-						$("#mini_popup_img").attr("src", "img/not_check.png");
-						$("#mini_popup_text").text("Exist Project Name");
-						$("#mini_popup").fadeIn("slow", function() {
-							setTimeout(function() {
-								$("#mini_popup").fadeOut("slow");
-							}, pupup_time);
-						});
-					}
-				});
-			} else {
-				$("#mini_popup_img").attr("src", "img/not_check.png");
-					$("#mini_popup_text").text("Please Fill Out the Form");
-					$("#mini_popup").fadeIn("slow", function() {
-						setTimeout(function() {
-							$("#mini_popup").fadeOut("slow");
-						}, pupup_time);
-					});
-			}
-	});
-
+	
+	
 	// preject_invite.html
 
 	$("#btn_pinvite").click(function() {

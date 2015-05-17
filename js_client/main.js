@@ -123,7 +123,7 @@ $(document).ready(function() {
 
 
 	/////////////////////////////////////////
-	// USER WORKLIST - 포스트잇에 id
+	// USER WORKLIST - 포스트잇에 ido
 	/////////////////////////////////////////
 
 	$(".users_label").click(function(e){
@@ -291,8 +291,12 @@ $(document).ready(function() {
 	function make_fileTree(folder_path){
 		$('#left_tree').fileTree({root : folder_path, script : 'req_filetree'}, function(file) {
 			// When file opening...send data to server with 'post'
+			console.log(folder_path);
+			console.log(file);
+			_GLOBAL.file= file;
 			$.post('openFile', {path : file}, function(data) {
 					make_editor(data, file, 1, 1);
+
 					//파일트리에서 열면: read-only
 				});
 		});
@@ -469,7 +473,7 @@ $(document).ready(function() {
 
 	$("#btm_menu_apk").click(function(){
 		$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
-		isShownBtmMenu = false;
+		isShownBtmMenu = false;	
 		window.location = "/btm_menu_apk?id=" + _GLOBAL.id + "&project=" + _GLOBAL.project;
 	});
 	$("#btm_menu_graphic").click(function(){
@@ -478,10 +482,16 @@ $(document).ready(function() {
 		$.post("/graphical", {
 					id : _GLOBAL.id,
 					pname : _GLOBAL.project,
+
 				}, function(data) {
 					if (data == "G_L") {
 						console.log("이동");
-						window.location.href=("./G_L.html?id=" + _GLOBAL.id + "&project=" + _GLOBAL.project);
+						var obj={			
+							id : _GLOBAL.id,
+							path : _GLOBAL.file,
+
+						}
+						window.location.href=("./G_L.html?id=" + _GLOBAL.id + "&path=" + _GLOBAL.file);
 					} 
 				});
 	});
