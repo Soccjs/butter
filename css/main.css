@@ -54,6 +54,7 @@ html, body {
 	height: 40px;
 	background: #2C2C2C;
 	bottom: 0;
+
 }
 
 #left_bottom_menu:hover{
@@ -217,8 +218,8 @@ html, body {
 
 #btm_menu {
 	overflow: hidden;
-	width: 55%;
-	height: 150px;
+	width: 40%;
+	height: 300px;
 	background: rgba(59, 65, 72, 0.7);
 	margin: auto;
 	position: fixed;

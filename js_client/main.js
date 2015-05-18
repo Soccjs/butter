@@ -379,12 +379,12 @@ $(document).ready(function() {
 	$("#left_bottom_menu").click(function(){
 		console.log("Hi");
 		if(isShownBtmMenu == false){
-			$("#btm_menu").animate({top : "90%"}, {duration: 1000, easing: 'easeInOutBack'});
+			$("#btm_menu").animate({top : "50%"}, {duration: 1000, easing: 'easeInOutBack'});
 			isShownBtmMenu = true;
 		}
 
 		else{
-			$("#btm_menu").animate({top : "130%"}, {duration: 1000, easing: 'easeInOutBack'});
+			$("#btm_menu").animate({top : "180%"}, {duration: 1000, easing: 'easeInOutBack'});
 			isShownBtmMenu = false;
 		}
 	});
@@ -484,15 +484,15 @@ $(document).ready(function() {
 					pname : _GLOBAL.project,
 
 				}, function(data) {
-					if (data == "G_L") {
+					if (data === "G_L") {
 						console.log("이동");
-						var obj={			
-							id : _GLOBAL.id,
-							path : _GLOBAL.file,
-
+						if(typeof _GLOBAL.file=== "undefined"){
+							alert("file was Not selected!");
 						}
+						else{
 						window.location.href=("./G_L.html?id=" + _GLOBAL.id + "&path=" + _GLOBAL.file);
-					} 
+						} 
+					}
 				});
 	});
 	

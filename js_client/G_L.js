@@ -66,7 +66,7 @@ $(document).ready(function() {
 
 	function make_editor(data, file, flag, _working_flag){
 		$("#right_editor").children().remove();
-		$("#right_editor").append("<div id='right_editor_inner' style='top:63px;'></div>");
+		$("#right_editor").append("<div id='right_editor_inner' style='top:0px;'></div>");
 		editor = null;
 		ace.require("ace/ext/language_tools");
 		// create Ace Editor
