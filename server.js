@@ -223,8 +223,8 @@ app.get('/project_info', function(req, res) {
 
 	var context = "[/project_info] : ";
 	var project_name = req.param("project");
-	_GLOBAL.project_name = project_name;
-	_GLOBAL.project_path = __DIR + project_name;
+	_GLOBAL.project_name = project_name ;
+	_GLOBAL.project_path = __DIR + project_name + '_' +req.param("id");
 	console.log("js: proj_name " + _GLOBAL.project_name);
 	console.log("js: proj_path " + _GLOBAL.project_path);
 
@@ -527,7 +527,6 @@ app.get('/updatetarget', function(req, res){
 
 	var filePath = req.param('path');
 
-	//console.log("+++++++++++++++++++++++ : " + filePath);
 
 
 	_GLOBAL.cur_project_path = "./user_data/projects/"+filePath;

@@ -505,7 +505,7 @@ $(document).ready(function() {
 		$("#dialog_selected_project").val(proj_name);
 
 		// 서버에서 프로젝트 정보 받기
-		$.get("/project_info?project=" + proj_name, function(data, status){
+		$.get("/project_info?id=" + _GLOBAL.id + "&project=" + proj_name, function(data, status){
 
 			// 과연 get 메세지는 객체를 수신할 수 있을 것인가?!
 			var date_str = "";
@@ -530,8 +530,8 @@ $(document).ready(function() {
 		_GLOBAL.project = target;
 
 		if (target) {
-			fileTreePath = _GLOBAL.project + "/_" + _GLOBAL.id + "/";
-			console.log(fileTreePath);
+			fileTreePath = _GLOBAL.project + "_" +_GLOBAL.id +  "/_" + _GLOBAL.id + "/";
+			console.log("tired  " + fileTreePath);
 
 			$.get('/updatetarget?path=' +fileTreePath);
 			$.get('/makeGitTree?path=' +_GLOBAL.project+ "&id=" +_GLOBAL.id, function(data, status){
