@@ -12,9 +12,9 @@ html, body {
 #container {
 	color: #fff;
 	margin: 0;
-	margin-left:300px;
+	margin-left:15%;
 	padding: 0;
-	width: 100%;
+	width: 85%;
 	height: 100%;
 	z-index: 1;
 	overflow: hidden;
@@ -24,10 +24,10 @@ html, body {
 #left {
   position: fixed;
   top: 0;
-  height: 71%;
+  height: 75%;
   z-index: 99;
-  margin-top: 35px;
-  margin-left: 300px;
+  margin-top: 2%;
+  margin-left: 15%;
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
@@ -37,43 +37,50 @@ html, body {
   left: 0;
   overflow: hidden;
   z-index: 0;
-  background: url('../img/phone.png') 50% 25%, #ddd ;
-  background-repeat: no-repeat;
 
 }
 #gallery {
 
 }  .gallery.custom-state-active { background: #eee; }
   
+  #left_img{
+  	margin-top: 2%;
+  	height: 100%;
+  	width: 100%;
+ 	padding-left: 111px;
+ 	padding-top: 97px;
+    background: url('../img/phone.png'), #ddd ;
+ 	background-repeat: no-repeat;,
+ 	
+  }
+ 
 #trash {
-  position: fixed;
-  margin-left: 127px;
-  margin-top: 110px;
-  width: 200px;
-  height: 200px;
-  background: #FFF;
-  padding: 1%;
+ 	background: #FFF;
+ 		height: 320px;
+  	width: 290px;
+
 }  #trash h4 {  }
   #trash h4 .ui-icon {  }
   #trash .gallery h5 { display: none; }
 
 
 #right {
-	margin-top: 50px;
-	margin-left: 		40%;
-	position: relative;
+	margin-top: 1%;
+	margin-left: 40%;
+	position: fixed;
+	
 	height: 100%;
-	width:55%;
+	width:45%;
 	float:right;
+
 }
 
 
 
-
 #right_editor{
-	width: 68%;
-	height: 75%;
-	background: #ddd;
+	width: 99%;
+	height: 79%;
+	background: #232c31;
 	top: 60px;
 	border-top: 3px solid #232c31;
 }
@@ -83,7 +90,7 @@ html, body {
 	height: 89%;
 	background: #232c31;
 	top: 60px;
-	border-top: 3px solid #232c31;	
+	border-top: 3px solid #313131;	
 }
 
 #right_topbar {
