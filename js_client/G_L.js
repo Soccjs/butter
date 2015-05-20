@@ -1172,16 +1172,21 @@ $(document).ready(function() {
       revert: "valid", // when not dropped, the item will revert back to its initial position
       containment: "document",
       helper: "clone",
-      cursor: "move"
+      cursor: "move",
+      appendTo:"body"
     });
  
     // let the trash be droppable, accepting the gallery items
     $trash.droppable({
       accept: "#gallery > li",
       activeClass: "ui-state-highlight",
+	  hoverClass: "ui-state-hover",
+			
+
       drop: function( event, ui ) {
-        deleteImage( ui.draggable );
-      }
+				$( this ).find( ".placeholder" ).remove();
+				$( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
+			}
     });
  
     // let the gallery be droppable as well, accepting items from the trash
