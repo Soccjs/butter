@@ -1168,14 +1168,16 @@ $(document).ready(function() {
  
     // let the gallery items be draggable
     $( "li", $gallery ).draggable({
-      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
-      revert: "valid", // when not dropped, the item will revert back to its initial position
-      containment: "document",
       helper: "clone",
       cursor: "move",
       appendTo:"body"
     });
- 
+   	 $("div",$trash).draggable({
+      containment:"#trash",
+      scroll:false
+    });
+  	
+ 	 var i=0; 	
     // let the trash be droppable, accepting the gallery items
     $trash.droppable({
       accept: "#gallery > li",
@@ -1185,10 +1187,19 @@ $(document).ready(function() {
 
       drop: function( event, ui ) {
 				$( this ).find( ".placeholder" ).remove();
-				$( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
-			}
+				$( "<div id=\"i"+i+ "\" style=\"width:50px;height:50px;position:relative;\"></div>" ).text( ui.draggable.text()).appendTo( this );
+			i=i+1;
+			console.log(i);
+				$(this).find("div")
+					.addClass("ui-widget-content ui-draggable ui-draggable-handle")
+					.draggable({containment:"#trash",scroll:false});
+		}
+
+
     });
- 
+
+ 	
+ 	
     // let the gallery be droppable as well, accepting items from the trash
     $gallery.droppable({
       accept: "#trash li",
@@ -1201,19 +1212,7 @@ $(document).ready(function() {
     // image deletion function
     var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
     function deleteImage( $item ) {
-      $item.fadeOut(function() {
-        var $list = $( "ul", $trash ).length ?
-          $( "ul", $trash ) :
-          $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $trash );
- 
-        $item.find( "a.ui-icon-trash" ).remove();
-        $item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
-          $item
-            .animate({ width: "48px" })
-            .find( "img" )
-              .animate({ height: "36px" });
-        });
-      });
+
     }
  
     // image recycle function
@@ -1270,5 +1269,6 @@ $(document).ready(function() {
  
       return false;
     });
+
   
 });

@@ -64,7 +64,7 @@ html, body {
   #trash h4 .ui-icon {  }
   #trash .gallery h5 { display: none; }
   #trash li{color:blue;}
-
+  #trash>div{}
 
 #right {
 	margin-top: 1%;
