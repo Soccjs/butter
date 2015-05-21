@@ -66,6 +66,17 @@ html, body {
   #trash li{color:blue;}
   #trash>div{}
 
+#current{  
+	width: 150px;
+  height: 70px;
+  background-color: yellow;
+  margin-top: -250px;
+  margin-left: 330px;
+}
+#current span{
+	color: blue;
+}
+
 #right {
 	margin-top: 1%;
 	margin-left: 40%;
@@ -76,6 +87,7 @@ html, body {
 	float:right;
 
 }
+
 
 
 

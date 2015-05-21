@@ -1162,10 +1162,16 @@ $(document).ready(function() {
     	$('#autocomplete_listbox').css("display", "block");
 
     });
-    
-     var $gallery = $( "#gallery" ),
-      $trash = $( "#trash" );
+    var $current = $("#current");
+	var $gallery = $( "#gallery" ),
+  	    $trash = $( "#trash" );
  
+    $(trash).mousemove(function(event){ 
+        $current.find("span").text("X: " + event.pageX + ", Y: " + event.pageY); 
+    });
+	
+	
+     
     // let the gallery items be draggable
     $( "li", $gallery ).draggable({
       helper: "clone",
