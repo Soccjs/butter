@@ -1167,21 +1167,42 @@ $(document).ready(function() {
   	    $trash = $( "#trash" );
  
     $(trash).mousemove(function(event){ 
-        $current.find("span").text("X: " + event.pageX + ", Y: " + event.pageY); 
+        $current.find("span#span2").text("X: " + event.pageX + ", Y: " + event.pageY  ); 
+    	
     });
 	
 	
+	$(trash).click(function(){
+		var $item = $( this ),
+        $target = $( event.target );
+ 		
+ 		$current.find("span#span1").text("id = " + $target.attr("id")); 
+    	
+ 		console.log("id = " + $target.attr("id"));
+ 		console.log("background = " + $target.css("background"));
+ 		
+ 		$item.find("div").draggable({containment:"#trash",scroll:false});
+ 		$item.find("div").on("click dblick mouseover mouseout",function(event){
+ 			 		console.log(event.type);
+					if(event.type==="mouseout"){$item.end();$target.end();}
+					else if(event.type==="click"){
+						
+
+					}
+ 			return false;
+ 		});
+ 		
+	});
+	
+	 
      
     // let the gallery items be draggable
     $( "li", $gallery ).draggable({
       helper: "clone",
       cursor: "move",
       appendTo:"body"
-    });
-   	 $("div",$trash).draggable({
-      containment:"#trash",
-      scroll:false
-    });
+    });	
+   	
   	
  	 var i=0; 	
     // let the trash be droppable, accepting the gallery items
@@ -1272,7 +1293,7 @@ $(document).ready(function() {
       } else if ( $target.is( "a.ui-icon-refresh" ) ) {
         recycleImage( $item );
       }
- 
+ 	
       return false;
     });
 
