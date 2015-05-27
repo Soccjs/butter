@@ -220,7 +220,7 @@ $(document).ready(function() {
 				var cur_contents = editor.getValue();
 				if (prv_contents == cur_contents){
 					$("#mini_popup_img").attr("src", "img/not_check.png");
-					$("#mini_popup_text").text("Nothig Changed to Save");
+					$("#mini_popup_text").text("Nothing Changed to Save");
 					$("#mini_popup").fadeIn("slow", function() {
 						setTimeout(function() {
 							$("#mini_popup").fadeOut("slow");

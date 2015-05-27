@@ -435,7 +435,7 @@ app.get('/btm_menu_run', function(request, response){
 	var user_id = request.param("id");
 	var project_name = request.param("project");
 
-	var path = "./user_data/projects/" + project_name + "/_" + user_id;
+	var path = "./user_data/projects/" + project_name +"_"+user_id + "/_" + user_id;
 
 	console.log(_GLOBAL.cur_project_target);
 	console.log(path);
@@ -452,7 +452,7 @@ app.get('/btm_menu_run', function(request, response){
 				if (err === null)
 				{
 					console.log(context, "	successful");
-					//sys.print('stdout : '+ stdout);
+					sys.print('stdout : '+ stdout);
 					response.send("Run Success!!!!!");
 					//response.download(path1);
 				}
@@ -742,7 +742,7 @@ app.post('/file_save', function(req, res){
 	var user_id = req.body.id;
 	var project_name = req.body.project;
 
-	var path = "./user_data/projects/" + project_name + "/_" + user_id;
+	var path = "./user_data/projects/" + project_name +"_"+ user_id + "/_" + user_id;
 
 	fs.writeFile(fileName, contents, 'utf8', function(err){
 		if(err) throw err;
@@ -753,7 +753,7 @@ app.post('/file_save', function(req, res){
 	console.log(path);
 
 	var antcompile = exec("cd " + path +"; "+ " ant compile", function(err, stdout ,stderr){
-		console.log(stdout);
+		console.log("stdout" + stdout);
 			
       	
 			if (err === null)
@@ -883,7 +883,7 @@ app.post('/file_save', function(req, res){
 					res.send(_ParseLog);
 			}
 			else{
-
+				console.log("zz"+stdout);
 				if(stdout.search("task3")===-1){//androidmanifext.xml error
 					stdout = stdout.replace(/(\r\n|\r|\n|\^)/gm,"");
 					stdout = stdout.replace(/(\s{2,})/g,' ');	
@@ -910,7 +910,7 @@ app.post('/file_save', function(req, res){
 
 
 					_ParseLog+=(  "statments &nbsp;:&nbsp;" + _tmp[3] +"</br>");
-					_ParseLog += ("  state  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;  " + _tmp[4]);
+					_ParseLog += ("  state  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  " + _tmp[4]);
 					_ParseLog += ("</br>   line   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; " + _tmp[1] + "</br>");
 					var index = _tmp[0].search(user_id);
 					_tmp[0] = _tmp[0].substring(_tmp[0].search('_'+user_id)+user_id.length+1,_tmp[0].length);

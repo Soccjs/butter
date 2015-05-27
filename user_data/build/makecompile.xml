@@ -1,0 +1,197 @@
+<!-- manual :  
+ 1. open  android-sdk-linux/tools/ant/build.xml
+ 2. find  target name="release"
+ 3. paste under the end of function of 'target name="release"', following code.
+-->
+
+
+ <target name="-task2" >
+        <echo>build-setup start!</echo>
+        <!-- find location of build tools -->
+        <getbuildtools name="android.build.tools.dir" verbose="${verbose}" />
+        <property name="aidl" location="${android.build.tools.dir}/aidl${exe}" />
+        <property name="aapt" location="${android.build.tools.dir}/aapt${exe}" />
+        <property name="dx" location="${android.build.tools.dir}/dx${bat}" />
+        <property name="zipalign" location="${android.build.tools.dir}/zipalign${exe}" />
+
+        <!-- read the previous build mode -->
+        <property file="${out.build.prop.file}" />
+        <!-- if empty the props won't be set, meaning it's a new build.
+             To force a build, set the prop to empty values. -->
+        <property name="build.last.target" value="" />
+        <property name="build.last.is.instrumented" value="" />
+        <property name="build.last.is.packaging.debug" value="" />
+        <property name="build.last.is.signing.debug" value="" />
+
+        <!-- If the "debug" build type changed, clear out the compiled code.
+             This is to make sure the new BuildConfig.DEBUG value is picked up
+             as javac can't deal with this type of change in its dependency computation. -->
+        <if>
+            <condition>
+                <and>
+                    <length string="${build.last.is.packaging.debug}" trim="true" when="greater" length="0" />
+                    <not><equals
+                            arg1="${build.is.packaging.debug}"
+                            arg2="${build.last.is.packaging.debug}" /></not>
+                </and>
+            </condition>
+            <then>
+                <delete dir="${out.classes.absolute.dir}" />
+            </then>
+            <else>
+            
+                <if>
+                    <condition>
+                        <and>
+                            <istrue value="${build.last.is.instrumented}" />
+                            <isfalse value="${build.is.instrumented}" />
+                        </and>
+                    </condition>
+                    <then>
+                          <delete dir="${out.classes.absolute.dir}" />
+                    </then>
+                </if>
+            </else>
+        </if>
+
+      
+        <gettarget
+                androidJarFileOut="project.target.android.jar"
+                androidAidlFileOut="project.target.framework.aidl"
+                bootClassPathOut="project.target.class.path"
+                targetApiOut="project.target.apilevel"
+                minSdkVersionOut="project.minSdkVersion" />
+
+        <!-- Value of the hasCode attribute (Application node) extracted from manifest file -->
+        <xpath input="${manifest.abs.file}" expression="/manifest/application/@android:hasCode"
+                    output="manifest.hasCode" default="true"/>
+
+
+        <do-only-if-manifest-hasCode>
+            <mkdir dir="${gen.absolute.dir}" />
+            <mkdir dir="${out.classes.absolute.dir}" />
+            <mkdir dir="${out.dexed.absolute.dir}" />
+        </do-only-if-manifest-hasCode>
+
+      <dependency
+                libraryFolderPathOut="project.library.folder.path"
+                libraryPackagesOut="project.library.packages"
+                libraryManifestFilePathOut="project.library.manifest.file.path"
+                libraryResFolderPathOut="project.library.res.folder.path"
+                libraryBinAidlFolderPathOut="project.library.bin.aidl.folder.path"
+                libraryRFilePathOut="project.library.bin.r.file.path"
+                libraryNativeFolderPathOut="project.library.native.folder.path"
+                jarLibraryPathOut="project.all.jars.path"
+                targetApi="${project.target.apilevel}"
+                renderscriptSupportMode="${renderscript.support.mode}"
+                buildToolsFolder="${android.build.tools.dir}"
+                renderscriptSupportLibsOut="project.rs.support.libs.path"
+        />
+
+        <!-- compile the libraries if any -->
+       
+        <!-- compile the main project if this is a test project -->
+        <if condition="${project.is.test}">
+            <then>
+                <!-- figure out which target must be used to build the tested project.
+                     If emma is enabled, then use 'instrument' otherwise, use 'debug' -->
+                <condition property="tested.project.target" value="instrument" else="debug">
+                    <isset property="emma.enabled" />
+                </condition>
+
+                 <subant target="${tested.project.target}" failonerror="true">
+                    <fileset dir="${tested.project.absolute.dir}" includes="build.xml" />
+                </subant>
+
+                <!-- get the tested project full classpath to be able to build
+                     the test project -->
+                <testedprojectclasspath
+                        projectLocation="${tested.project.absolute.dir}"
+                        projectClassPathOut="tested.project.classpath"/>
+            </then>
+            <else>
+                <!-- no tested project, make an empty Path object so that javac doesn't
+                     complain -->
+                <path id="tested.project.classpath" />
+            </else>
+        </if>
+    </target>
+
+
+    <target name="-task3">
+        <echo>code-gen start!</echo>
+        <!-- always merge manifest -->
+        <mergemanifest
+                appManifest="${manifest.abs.file}"
+                outManifest="${out.manifest.abs.file}"
+                enabled="${manifestmerger.enabled}">
+            <library refid="project.library.manifest.file.path" />
+        </mergemanifest>
+
+        <do-only-if-manifest-hasCode
+                elseText="hasCode = false. Skipping aidl/renderscript/R.java">
+          
+            <aapt executable="${aapt}"
+                    command="package"
+                   
+                    manifest="${out.manifest.abs.file}"
+                    originalManifestPackage="${project.app.package}"
+                    androidjar="${project.target.android.jar}"
+                    rfolder="${gen.absolute.dir}"
+                    nonConstantId="${android.library}"
+                    libraryResFolderPathRefid="project.library.res.folder.path"
+                    libraryPackagesRefid="project.library.packages"
+                    libraryRFileRefid="project.library.bin.r.file.path"
+                    ignoreAssets="${aapt.ignore.assets}"
+                    binFolder="${out.absolute.dir}"
+                    proguardFile="${out.absolute.dir}/proguard.txt">
+                <res path="${out.res.absolute.dir}" />
+                <res path="${resource.absolute.dir}" />
+            </aapt>
+
+
+        </do-only-if-manifest-hasCode>
+    </target>
+
+
+     <target name="-task1" depends="-task2, -task3">
+        <echo>compile start!</echo>
+       <property name="build.target" value="release" />
+        <property name="renderscript.opt.level" value="${renderscript.release.opt.level}" />
+        <do-only-if-manifest-hasCode elseText="hasCode = false. Skipping...">
+            <!-- merge the project's own classpath and the tested project's classpath -->
+            <path id="project.javac.classpath">
+                <path refid="project.all.jars.path" />
+                <path refid="tested.project.classpath" />
+                <path path="${java.compiler.classpath}" />
+            </path>
+            <javac encoding="${java.encoding}"
+                    source="${java.source}" target="${java.target}"
+                    debug="true" extdirs="" includeantruntime="false"
+                    destdir="${out.classes.absolute.dir}"
+                    bootclasspathref="project.target.class.path"
+                    
+                    verbose="${verbose}"
+                    classpathref="project.javac.classpath"
+                    fork="${need.javac.fork}"
+                    >
+                <src path="${source.absolute.dir}" />
+                <src path="${gen.absolute.dir}" />
+                <compilerarg line="${java.compilerargs}" />
+            </javac>
+
+            <!-- if the project is instrumented, intrument the classes -->
+            
+            <!-- if the project is a library then we generate a jar file -->
+          
+        </do-only-if-manifest-hasCode>
+    </target>
+
+    
+
+    <target name="compile"
+                depends="-task1"
+                
+                description="Builds the application in compile mode.">
+                <echo>compile</echo>
+    </target>
