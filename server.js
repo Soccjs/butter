@@ -743,7 +743,7 @@ app.post('/file_save', function(req, res){
 	var project_name = req.body.project;
 
 	var path = "./user_data/projects/" + project_name +"_"+ user_id + "/_" + user_id;
-
+	console.log("fileName" + fileName);
 	fs.writeFile(fileName, contents, 'utf8', function(err){
 		if(err) throw err;
 		console.log("### Save Complete ###\n\n");
