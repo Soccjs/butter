@@ -744,6 +744,7 @@ app.post('/file_save', function(req, res){
 
 	var path = "./user_data/projects/" + project_name +"_"+ user_id + "/_" + user_id;
 	console.log("fileName" + fileName);
+	
 	fs.writeFile(fileName, contents, 'utf8', function(err){
 		if(err) throw err;
 		console.log("### Save Complete ###\n\n");
@@ -1634,7 +1635,7 @@ io.on('connection', function(socket) {
 
 		var user_id = data.id;
 		var project_name = data.project;
-
+		var inviting_user = data.inv_usr;
 		function inv_accept_handler(accept_successful, project_name, socket) {
 			var socket = socket;
 
@@ -1646,7 +1647,7 @@ io.on('connection', function(socket) {
 		}
 
 		// execute db
-		db.invitation.accept(user_id, project_name, inv_accept_handler, socket);
+		db.invitation.accept(user_id, project_name, inviting_user, inv_accept_handler, socket);
 	});
 
 	/////////////////////////

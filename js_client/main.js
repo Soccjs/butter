@@ -979,9 +979,11 @@ $(document).ready(function() {
 
 		var content = $(".invitem.selected").html();
 		var project_name = content.substr(content.search(':') + 1).trim().split('<br>')[0];
-		
+		var inviting = content.substr(content.search(':') + 1).trim().split('<br>')[2];
+		var inviting_user = inviting.split(' ')[2];
+		console.log("[inviting_user] : " + inviting_user);
 		console.log("[invitelist_accept request] : ", _GLOBAL.id, project_name);		
-		socket.emit("invitelist_accept", {id:_GLOBAL.id, project:project_name});
+		socket.emit("invitelist_accept", {id:_GLOBAL.id, project:project_name, inv_usr:inviting_user});
 	});
 
 	//////////////////////
