@@ -60,6 +60,12 @@
 				  $(function() {
 	 
 					 $( "#a" ).draggable({containment:"#trash",scroll:false});
+					 $("#btn_join").click(function() {
+						var background = $("#form_id").val();
+						console.log("zz " + background);
+						$("#current").css("background", background);
+
+					});
 				});
 
 
@@ -145,7 +151,10 @@
 						 <span id="span1"></span>
 						 <span id="span2"></span>
 						 <span id="span3"></span>
-						 <span id="span4"></span>	
+						 <span id="span4"></span>
+						 <input type="text" placeholder="background"  id="form_id" style="color:blue;"/>
+						 <input type="button" value="Join" id="btn_join"/>
+
 					</div>
 				</div>
 			</div>	
