@@ -1172,34 +1172,32 @@ $(document).ready(function() {
         $input.find("input[name=" + "XY" + "]").attr("value", "X: " + event.pageX + ", Y: " + event.pageY);
     });
 
-    				
+    var click_cnt = true;
 
     $(trash).click(function(){
 		var $item = $( this ),
         $target = $( event.target );
-		console.log("event = " +event.type);
-        console.log("item = " + $item.attr('id'));
- 		console.log("id = " + $target.attr("id"));
- 		console.log("background = " + $target.css("background"));
-
+		
 		
 		$item.find("div.textView").on("click dblclick mousedown mouseover mouseout mouseenter mouseup",function(event){
  			 		console.log(event.type);
  			 		$obj = $(event.target);
 					
-		
-					console.log("obj= " + $obj.attr('id'));
+				
 					if(event.type==="mouseout"||event.type==="mouseover"){$item.end();$target.end();}
-					else if(event.type==="click"||event.type==="mouseup" ){
+					else if(event.type==="click"){
 						$obj.draggable({	containment:"#trash",scroll:false});
 
-						$input.find("input[name=" + "obj_id" + "]").attr( "value", $obj.attr("id"));
-						$input.find("input[name=" + "width" + "]").attr( "value", $obj.css("width"));
-						$input.find("input[name=" + "height" + "]").attr( "value", $obj.css("height"));
-						$input.find("input[name=" + "background" + "]").attr( "value", $obj.css("background"));
 						$obj.end();$item.end();$target.end();
 					}
-						
+					else if(event.type==="mouseup"){
+							$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+							$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+							$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+							$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+							console.log("obj= " + $obj.attr('id') + ' ' + $obj.css("background"));
+
+					}
 
 					else if(event.type==="dblclick"){
 						$obj.resizable({  maxHeight: 300,
@@ -1207,6 +1205,8 @@ $(document).ready(function() {
 									      minHeight: 50,
 									      minWidth: 50,
 									      containment:"#trash" , autoHide:true, handles:"n,e,s,w"});	
+												$obj.end();$item.end();$target.end();
+
 					}
 					
  			return false;
