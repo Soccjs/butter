@@ -1164,45 +1164,65 @@ $(document).ready(function() {
     });
     var $current = $("#current");
 	var $gallery = $( "#gallery" ),
-  	    $trash = $( "#trash" );
- 
-    $(trash).mousemove(function(event){ 
-        $current.find("span#span2").text("X: " + event.pageX + ", Y: " + event.pageY  ); 
-    	
+  	    $trash = $( "#trash"),
+ 		$input = $( "#input_dialog");
+
+    $(trash).mousemove(function(event) {
+        $current.find("span#span2").text("X: " + event.pageX + ", Y: " + event.pageY);
+        $input.find("input[name=" + "XY" + "]").attr("value", "X: " + event.pageX + ", Y: " + event.pageY);
     });
-	
-	
-	$(trash).click(function(){
+
+    				
+
+    $(trash).click(function(){
 		var $item = $( this ),
         $target = $( event.target );
- 		
- 		$current.find("span#span1").text("id = " + $target.attr("id")); 
-    	
+		console.log("event = " +event.type);
+        console.log("item = " + $item.attr('id'));
  		console.log("id = " + $target.attr("id"));
  		console.log("background = " + $target.css("background"));
- 		
- 		$item.find("div").draggable({containment:"#trash",scroll:false});
- 		$item.find("div").on("click dblick mouseover mouseout",function(event){
+
+		
+		$item.find("div.textView").on("click dblclick mousedown mouseover mouseout mouseenter mouseup",function(event){
  			 		console.log(event.type);
-					if(event.type==="mouseout"){$item.end();$target.end();}
-					else if(event.type==="click"){
+ 			 		$obj = $(event.target);
+					
+		
+					console.log("obj= " + $obj.attr('id'));
+					if(event.type==="mouseout"||event.type==="mouseover"){$item.end();$target.end();}
+					else if(event.type==="click"||event.type==="mouseup" ){
+						$obj.draggable({	containment:"#trash",scroll:false});
+
+						$input.find("input[name=" + "obj_id" + "]").attr( "value", $obj.attr("id"));
+						$input.find("input[name=" + "width" + "]").attr( "value", $obj.css("width"));
+						$input.find("input[name=" + "height" + "]").attr( "value", $obj.css("height"));
+						$input.find("input[name=" + "background" + "]").attr( "value", $obj.css("background"));
+						$obj.end();$item.end();$target.end();
+					}
 						
 
+					else if(event.type==="dblclick"){
+						$obj.resizable({  maxHeight: 300,
+									      maxWidth: 280,
+									      minHeight: 50,
+									      minWidth: 50,
+									      containment:"#trash" , autoHide:true, handles:"n,e,s,w"});	
 					}
+					
  			return false;
  		});
- 		
+
 	});
-	
-	 
-     
+
+
+
     // let the gallery items be draggable
     $( "li", $gallery ).draggable({
       helper: "clone",
       cursor: "move",
       appendTo:"body"
-    });	
-   	
+    });
+
   	
  	 var i=0; 	
     // let the trash be droppable, accepting the gallery items
@@ -1214,13 +1234,11 @@ $(document).ready(function() {
 
       drop: function( event, ui ) {
 				$( this ).find( ".placeholder" ).remove();
-				$( "<div id=\"i"+i+ "\" style=\"width:50px;height:50px;position:relative;\"></div>" ).text( ui.draggable.text()).appendTo( this );
+				$( "<div id=\"i"+i+ "\" class=\"ui-widget-content textView\" style=\"width:50px;height:50px;position:relative;\"></div>" ).text( ui.draggable.text()).appendTo( this );
 			i=i+1;
 			console.log(i);
-				$(this).find("div")
-					.addClass("ui-widget-content ui-draggable ui-draggable-handle")
-					.draggable({containment:"#trash",scroll:false});
-		}
+			
+	}
 
 
     });

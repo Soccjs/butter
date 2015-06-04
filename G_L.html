@@ -1,230 +1,227 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link href="css/G_L.css" rel="stylesheet">
-		<link href="css/jqueryFileTree.css" rel="stylesheet">
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-		<link rel="stylesheet" href="css/jquery.contextMenu.css" />
-			
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<head>
+	<link href="css/G_L.css" rel="stylesheet">
+	<link href="css/jqueryFileTree.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="css/jquery.contextMenu.css" />
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 
-		<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Karla:700' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
-		
-
-		<script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
-		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-		
+	<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Karla:700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
 
 
-		<script src="./ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script src="./ace-builds/src/ext-language_tools.js"></script>
-	
-		<script src="js_client/G_L.js" type="text/javascript"></script>
-
-		<script src="lib/jquery.easing.js" type="text/javascript"></script>
-		<script src="lib/jqueryFileTree.js" type="text/javascript"></script>
-		<script src="lib/jquery.contextMenu.js"></script>
-		<script src="lib/jquery.ui.position.js"></script>
-		<script src="lib/socket.js"></script>
-		<script src="lib/autocomplete.js"></script>
-        <script src="lib/lists.js"></script>
-        
-        <link type="text/css" rel="stylesheet" href="./materialize/css/materialize.min.css"  media="screen,projection"/>
-
-         <link rel="stylesheet" href="./draganddrop_test/jquery-ui.css">
-  		<script src="./draganddrop_test/jquery-ui.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	</head>
 
-	<body>
-	  
-	   <script type="text/javascript" src="./materialize/js/materialize.min.js"></script>
-	   <script src="./materialize/js/init.js"></script>
-	 
-		
-	<script> 
+	<script src="./ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace-builds/src/ext-language_tools.js"></script>
+
+	<script src="js_client/G_L.js" type="text/javascript"></script>
+
+	<script src="lib/jquery.easing.js" type="text/javascript"></script>
+	<script src="lib/jqueryFileTree.js" type="text/javascript"></script>
+	<script src="lib/jquery.contextMenu.js"></script>
+	<script src="lib/jquery.ui.position.js"></script>
+	<script src="lib/socket.js"></script>
+	<script src="lib/autocomplete.js"></script>
+	<script src="lib/lists.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="./materialize/css/materialize.min.css"  media="screen,projection"/>
+
+	<link rel="stylesheet" href="./draganddrop_test/jquery-ui.css">
+	<script src="./draganddrop_test/jquery-ui.js"></script>
+
+
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+</head>
+
+<body>
+
+<script type="text/javascript" src="./materialize/js/materialize.min.js"></script>
+<script src="./materialize/js/init.js"></script>
+
+
+<script>
 
 	$('.button-collapse').sideNav({
-      menuWidth: 300, // Default is 240
-      edge: 'right', // Choose the horizontal origin
-      closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
-    });
+		menuWidth: 300, // Default is 240
+		edge: 'right', // Choose the horizontal origin
+		closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+	});
 
-				  $(function() {
-	 
-					 $( "#a" ).draggable({containment:"#trash",scroll:false});
-					 $("#btn_join").click(function() {
-						var background = $("#form_id").val();
-						console.log("zz " + background);
-						$("#current").css("background", background);
+	$(function() {
 
-					});
-				});
+		$( "#a" ).draggable({containment:"#trash",scroll:false});
 
+		$("#complete").click(function() {
+			var background = $("#input_dialog").find("input[name=" + "background" + "]").val();
+			var id = $("#input_dialog").find("input[name="+"obj_id"+"]").val();
+			var width = $("#input_dialog").find("input[name="+"width"+"]").val();
+			var height = $("#input_dialog").find("input[name="+"height"+"]").val();
 
-			</script>
+			$('#' + id).css("background",background);
+			$('#' + id).css("width",width);
+			$('#' + id).css("height",height);
 
-
-
-
-  <ul id="nav-mobile" class="side-nav fixed" style="width: 300px;">
-      
-    <li class="logo"><a id="logo-container" href="http://github.com/soccjs/butter" class="brand-logo" style = "height : 130px;">
-            <object id="front-page-logo" type="image/png" data="./img/smile.png">Your browser does not support png</object></a></li>
+		});
+	});
 
 
-	  <ul id="slide-out" class="side-nav fixed" style="top : 130px; width:300px">
-	    <li>
-	    	<a href="#!">EditText</a>
-	    		    </li>
-	    <li><a href="#!">ImageView</a></li>
-	   
-	    <li class="no-padding">
-          <ul class="collapsible collapsible-accordin" >
-            <li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">Form widget</a>
-              <div class="collapsible-body" style="">
-                <ul id="gallery">
-                  <li ><a href="http://materializecss.com/color.html">TextView</a></li>
-                  <li>			
- 					   <a><img src="images/button.png" alt="The peaks of High Tatras" cursor="move"></a>
-                  </li>
-                  <li><a href="http://materializecss.com/helpers.html">CheckBox</a></li>
-                </ul>
-              </div>
-            </li>
-            <li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">Layouts</a>
-              <div class="collapsible-body" style="">
-                <ul>
-                  <li><a href="http://materializecss.com/badges.html">LinearLayout(H)</a></li>
-                  <li><a href="http://materializecss.com/buttons.html">LinearLayout(V)</a></li>
-                  <li><a href="http://materializecss.com/cards.html">RelativeLayout</a></li>
-                </ul>
-              </div>
-            </li>
-            <li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">Composite</a>
-              <div class="collapsible-body" style="">
-                <ul>
-                  <li><a href="http://materializecss.com/collapsible.html">ScrollView</a></li>
-                  <li><a href="http://materializecss.com/dialogs.html">WebView</a></li> 
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </li>
-  </ul>
-  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+</script>
+
+
+
+
+<ul id="nav-mobile" class="side-nav fixed" style="width: 300px;">
+
+	<li class="logo"><a id="logo-container" href="http://github.com/soccjs/butter" class="brand-logo" style = "height : 130px;">
+		<object id="front-page-logo" type="image/png" data="./img/smile.png">Your browser does not support png</object></a></li>
+
+
+	<ul id="slide-out" class="side-nav fixed" style="top : 130px; width:300px">
+		<li>
+			<a href="#!">EditText</a>
+		</li>
+		<li><a href="#!">ImageView</a></li>
+
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordin" >
+				<li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">Form widget</a>
+					<div class="collapsible-body" style="">
+						<ul id="gallery">
+							<li ><a href="http://materializecss.com/color.html">TextView</a></li>
+							<li>
+								<a><img src="images/button.png" alt="The peaks of High Tatras" cursor="move"></a>
+							</li>
+							<li><a href="http://materializecss.com/helpers.html">CheckBox</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">Layouts</a>
+					<div class="collapsible-body" style="">
+						<ul>
+							<li><a href="http://materializecss.com/badges.html">LinearLayout(H)</a></li>
+							<li><a href="http://materializecss.com/buttons.html">LinearLayout(V)</a></li>
+							<li><a href="http://materializecss.com/cards.html">RelativeLayout</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">Composite</a>
+					<div class="collapsible-body" style="">
+						<ul>
+							<li><a href="http://materializecss.com/collapsible.html">ScrollView</a></li>
+							<li><a href="http://materializecss.com/dialogs.html">WebView</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	<a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 </ul>
 
 
-		<div class="overlay_off" id="spinner_container">
-			<div class="square">
-				<div class="spin"></div>
+<div class="overlay_off" id="spinner_container">
+	<div class="square">
+		<div class="spin"></div>
+	</div>
+</div>
+
+<div id="container">
+	<div id="right_topbar"></div>
+	<div id="left">
+		<div id="left_img">
+			<div id="trash" class="ui-widget-header"></div>
+			<div id="input_dialog">
+				<span>&nbsp Id &nbsp&nbsp&nbsp</span> <input type="text" placeholder="id"  name="obj_id" style="color:blue;"/>
+
+				<span>&nbsp BG &nbsp&nbsp </span><input type="text" placeholder="background"  name="background" style="color:blue;"/>
+
+				<span> Width</span><input type="text" placeholder="width"  name="width" style="color:blue;"/>
+
+				<span> Height</span><input type="text" placeholder="height"  name="height" style="color:blue;"/>
+
+				<input type="button" value="click" id="complete"/>
 			</div>
+
+	</div>
+</div>
+
+	<div id="right">
+		<ul id="right_topbar_sortable">
+			<!--<li class="file_selected" iSSSSAAAd="li_dummy">
+                <span class="ui-icon ui-icon-circle-close"></span>&nbsp;<a>dummy...</a>
+            </li>-->
+		</ul>
+
+		<div id="right_editor"></div>
+
+
+	</div>
+	<div id="right_drag"></div>
+	<div id="right_log">
+		<div id="right_log_inner" style="background: #ddd">
 		</div>
-		
-		<div id="container">
-			<div id="right_topbar"></div>
-			<div id="left">
-				<div id="left_img">
-					<div id="trash" class="ui-widget-header">					
-							<div id="i1" class="ui-widget-content" style="width:50px;height:50px;">
-								<p>inner</p>
-							</div>
-					</div>
+	</div>
 
 
-					 <div id="a" class="ui-widget-content" style="width:50px;height:50px;">
-						<p>Drag</p>
-					</div>
+	<div class="git_btn_container" style="z-index: 9999999">
+		<figure class="git_button">
+			<img  src="img/git.png"/>
+		</figure>
+	</div>
 
-					
+	<div class="git_commit git_smallBtn" id="git_commit" title="commit">
+		<figure>
+			<img src="img/commit.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
+		</figure>
+	</div>
 
+	<div class="git_push git_smallBtn" id="git_push" title="push">
+		<figure>
+			<img src="img/push.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
+		</figure>
+	</div>
 
-					<div id="current">
-						 <span id="span1"></span>
-						 <span id="span2"></span>
-						 <span id="span3"></span>
-						 <span id="span4"></span>
-						 <input type="text" placeholder="background"  id="form_id" style="color:blue;"/>
-						 <input type="button" value="Join" id="btn_join"/>
-
-					</div>
-				</div>
-			</div>	
-			<div id="right">
-					<ul id="right_topbar_sortable">
-						<!--<li class="file_selected" iSSSSAAAd="li_dummy">
-							<span class="ui-icon ui-icon-circle-close"></span>&nbsp;<a>dummy...</a>
-						</li>-->
-					</ul>
-				
-				<div id="right_editor"></div>
-				
-				
-			</div>
-			<div id="right_drag"></div>
-			<div id="right_log">
-			<div id="right_log_inner" style="background: #ddd">
-			</div>
-		</div>
-
-
-		<div class="git_btn_container" style="z-index: 9999999">
-			<figure class="git_button">
-				<img  src="img/git.png"/>
-			</figure>
-		</div>
-
-		<div class="git_commit git_smallBtn" id="git_commit" title="commit">
-			<figure>
-				<img src="img/commit.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
-			</figure>
-		</div>
-
-		<div class="git_push git_smallBtn" id="git_push" title="push">
-			<figure>
-				<img src="img/push.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
-			</figure>
-		</div>
-
-		<div class="git_pull git_smallBtn" id="git_pull" title="pull">
-			<figure>
-				<img src="img/pull.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
-			</figure>
-		</div>
-<!--AUTO COMPLETE-->
-    <div id="autocomplete_listbox">
-        <div class="blur"></div>
-        <ul id="methods_list">
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-            <li>item1</li>
-        </ul>
-    </div>		
-		
-
-	
-		<div id="personal_info">
-			<img src="img/personal.png">
-		</div>
+	<div class="git_pull git_smallBtn" id="git_pull" title="pull">
+		<figure>
+			<img src="img/pull.png" style="margin-left: -32px; margin-top: -11px; width: 35px;"/>
+		</figure>
+	</div>
+	<!--AUTO COMPLETE-->
+	<div id="autocomplete_listbox">
+		<div class="blur"></div>
+		<ul id="methods_list">
+			<li>item1</li>
+			<li>item1</li>
+			<li>item1</li>
+			<li>item1</li>
+			<li>item1</li>
+			<li>item1</li>
+		</ul>
+	</div>
 
 
-		
-		<div id="mini_popup">
-				&nbsp;&nbsp;<span><img src="img/check.png" id="mini_popup_img"/>&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="mini_popup_text">File Saved</span>
-		</div>
-		
+
+	<div id="personal_info">
+		<img src="img/personal.png">
+	</div>
 
 
-	</body>
+
+	<div id="mini_popup">
+		&nbsp;&nbsp;<span><img src="img/check.png" id="mini_popup_img"/>&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="mini_popup_text">File Saved</span>
+	</div>
+
+
+</div>
+</body>
 </html>
