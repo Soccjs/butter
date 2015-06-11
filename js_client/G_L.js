@@ -1162,10 +1162,16 @@ $(document).ready(function() {
     	$('#autocomplete_listbox').css("display", "block");
 
     });
+
+
+    
+    	
+
+
     var $current = $("#current");
 	var $gallery = $( "#gallery" ),
   	    $trash = $( "#trash"),
- 		$input = $( "#input_dialog");
+ 		$input = $( "#input");
 
     $(trash).mousemove(function(event) {
         $current.find("span#span2").text("X: " + event.pageX + ", Y: " + event.pageY);

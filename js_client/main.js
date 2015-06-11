@@ -490,7 +490,7 @@ $(document).ready(function() {
 							alert("file was Not selected!");
 						}
 						else{
-						window.location.href=("./G_L.html?id=" + _GLOBAL.id + "&path=" + _GLOBAL.file);
+						window.location.href=("./G_L.html?id=" + _GLOBAL.id + "&path=" + _GLOBAL.file + "&proj=" +_GLOBAL.project+"_"+_GLOBAL.id);
 						} 
 					}
 				});

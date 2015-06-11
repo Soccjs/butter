@@ -1,20 +1,42 @@
 var orientation = "display:block;";
 
+var editor;
+
+
 $(document).ready(function() 
 {
-	$(".click_btn").click(function() {
-		makeParser();
-	});
 
+	   	$("#complete").click(function() {
+	/*		var background = $("#input").find("input[name=" + "background" + "]").val();
+			var id = $("#input").find("input[name="+"obj_id"+"]").val();
+			var width = $("#input").find("input[name="+"width"+"]").val();
+			var height = $("#input").find("input[name="+"height"+"]").val();
+
+			$('#' + id).css("background",background);
+			$('#' + id).css("width",width);
+			$('#' + id).css("height",height);
+			*/
+				editor = ace.edit("right_editor_inner");
+
+					console.log("click");
+				var cur_contents = editor.getValue();
+				console.log(cur_contents);
+				makeParser(cur_contents);
+			
+		});
+    	
+
+
+	console.log("parser");
 	// XML parser
-	function makeParser()
+	function makeParser(cur_contents)
 	{
-		var xml = $(".right_editor").text().replace(/\"/g,"'");
+		var xml = cur_contents.replace(/\"/g,"'");
 		var	xmlDoc = $.parseXML(xml);
 		$xml = $(xmlDoc);
 
 		var fullHtml = makeChildeNode(xmlDoc);
-		$("#left").html(fullHtml);
+		$("#trash").html(fullHtml);
 
 		/*dpi_x = document.getElementById('testdiv').offsetWidth;
    		dpi_y = document.getElementById('testdiv').offsetHeight;*/
@@ -98,7 +120,7 @@ $(document).ready(function()
 		var textview = "<div id=\""+getId(xml)+"\" ";
 
 		//STYLE생성
-		textview += "style=\""+orientation+"margin:"+getMargin(xml)+";"+"\">"+"<span style=\"";
+		textview += "style=\""+orientation+"margin:"+getMargin(xml)+";"+"\">"+"<span class=\"TextView\" style=\"";
 
 		//WIDTH생성
 		var width = getWidth(xml);

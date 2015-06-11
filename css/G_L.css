@@ -65,7 +65,7 @@ html, body {
   #trash .gallery h5 { display: none; }
   #trash li{color:blue;}
 
-.textView{
+.TextView{
 	background: #Fa0000;
 
 }
@@ -82,13 +82,13 @@ html, body {
 	width:100px;
 	height:10px;
 }
-#input_dialog{
+#input{
 	background:#ddd;margin-top:-300px;margin-left:400px;width:210px;height:300px;
 	border-color:#000000;
 	border-width: 3px;
 	border-style:double;
 }
-#input_dialog input[type=text] ,span, input[type=button] {
+#input input[type=text]  input[type=button] span{
 	width: 60%;
 	height: 20px;
 	margin-right:3px;
@@ -100,7 +100,7 @@ html, body {
 	background: #FF1744;
 	clear:both;
 }
-#input_dialog input[type=button]{
+#input input[type=button]{
 	height:30px;
 	background:#000000;
 }
