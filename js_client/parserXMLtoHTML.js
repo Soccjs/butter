@@ -6,16 +6,8 @@ var editor;
 $(document).ready(function() 
 {
 
-	   	$("#complete").click(function() {
-	/*		var background = $("#input").find("input[name=" + "background" + "]").val();
-			var id = $("#input").find("input[name="+"obj_id"+"]").val();
-			var width = $("#input").find("input[name="+"width"+"]").val();
-			var height = $("#input").find("input[name="+"height"+"]").val();
-
-			$('#' + id).css("background",background);
-			$('#' + id).css("width",width);
-			$('#' + id).css("height",height);
-			*/
+	   	$("#rightToleft").click(function() {
+	
 				editor = ace.edit("right_editor_inner");
 
 					console.log("click");

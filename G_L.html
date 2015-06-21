@@ -127,26 +127,70 @@
 		<div class="spin"></div>
 	</div>
 </div>
-
+<div id="leftToright"><img  src="./images/leftToright.png" alt="htmltoxml" width="50" height="50" ></div>
+<div id="rightToleft"><img  src="./images/rightToleft.png" alt="xmltohtml" width="50" height="50" ></div>
+		
 <div id="container">
 	<div id="right_topbar"></div>
 	<div id="left">
 		<div id="left_img">
-			<div id="trash" class="ui-widget-header"></div>
-			<div id="input">
-				<span>&nbsp Id &nbsp&nbsp&nbsp</span> <input type="text" placeholder="id"  name="obj_id" style="color:blue;"/>
-
-				<span>&nbsp BG &nbsp&nbsp </span><input type="text" placeholder="background"  name="background" style="color:blue;"/>
-
-				<span> Width</span><input type="text" placeholder="width"  name="width" style="color:blue;"/>
-
-				<span> Height</span><input type="text" placeholder="height"  name="height" style="color:blue;"/>
-
-				<input type="button" value="click" id="complete"/>
+			<div id="trash" class="ui-widget-header"></div>	
+		</div>
+		<div id="input" class="input_dialog card-panel" style="padding:0px;">
+				
+			<div   id="table_dialog">
+				<table class="hoverable centered blue-text">
+			        <thead>
+			          <tr>
+			              <th data-field="id"><blockquote style="margin:0px;" >Name</blockquote></th>
+			              <th data-field="price"><blockquote style="margin:0px;">Value</blockquote></th>
+			          </tr>
+			        </thead>
+			        <tbody>
+			          <tr>
+			            <td> id</td>
+			            <td><input type="text" placeholder="id"  name="obj_id" /></td>
+			          </tr>
+			          <tr>
+			            <td>Background</td>
+			            <td><input type="text" placeholder="background"  name="background" /></td>
+			          </tr>
+			          <tr>
+			            <td>Width</td>
+			            <td><input type="text" placeholder="width"  name="width"/></td>
+			          </tr>
+			           <tr>
+			            <td>Height</td>
+			            <td><input type="text" placeholder="height"  name="height"/></td>
+			          </tr>
+			          <tr>
+			            <td>text</td>
+			            <td><input type="text" placeholder="text"  name="text"/></td>
+			          </tr>
+			          <tr>
+			            <td>Width</td>
+			            <td><input type="text" placeholder="width"  name="width"/></td>
+			          </tr>
+			          <tr>
+			            <td>Width</td>
+			            <td><input type="text" placeholder="width"  name="width"/></td>
+			          </tr>
+			          <tr>
+			            <td>Width</td>
+			            <td><input type="text" placeholder="width"  name="width"/></td>
+			          </tr>
+			          <tr>
+			            <td>Width</td>
+			            <td><input type="text" placeholder="width"  name="width"/></td>
+			          </tr>
+			          
+			        </tbody>
+			    </table>
 			</div>
-
+			<input type="button" value="click" id="complete" class="teal"/>
+		</div>
+		
 	</div>
-</div>
 
 	<div id="right">
 		<ul id="right_topbar_sortable">

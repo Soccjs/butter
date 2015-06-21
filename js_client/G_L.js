@@ -1164,8 +1164,25 @@ $(document).ready(function() {
     });
 
 
-    
-    	
+    $("#input").draggable();
+
+    $("#complete").click(function() {
+		var background = $("#input").find("input[name=" + "background" + "]").val();
+		var id = $("#input").find("input[name="+"obj_id"+"]").val();
+		var width = $("#input").find("input[name="+"width"+"]").val();
+		var height = $("#input").find("input[name="+"height"+"]").val();
+		var text = $("#input").find("input[name="+"text"+"]").val();
+
+		$('#' + id).css("background",background);
+		$('#' + id).css("width",width);
+		$('#' + id).css("height",height);
+		//$('#' + id).html(text);
+		//$('#' + id).text(text);
+		
+		console.log(text);
+
+		
+	});	
 
 
     var $current = $("#current");
@@ -1173,51 +1190,36 @@ $(document).ready(function() {
   	    $trash = $( "#trash"),
  		$input = $( "#input");
 
-    $(trash).mousemove(function(event) {
-        $current.find("span#span2").text("X: " + event.pageX + ", Y: " + event.pageY);
-        $input.find("input[name=" + "XY" + "]").attr("value", "X: " + event.pageX + ", Y: " + event.pageY);
-    });
-
     var click_cnt = true;
 
-    $(trash).click(function(){
-		var $item = $( this ),
-        $target = $( event.target );
+    $(trash).on('click mousedown mouseup',"div.TextView", function(){
+		var $target = $( this ),
+        $obj = $( event.target );
 		
+		console.log($obj.attr('id'));
+		console.log($target.attr('id'));
 		
-		$item.find("div.textView").on("click dblclick mousedown mouseover mouseout mouseenter mouseup",function(event){
- 			 		console.log(event.type);
- 			 		$obj = $(event.target);
-					
+ 		console.log(event.type);
+		console.log($obj.attr('class'));
+ 	
+		if(event.type==="click"){
+			if(typeof $obj.attr("id") !=="undefined"){
+				$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+				$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+				$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+				$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+				$input.find("input[name=" + "text" + "]").val($obj.text());
 				
-					if(event.type==="mouseout"||event.type==="mouseover"){$item.end();$target.end();}
-					else if(event.type==="click"){
-						$obj.draggable({	containment:"#trash",scroll:false});
+			}
+			
+			$target.end();
+			$obj.end();
 
-						$obj.end();$item.end();$target.end();
-					}
-					else if(event.type==="mouseup"){
-							$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-							$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-							$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-							$input.find("input[name=" + "background" + "]").val($obj.css("background"));
-							console.log("obj= " + $obj.attr('id') + ' ' + $obj.css("background"));
+		}
+	
+				
 
-					}
-
-					else if(event.type==="dblclick"){
-						$obj.resizable({  maxHeight: 300,
-									      maxWidth: 280,
-									      minHeight: 50,
-									      minWidth: 50,
-									      containment:"#trash" , autoHide:true, handles:"n,e,s,w"});	
-												$obj.end();$item.end();$target.end();
-
-					}
-					
- 			return false;
- 		});
-
+	
 	});
 
 
@@ -1238,13 +1240,22 @@ $(document).ready(function() {
 	  hoverClass: "ui-state-hover",
 			
 
-      drop: function( event, ui ) {
-				$( this ).find( ".placeholder" ).remove();
-				$( "<div id=\"i"+i+ "\" class=\"ui-widget-content textView\" style=\"width:50px;height:50px;position:relative;\"></div>" ).text( ui.draggable.text()).appendTo( this );
-			i=i+1;
-			console.log(i);
-			
-	}
+	    drop: function( event, ui ) {
+					$( this ).find( ".placeholder" ).remove();
+					$( "<div id=\"TextView"+i+ "\" ></div>" ).text( ui.draggable.text()).appendTo( this )
+					.addClass("TextView")
+					.draggable({containment:"#trash",scroll:false})
+					.resizable({ 
+					  maxHeight: 300,
+				      maxWidth: 280,
+				      minHeight: 30,
+				      minWidth: 50,
+				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
+						
+				i=i+1;
+				console.log(i);
+				
+		}
 
 
     });
