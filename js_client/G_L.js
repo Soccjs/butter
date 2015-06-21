@@ -1,3 +1,5 @@
+var parser = require('./parserXMLtoHTML.js');
+
 // global variables
 var isShownBtmMenu = false;			// boolean for bottom menu
 var isPerInfoVisible = false;		// boolean for personal_info menu
@@ -29,6 +31,8 @@ var add_flag = 0;
 
 var editor;
 
+document.write('<script language="javascript" src="./js_client/parserXMLtoHTML.js"></script>');
+
 $(document).ready(function() {
 
 	_GLOBAL.id = getParameterByName('id');
@@ -39,6 +43,7 @@ $(document).ready(function() {
 
 
 	
+//	loadjscssfile("parserXMLtoHTML.js", "js");
 	$(document).on({
 		ajaxStart : function(){
 			console.log("AJAX START");
@@ -54,10 +59,11 @@ $(document).ready(function() {
 	
 	_GLOBAL.file=getParameterByName('path');
 		$.post('openFile', {path : _GLOBAL.file}, function(data) {
-					make_editor(data, _GLOBAL.file, 1, 1);	
+					make_editor(data, _GLOBAL.file, 1, 1);	//파일트리에서 열면: read-only
 
-						//파일트리에서 열면: read-only
+					parser.parse.xToh();
 		});
+				//	directParser();
 
 	//로그인 처음 되면 리빙룸에 있도록 in
 	socket.emit("in",{id: _GLOBAL.id});

@@ -6,20 +6,30 @@ var editor;
 $(document).ready(function() 
 {
 
+
 	   	$("#rightToleft").click(function() {
-	
 				editor = ace.edit("right_editor_inner");
 
-					console.log("click");
+				console.log("click");
 				var cur_contents = editor.getValue();
 				console.log(cur_contents);
 				makeParser(cur_contents);
 			
 		});
+
+
+	console.log("hi parser");
     	
+    function directParser(){
+    	editor = ace.edit("right_editor_inner");
 
+		console.log("click");
+		var cur_contents = editor.getValue();
+		console.log(cur_contents);
+		makeParser(cur_contents);
+    }
 
-	console.log("parser");
+	
 	// XML parser
 	function makeParser(cur_contents)
 	{
