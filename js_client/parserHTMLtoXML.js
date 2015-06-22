@@ -9,14 +9,15 @@ function getParameterByName(name) {
 
 $(document).ready(function() 
 {
-	$(".click_html_to_xml_btn").click(function() {
-		makeParser();
-	});
+.
 
+	$("#leftToright").click(function() {
+				makeParser();
+	});
 	// HTML parser
 	function makeParser()
 	{
-		var html = $(".left_editor").html();
+		var html = $("#trash").html();
 		var	htmlDoc = $.parseHTML(html);
 		$html = $(htmlDoc);
 

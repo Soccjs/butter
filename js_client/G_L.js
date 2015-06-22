@@ -1193,7 +1193,8 @@ $(document).ready(function() {
 
     var $current = $("#current");
 	var $gallery = $( "#gallery" ),
-  	    $trash = $( "#trash"),
+  	  	 $layout = $( "#layout"),
+  	     $trash = $( "#trash"),
  		$input = $( "#input");
 
     var click_cnt = true;
@@ -1237,19 +1238,43 @@ $(document).ready(function() {
       appendTo:"body"
     });
 
-  	
- 	 var i=0; 	
+	$( "li", $layout ).draggable({
+		helper: "clone",
+		cursor: "move",
+		appendTo:"body"
+	});
+
+
+	var t_v_cnt=0;//textview count
+	var l_l_H_cnt=0;//LenearLayout count
     // let the trash be droppable, accepting the gallery items
     $trash.droppable({
-      accept: "#gallery > li",
+
+		accept: "li",
+
       activeClass: "ui-state-highlight",
 	  hoverClass: "ui-state-hover",
 			
 
 	    drop: function( event, ui ) {
 					$( this ).find( ".placeholder" ).remove();
-					$( "<div id=\"TextView"+i+ "\" ></div>" ).text( ui.draggable.text()).appendTo( this )
+
+			if(ui.draggable.text()==="TextView"){
+				$( "<div id=\"TextView"+t_v_cnt+ "\" ></div>" ).text( ui.draggable.text()).appendTo( this )
 					.addClass("TextView")
+					.draggable({containment:"#trash",scroll:false})
+					.resizable({
+						maxHeight: 300,
+						maxWidth: 280,
+						minHeight: 30,
+						minWidth: 50,
+						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
+				t_v_cnt++;
+			}
+			else if(ui.draggable.text()==="LinearLayout_H"){
+
+					$( "<div id=\"LinearLayout"+l_l_H_cnt+ "\" ></div>" ).text("").appendTo( this )
+					.addClass("LinearLayout_H")
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({ 
 					  maxHeight: 300,
@@ -1258,9 +1283,8 @@ $(document).ready(function() {
 				      minWidth: 50,
 				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
 						
-				i=i+1;
-				console.log(i);
-				
+				l_l_H_cnt++;
+			}
 		}
 
 
