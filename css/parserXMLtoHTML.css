@@ -1,15 +1,29 @@
+#layout_frame {
+ 	background: #000000;
+	-webkit-padding-start: 0px;
+}
+
+#layout_relative {
+ 	background: #000000;
+	-webkit-padding-start: 0px;
+}
+
 #layout_vertical{
-  	height: 640px;
-  	width:360px;
  	background: #000000;
 	-webkit-padding-start: 0px;
 }
 
 #layout_horizontal{
-  	height: 640px;
-  	width:360px;
  	background: #000000;
 	-webkit-padding-start: 0px;
+}
+
+#layout_frame div{
+  	position: absolute;
+}
+
+#layout_relative div{
+  	position: relative;
 }
 
 #layout_vertical div{
@@ -18,4 +32,29 @@
 
 #layout_horizontal div{
 	float:left;
+}
+
+.EditText {
+	color:#000000;
+	background-color:#FFFFFF;
+}
+
+.RadioButton {
+	color:#FFFFFF;
+	background-color:#000000;
+}
+
+.CheckBox {
+	color:#FFFFFF;
+	background-color:#000000;
+}
+
+.Button {
+	color:#FFFFFF;
+	background-color:#BBBBBB;
+}
+
+.TextView {
+	color:#FFFFFF;
+	background-color:#000000;
 }

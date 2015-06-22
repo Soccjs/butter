@@ -1,8 +1,15 @@
-var orientation = "display:block;";
+// 사위 parent Node의 orientation 속성을 child에서 사용
+var defaultOrientation = "display:block;";
+
+// 기본 WebView의 화면으로 표시해 줄 웹 페이지
+var defaultWebViewUrl = "http://developer.android.com/develop/index.html";
+
+// Session에 저장된 GLOBAL 변수 값 저장.
+var _GLOBAL = {};
 
 $(document).ready(function() 
 {
-	$(".click_btn").click(function() {
+	$(".click_xml_to_html_btn").click(function() {
 		makeParser();
 	});
 
@@ -14,7 +21,7 @@ $(document).ready(function()
 		$xml = $(xmlDoc);
 
 		var fullHtml = makeChildeNode(xmlDoc);
-		$("#left").html(fullHtml);
+		$("#left_editor").html(fullHtml);
 
 		/*dpi_x = document.getElementById('testdiv').offsetWidth;
    		dpi_y = document.getElementById('testdiv').offsetHeight;*/
@@ -54,170 +61,343 @@ $(document).ready(function()
 			case "TextView" : eachHtml += makeTextView(xmlDoc); break;
 			case "Button" : eachHtml += makeButton(xmlDoc); break;
 			case "EditText" : eachHtml += makeEditText(xmlDoc); break;
+			case "RadioButton" : eachHtml += makeRadioButton(xmlDoc); break;
+			case "CheckBox" : eachHtml += makeCheckBox(xmlDoc); break;
+			case "WebView" : eachHtml += makeWebView(xmlDoc); break;
+			case "ImageView" : eachHtml += makeImageView(xmlDoc); break;
+			case "ScrollView" : eachHtml += makeScrollView(xmlDoc); break;
 			case "LinearLayout" : eachHtml += makeLinearLayout(xmlDoc); break;
+			case "RelativeLayout" : eachHtml += makeRelativeLayout(xmlDoc); break;
+			case "FrameLayout" : eachHtml += makeFrameLayout(xmlDoc); break;
 		}
 		return eachHtml;
 	}
 
-	function makeLinearLayout(xml)
+	// FrameLayout 속성 추출
+	function makeFrameLayout(xml)
 	{
-		var textview = "<div style=\""+orientation+"\" ";
-
-		//ID생성
-		textview += "id=\""+getId(xml)+"\" ";
-		//WIDTH생성
-		textview += "width=\""+getWidth(xml)+"\" ";
-		//HEIGHT생성
-		textview += "height=\""+getHeight(xml)+"\">";
-
-		textview += getOrientation(xml);
-
-		return textview;
+		var viewHTML = "<div ";
+		//RelativeLayout Class 생성
+		viewHTML += setClass("FrameLayout");
+		//DefaultLayout생성
+		viewHTML += makeDefaultLayout(xml);
+		//Orientation생성
+		viewHTML += defaultOrientation+"\">";
+		//Orientation생성
+		viewHTML += "<ul id=\"layout_frame\" style=\"display:block;\">";
+		return viewHTML;
 	}
 
+	// RelativeLayout 속성 추출
 	function makeRelativeLayout(xml)
 	{
-		var textview = "<div ";
+		var viewHTML = "<div ";
+		//RelativeLayout Class 생성
+		viewHTML += setClass("RelativeLayout");
+		//DefaultLayout생성
+		viewHTML += makeDefaultLayout(xml);
+		//Orientation생성
+		viewHTML += defaultOrientation+"\">";
+		//Orientation생성
+		viewHTML += "<ul id=\"layout_relative\" style=\"display:block;\">";
+		return viewHTML;
+	}
 
+	// LinearLayout 속성 추출
+	function makeLinearLayout(xml)
+	{
+		var viewHTML = "<div ";
+		//LinearLayout Class생성
+		viewHTML += setClass("LinearLayout");
+		//DefaultLayout생성
+		viewHTML += makeDefaultLayout(xml);
+		//Orientation생성
+		viewHTML += defaultOrientation+"\">";
+		//Orientation생성
+		viewHTML +="<ul id=\"layout_vertical\" style=\"display:block;\">";
+		return viewHTML;
+	}
+
+	// ScrollView 속성 추출
+	function makeScrollView(xml)
+	{
+		var viewHTML = "<div ";
+		//ScrollView Class 생성
+		viewHTML += setClass("ScrollView");
+		//DefaultLayout 생성
+		viewHTML += makeDefaultLayout(xml);
+		//Scroll 기능 생성
+		viewHTML += "overflow:scroll;";
+		return viewHTML+"\">";
+	}
+
+	// DefaultLayout 속성 추출
+	function makeDefaultLayout(xml)
+	{
+		var viewHTML = "";
+		//Root Information생성
+		viewHTML += getRootInfo(xml);
+		//Global Orientation 정보 설정
+		viewHTML += getOrientation(xml);
 		//ID생성
-		textview += "id=\""+getId(xml)+"\" ";
+		viewHTML += getId(xml);
+		//DIV STYLE생성
+		viewHTML += "style=\"";
 		//WIDTH생성
-		textview += "width=\""+getWidth(xml)+"\" ";
+		viewHTML += getWidth(xml);
 		//HEIGHT생성
-		textview += "height=\""+getHeight(xml)+"\" ";
-		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-		textview += ">"+getText(xml)+"</div>";
-
-		return textview;
+		viewHTML += getHeight(xml);
+		//BACKGROUND생성
+		viewHTML += getBackground(xml);
+		return viewHTML;
 	}
 
 	// TextView 속성 추출
 	function makeTextView(xml)
 	{
+		//DIV생성
+		var viewHTML = "<div ";
 		//ID생성
-		var textview = "<div id=\""+getId(xml)+"\" ";
-
-		//STYLE생성
-		textview += "style=\""+orientation+"margin:"+getMargin(xml)+";"+"\">"+"<span style=\"";
-
-		//WIDTH생성
-		var width = getWidth(xml);
-		textview += "width:"+width+";";
-		
-		// 기본 Default View 속성 생성
-		textview += makeDefaultView(xml, "TextView");
-
-		//DEFAULT생성
-		textview += "background:"+getBackground(xml, width, "TextView")+";";
-
+		viewHTML += getId(xml);
+		//DIV STYLE생성
+		viewHTML += "style=\""+defaultOrientation;
+		//MARGIN생성
+		viewHTML += getMargin(xml);
+		//RELATIVE MARGIN생성
+		viewHTML += getRelativeMargin(xml);
+		//END DIV생성
+		viewHTML += "\">";
+		//SPAN CLASS생성
+		viewHTML += "<span ";
+		//TextView Class 생성
+		viewHTML += setClass("TextView");
+		//Real ID생성
+		viewHTML += getRealId(xml);
+		//SPAN STYLE생성
+		viewHTML += "style=\"";
+		//SPAN 기본 Default View 속성 생성
+		viewHTML += makeDefaultView(xml);
 		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-		textview += "\">"+getText(xml)+"</span></div>";
-		return textview;
-	}
-		
-	// EditText 속성 추출
-	function makeEditText(xml)
-	{
-		//ID생성
-		var textview = "<div id=\""+getId(xml)+"\" ";
-
-		//STYLE생성
-		textview += "style=\""+orientation+"margin:"+getMargin(xml)+";"+"\">"+"<input style=\"";
-
-		//WIDTH생성
-		var width = getWidth(xml);
-		textview += "width:"+width+";";
-		
-		// 기본 Default View 속성 생성
-		textview += makeDefaultView(xml, "EditText");
-
-		//DEFAULT생성
-		textview += "background:"+getBackground(xml, width, "EditText")+";";
-
-		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-		textview += "\" value=\""+getText(xml)+"\"></div>";
-		return textview;
+		viewHTML += "\">"+getText(xml)+"</span></div>";
+		return viewHTML;
 	}
 
 	// Button 속성 추출
 	function makeButton(xml)
 	{
+		//DIV생성
+		var viewHTML = "<div ";
 		//ID생성
-		var textview = "<div id=\""+getId(xml)+"\" ";
-
+		viewHTML += getId(xml);
 		//STYLE생성
-		textview += "style=\""+orientation+"margin:"+getMargin(xml)+";padding:5px;display:inline-block;";
-
-		//DEFAULT생성
-		textview += "background:"+getBackground(xml, width, "Button")+";"+"\">";
-
-		textview += "<span style=\"";
-
-		//WIDTH생성
-		var width = getWidth(xml);
-		textview += "width:"+width+";";
-		
+		viewHTML += "style=\""+defaultOrientation+";padding:5px;display:inline-block;";
+		//MARGIN생성
+		viewHTML += getMargin(xml);
+		//RELATIVE MARGIN생성
+		viewHTML += getRelativeMargin(xml);
+		//END STYLE생성
+		viewHTML += "\">";
+		//SPAN CLASS생성
+		viewHTML += "<span ";
+		//Button Class 생성
+		viewHTML += setClass("Button");
+		//Real ID생성
+		viewHTML += getRealId(xml);
+		//SPAN STYLE생성
+		viewHTML += "style=\"";
 		// 기본 Default View 속성 생성
-		textview += makeDefaultView(xml, "Button");
-
+		viewHTML += makeDefaultView(xml);
 		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-		textview += "\">"+getText(xml)+"</span></div>";
-		return textview;
+		viewHTML += "\">"+getText(xml)+"</span></div>";
+		return viewHTML;
+	}
+
+	// Button 속성 추출
+	function makeImageView(xml)
+	{
+		//DIV생성
+		var viewHTML = "<div ";
+		//ID생성
+		viewHTML += getId(xml);
+		//STYLE생성
+		viewHTML += "style=\""+defaultOrientation+";padding:5px;display:inline-block;";
+		//MARGIN생성
+		viewHTML += getMargin(xml);
+		//RELATIVE MARGIN생성
+		viewHTML += getRelativeMargin(xml);
+		//END STYLE생성
+		viewHTML += "\">";
+		//SPAN CLASS생성
+		viewHTML += "<span ";
+		//Button Class 생성
+		viewHTML += setClass("ImageView");
+		//Real ID생성
+		viewHTML += getRealId(xml);
+		//SPAN STYLE생성
+		viewHTML += "style=\"";
+		// 기본 Default View 속성 생성
+		viewHTML += makeDefaultView(xml);
+		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
+		viewHTML += "\">"+getText(xml)+"</span></div>";
+		return viewHTML;
+	}
+
+	// EditText 속성 추출
+	function makeEditText(xml)
+	{
+		//INPUT TYPE VIEW생성
+		return makeInputTypeView(xml, "text");
+	}
+
+	// RadioButton 속성 추출
+	function makeRadioButton(xml)
+	{
+		//INPUT TYPE VIEW생성
+		return makeInputTypeView(xml, "radio");
+	}
+
+	// CheckBox 속성 추출
+	function makeCheckBox(xml)
+	{
+		//INPUT TYPE VIEW생성
+		return makeInputTypeView(xml, "checkbox");
+	}
+
+	// WebView 속성 추출
+	function makeWebView(xml)
+	{
+		//init 생성
+		var viewHTML = "<iframe src=\""+defaultWebViewUrl+"\" "; 
+		//WebView Class 생성
+		viewHTML += setClass("WebView");
+		//ID생성
+		viewHTML += getId(xml);
+		//STYLE생성
+		viewHTML += "style=\""+defaultOrientation;
+		//WIDTH생성
+		viewHTML += getWidth(xml);
+		//HEIGHT생성
+		viewHTML += getHeight(xml);
+		//WebView END 생성
+		viewHTML += "\" frameborder=\"0\"></iframe>";
+		//INPUT TYPE VIEW생성
+		return viewHTML;
+	}
+
+	// InputType 속성 추출 (EditText, RadioButton, CheckBox)
+	function makeInputTypeView(xml, type)
+	{
+		//DIV생성
+		var viewHTML = "<div ";
+		//ID생성
+		viewHTML += getId(xml);
+		//STYLE생성
+		viewHTML += "style=\""+defaultOrientation;
+		//MARGIN생성
+		viewHTML += getMargin(xml);
+		//WIDTH생성
+		viewHTML += getWidth(xml);
+		//END STYLE생성
+		viewHTML += "\">";
+		//SPAN CLASS생성
+		switch(type)
+		{
+			case "text" : viewHTML += "<input class=\"EditText\" "; break;
+			case "radio" : viewHTML += "<input class=\"RadioButton\" "; break;
+			case "checkbox" : viewHTML += "<input class=\"CheckBox\" "; break;
+		}
+		//Real ID생성
+		viewHTML += getRealId(xml);
+		//SPAN STYLE생성
+		viewHTML += "style=\"";
+		// 기본 Default View 속성 생성
+		viewHTML += makeDefaultView(xml);
+		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
+		if(type == "text")
+		{
+			viewHTML += "\" value=\""+getText(xml)+"\" type=\""+type+"\"></input>";
+		}
+		else
+		{
+			var text = getText(xml);
+			viewHTML += "\" value=\""+text+"\" type=\""+type+"\">"+text+"</input>";
+		}
+		return viewHTML+"</div>";
 	}
 
 	// 기본 View 속성 추출
-	function makeDefaultView(xml, type)
+	function makeDefaultView(xml)
 	{
-		var textview = "";
+		var viewHTML = "";
+		//WIDTH생성
+		viewHTML += getWidth(xml);
 		//HEIGHT생성
-		textview += "height:"+getHeight(xml)+";";
-
+		viewHTML += getHeight(xml);
 		//MARGIN생성
-		textview += "margin:"+getMargin(xml)+";";
-
+		viewHTML += getMargin(xml);
+		//RELATIVE MARGIN생성
+		viewHTML += getRelativeMargin(xml);
 		//TEXTSIZE생성
-		textview += "font-size:"+getTextSize(xml)+";";
-
+		viewHTML += getTextSize(xml);
 		//TEXTSTYLE생성
-		textview += "font-style:"+getTextStyle(xml)+";";
-
+		viewHTML += getTextStyle(xml);
 		//TEXTCOLOR생성
-		textview += "color:"+getTextColor(xml, type)+";";
-
+		viewHTML += getTextColor(xml);
 		//GRAVITY생성
-		textview += "text-align:"+getGravity(xml)+";";
-
+		viewHTML += getGravity(xml);
 		//ELLIPSIZE생성
-		textview += "text-overflow:"+getEllipsize(xml)+";";
-		return textview;
+		viewHTML += getEllipsize(xml);
+		//BACKGROUND생성
+		viewHTML += getBackground(xml);
+		return viewHTML;
+	}
+
+	// 컴포넌트 Class 생성
+	function setClass(className)
+	{
+		return "class=\""+className+"\"";
+	}
+
+	// XML Root 정보 생성
+	function getRootInfo(xml)
+	{
+		var xmlRootInfo = xml.attr("xmlns:android");
+		if(xmlRootInfo == null)
+			return "";
+		else
+			return "xml=\""+xmlRootInfo+"\" ";
 	}
 
 	// XML Orientation값 추출
 	function getOrientation(xml)
 	{
-		var xmlRawData = xml.attr("android:orientation");
-		if(xmlRawData == null || xmlRawData == "vertical") 
-		{
-			orientation = "display:block;";
-			return "<ul id=\"layout_vertical\">";
-		}
+		var xmlOrientation = xml.attr("android:orientation");
+		if(xmlOrientation == null || xmlOrientation == "vertical") 
+			defaultOrientation = "display:block;";
 		else
-		{
-			orientation = "display:inline-block;";
-			return "<ul id=\"layout_horizontal\">";
-		}
+			defaultOrientation = "display:inline;"; // "display:inline-block;";
+		return "";
 	}
 
 	// XML Id값 추출
 	function getId(xml)
 	{
-		var xmlRawData = xml.attr("android:id");
-		if(xmlRawData != null)
-			xmlRawData = xmlRawData.replace("@+id/", "");
+		var xmlID = xml.attr("android:id");
+		if(xmlID == null)
+			return "";
 		else
-			xmlRawData = "none";
+			return "id=\""+xmlID.replace("@+id/", "")+"\" ";
+	}
 
-		return xmlRawData;
+	// XML 실제 Id값 추출 (Drag&Drop 충돌 방지를 위에 postfix로 "_r"(real) 사용)
+	function getRealId(xml)
+	{
+		// 고유 아이디를 사용하기 위해 임시로 id+[$-R]형태로 아이디 부여
+		var xmlID = xml.attr("android:id");
+		if(xmlID == null)
+			return "";
+		else
+			return "id=\""+xmlID.replace("@+id/", "")+"[$-R]\" ";
 	}
 
 	//==================================================================================//
@@ -229,11 +409,11 @@ $(document).ready(function()
 	{
 		var xmlWidth = xml.attr("android:layout_width");
 		if(xmlWidth == "wrap_content")
-			return "0%";
+			return "";
 		else if(xmlWidth == "fill_parent" || xmlWidth == "match_parent")
-			return "100%";
+			return "width:100%;";
 		else
-			return xmlWidth;
+			return "width:"+xmlWidth+";";
 	}
 
 	// XML Height값 추출
@@ -241,69 +421,85 @@ $(document).ready(function()
 	{
 		var xmlHeight = xml.attr("android:layout_height");
 		if(xmlHeight == "wrap_content")
-			return "100%";
+			return "";
 		else if(xmlHeight == "fill_parent" || xmlHeight == "match_parent")
-			return "100%";
+			return "height:100%;";
 		else
-			return xmlHeight;
+			return "height:"+xmlHeight+";";
 	}
 
 	// XML Background값 추출
-	function getBackground(xml, width, type)
+	function getBackground(xml)
 	{
-		var xmlBackground = xml.attr("android:background");
-		xmlBackground = "url('"+xmlBackground+"');background-size:cover;background-repeat:no-repeat"
+		var xmlBackground = xml.attr("android:src");
+		if(null != xmlBackground) // 안드로이드드 select 기능을 위해 src와 background가 구분 뒤어 있지만 View 상에서 무의미(역파싱 고려)
+			xmlBackground = xml.attr("android:background");
 
-		if(width == "100%")
+		if(null != xmlBackground)
 		{
-			xmlBackground += ";display:inline-block";
+			// XML Path 경로 추가 -------+-------+-------+-------
+			var filePath = "";
+			xmlBackground = "background:url('"+filePath+"/"+xmlBackground+"');background-size:cover;background-repeat:no-repeat;"
+			if(getWidth(xml) == "width:100%;")
+			{
+				xmlBackground += "display:inline-block;";
+			}
+			return xmlBackground;
 		}
-
-		switch(type)
+		else
 		{
-			case "Button" : xmlBackground += ";background-color:#BBBBBB"; break;
-			case "EditText" : xmlBackground += ";background-color:#FFFFFF"; break;
+			return "";
 		}
-
-		return xmlBackground;
 	}
 
 	// XML Margin값 추출
 	function getMargin(xml)
 	{
-		return xml.attr("android:layout_margin");
+		var xmlMargin = xml.attr("android:layout_margin");
+		if(xmlMargin == null)
+			return "";
+		else
+			return "margin:"+xmlMargin+";";
+	}
+
+	// XML Relative Margin값 추출
+	function getRelativeMargin(xml)
+	{
+		var xmlMarginLeft = xml.attr("android:layout_marginLeft");
+		var xmlMarginRight = xml.attr("android:layout_marginRight");
+		var xmlMarginBottom = xml.attr("android:layout_marginBottom");
+		var xmlMarginTop = xml.attr("android:layout_marginTop");
+
+		if(xmlMarginLeft == null && xmlMarginRight == null && 
+			xmlMarginBottom == null && xmlMarginTop == null)
+		{
+			return "";
+		}
+		else
+		{
+			var xmlRelativeMargin = "";
+			if(xmlMarginLeft != null)
+				xmlRelativeMargin += "left:"+xmlMarginLeft+";";
+			if(xmlMarginRight != null)
+				xmlRelativeMargin += "right:"+xmlMarginRight+";";
+			if(xmlMarginBottom != null)
+				xmlRelativeMargin += "bottom:"+xmlMarginBottom+";";
+			if(xmlMarginTop != null)
+				xmlRelativeMargin += "top:"+xmlMarginTop+";";
+			return xmlRelativeMargin;
+		}
 	}
 
 	// XML Gravity 추출
 	function getGravity(xml)
 	{
-		return xml.attr("android:gravity");
-	}
-
-	//==================================================================================//
-	// EditText관련 Function
-	//==================================================================================//
-
-	// XML Text값 추출
-	function getInputType(xml)
-	{
-		var xmlText = xml.attr("android:inputType");
-		switch(xmlText)
-		{
-			case "textPassword" : xmlText = "password"; break;
-			case "number" : xmlText = "number"; break;
-		}
-		if(xmlText == null)
+		var xmlGravity = xml.attr("android:gravity");
+		if(xmlGravity == null)
 			return "";
 		else
-			return xmlText;
-	}
-	//==================================================================================//
+			return "text-align:"+xmlGravity+";";
+	}	
 
-	//==================================================================================//
-	// Text관련 Function
-	//==================================================================================//
-	
 	// XML Text값 추출
 	function getText(xml)
 	{
@@ -314,14 +510,20 @@ $(document).ready(function()
 			return xmlText;
 	}
 
+	//==================================================================================//
+
+	//==================================================================================//
+	// Text관련 Function
+	//==================================================================================//
+
 	// XML TextSize값 추출
 	function getTextSize(xml)
 	{
 		var xmlTextSize = xml.attr("android:textSize");
 		if(xmlTextSize == null)
-			return "20px";
+			return "";
 		else
-			return xmlTextSize;
+			return "font-size:"+xmlTextSize+";";
 	}
 
 	// XML TextStyle값 추출
@@ -329,25 +531,19 @@ $(document).ready(function()
 	{
 		var xmlTextStyle = xml.attr("android:textStyle");
 		if(xmlTextStyle == null)
-			return "normal";
+			return "";
 		else
-			return xmlTextStyle;
+			return "font-style:"+xmlTextStyle+";";
 	}
 
 	// XML TextColor값 추출
-	function getTextColor(xml, type)
+	function getTextColor(xml)
 	{
 		var xmlTextColor = xml.attr("android:textColor");
 		if(xmlTextColor == null)
-		{
-			switch(type)
-			{
-				case "EditText" :
-				case "Button" : xmlTextColor = "#000000"; break;
-				default : xmlTextColor = "#FFFFFF"; break;
-			}
-		}
-		return xmlTextColor;
+			return "";
+		else
+			return "color:"+xmlTextColor+";";
 	}
 
 	// XML Ellipsize 추출
@@ -355,9 +551,9 @@ $(document).ready(function()
 	{
 		var xmlEllipsize = xml.attr("android:ellipsize");
 		if(xmlEllipsize == "end")
-			return "ellipsis;overflow:hidden;display:inline-block";
+			return "text-overflow:ellipsis;overflow:hidden;display:inline-block;";
 		else
-			return "string";
+			return "";
 	}
 
 	//==================================================================================//
