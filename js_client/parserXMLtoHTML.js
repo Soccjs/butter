@@ -7,21 +7,55 @@ var defaultWebViewUrl = "http://developer.android.com/develop/index.html";
 // Session에 저장된 GLOBAL 변수 값 저장.
 var _GLOBAL = {};
 
+var editor;
+
+
 $(document).ready(function() 
 {
+<<<<<<< HEAD
 	$(".click_xml_to_html_btn").click(function() {
 		makeParser();
 	});
+=======
+>>>>>>> 9ac0314c0cbdf9b5d12b563699484f69459deeac
 
+
+	   	$("#rightToleft").click(function() {
+				editor = ace.edit("right_editor_inner");
+
+				console.log("click");
+				var cur_contents = editor.getValue();
+				console.log(cur_contents);
+				makeParser(cur_contents);
+			
+		});
+
+
+	console.log("hi parser");
+    	
+    function directParser(){
+    	editor = ace.edit("right_editor_inner");
+
+		console.log("click");
+		var cur_contents = editor.getValue();
+		console.log(cur_contents);
+		makeParser(cur_contents);
+    }
+
+	
 	// XML parser
-	function makeParser()
+	function makeParser(cur_contents)
 	{
-		var xml = $(".right_editor").text().replace(/\"/g,"'");
+		var xml = cur_contents.replace(/\"/g,"'");
 		var	xmlDoc = $.parseXML(xml);
 		$xml = $(xmlDoc);
 
 		var fullHtml = makeChildeNode(xmlDoc);
+<<<<<<< HEAD
 		$("#left_editor").html(fullHtml);
+=======
+		$("#trash").html(fullHtml);
+>>>>>>> 9ac0314c0cbdf9b5d12b563699484f69459deeac
 
 		/*dpi_x = document.getElementById('testdiv').offsetWidth;
    		dpi_y = document.getElementById('testdiv').offsetHeight;*/
@@ -190,6 +224,7 @@ $(document).ready(function()
 		//ID생성
 		viewHTML += getId(xml);
 		//STYLE생성
+<<<<<<< HEAD
 		viewHTML += "style=\""+defaultOrientation+";padding:5px;display:inline-block;";
 		//MARGIN생성
 		viewHTML += getMargin(xml);
@@ -205,6 +240,14 @@ $(document).ready(function()
 		viewHTML += getRealId(xml);
 		//SPAN STYLE생성
 		viewHTML += "style=\"";
+=======
+		textview += "style=\""+orientation+"margin:"+getMargin(xml)+";"+"\">"+"<span class=\"TextView\" style=\"";
+
+		//WIDTH생성
+		var width = getWidth(xml);
+		textview += "width:"+width+";";
+		
+>>>>>>> 9ac0314c0cbdf9b5d12b563699484f69459deeac
 		// 기본 Default View 속성 생성
 		viewHTML += makeDefaultView(xml);
 		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.

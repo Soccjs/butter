@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"/>
+  <title>XML Parser</title>
+  <link href="css/parserXMLtoHTML.css" rel="stylesheet">
+  <link href="css/G_L.css" rel="stylesheet">
+  
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
+  <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script src="js_client/parserXMLtoHTML.js" type="text/javascript"></script>
+  <script src="js_client/parserHTMLtoXML.js" type="text/javascript"></script>
+
+<header>
+  <h1>XML Parser Test</h1>
+</header>
+<button class="click_xml_to_html_btn">XML to HTML</button>
+<button class="click_html_to_xml_btn">HTML to XML</button>
+<div id='testdiv' style='height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;'></div>
+<div id="container">
+		<div id="left" class="left">
+			<div id="left_editor" class="left_editor">
+			</div>
+		</div>
+		<div id="right">
+			<div id="right_editor" class="right_editor">
+				&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:orientation="vertical" &gt;
+				    &lt;ScrollView
+			        android:id="@+id/scrollView1"
+			        android:layout_width="fill_parent"
+			        android:layout_height="fill_parent" &gt;
+			        &lt;LinearLayout
+			            android:id="@+id/linearlayout_0"
+			            android:layout_width="fill_parent"
+			            android:layout_height="fill_parent"
+			            android:background="@drawable/ic_menu_revert"
+			            android:orientation="vertical" &gt;
+
+			            &lt;TextView
+			                android:id="@+id/textview_1"
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:layout_margin="10px"
+			                android:ellipsize="end"
+			                android:gravity="center"
+			                android:text="onasdqwdkpoqwkdopqwkpe"
+			                android:textColor="#0033FF"
+			                android:textSize="20dip"
+			                android:textStyle="italic" /&gt;
+
+						&lt;ImageView
+			                android:id="@+id/imageView2"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:src="@drawable/ic_launcher" /&gt;
+
+			            &lt;EditText
+			                android:id="@+id/edittext_1"
+			                android:layout_width="match_parent"
+			                android:layout_height="wrap_content"
+			                android:text="edittext_edittext_edittext" /&gt;
+
+			            &lt;EditText
+			                android:id="@+id/edittext_2"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_margin="10px"
+			                android:text="edittext_edittext_edittext"
+			                android:textColor="#0033FF"
+			                android:textSize="30px" /&gt;
+
+			            &lt;Button
+			                android:id="@+id/button_1"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_margin="10dip"
+			                android:text="one2"
+			                android:textColor="#000000" /&gt;
+
+			            &lt;RelativeLayout
+			                android:id="@+id/linearlayout_1"
+			                android:layout_width="fill_parent"
+			                android:layout_height="53px"
+			                android:orientation="horizontal" &gt;
+
+			                &lt;TextView
+			                    android:id="@+id/textview_3"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content"
+			                    android:text="two" /&gt;
+
+			                &lt;TextView
+			                    android:id="@+id/textview_4"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content"
+			                    android:layout_alignParentTop="true"
+			                    android:layout_margin="10px"
+			                    android:layout_marginLeft="20px"
+			                    android:layout_toRightOf="@+id/textview_3"
+			                    android:text="three" /&gt;
+
+			                &lt;Button
+			                    android:id="@+id/button1"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content"
+			                    android:layout_alignParentTop="true"
+			                    android:layout_marginLeft="17px"
+			                    android:layout_toRightOf="@+id/textview_4"
+			                    android:text="Button" /&gt;
+			            &lt;/RelativeLayout&gt;
+
+			            &lt;LinearLayout
+			                android:id="@+id/linearlayout_3"
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:orientation="vertical" &gt;
+
+			                &lt;WebView
+			                    android:id="@+id/webview1"
+			                    android:layout_width="match_parent"
+			                    android:layout_height="300px" /&gt;
+			            &lt;/LinearLayout&gt;
+
+			            &lt;LinearLayout
+			                android:id="@+id/linearlayout_2"
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:orientation="horizontal" &gt;
+
+			                &lt;RadioButton
+			                    android:id="@+id/radioButton1"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content"
+			                    android:layout_margin="10px"
+			                    android:gravity="center"
+			                    android:text="RadioButton1"
+			                    android:textColor="#0033FF"
+			                    android:textSize="20dip"
+			                    android:textStyle="italic" /&gt;
+
+			                &lt;RadioButton
+			                    android:id="@+id/radioButton2"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content"
+			                    android:text="RadioButton2" /&gt;
+
+			                &lt;RadioButton
+			                    android:id="@+id/radioButton3"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content"
+			                    android:text="RadioButton3" /&gt;
+			            &lt;/LinearLayout&gt;
+
+					&lt;/LinearLayout&gt;
+			    	&lt;/ScrollView&gt;
+				&lt;/LinearLayout&gt;
+			</div>
+		</div>
+</div>
+
+</body>
+</html>
