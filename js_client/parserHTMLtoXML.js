@@ -9,7 +9,6 @@ function getParameterByName(name) {
 
 $(document).ready(function() 
 {
-.
 
 	$("#leftToright").click(function() {
 				makeParser();
@@ -22,6 +21,7 @@ $(document).ready(function()
 		$html = $(htmlDoc);
 
 		var fullHtml = makeChildeNode(htmlDoc);
+		console.log(fullHtml);
 		$("#right_editor").text(fullHtml);
 
 		/*_GLOBAL.id = getParameterByName('id');
@@ -339,13 +339,15 @@ $(document).ready(function()
 	function getBackground(html)
 	{
 		var htmlBackground = getStyleValue(html, "background");
-		//불필요한 태그 정보 삭제
-		htmlBackground = htmlBackground.replace("url('@drawable/", "");
-		htmlBackground = htmlBackground.replace("')", "");
 		if(htmlBackground == null)
 			return "";
-		else
+		else{
+			//불필요한 태그 정보 삭제
+			htmlBackground = htmlBackground.replace("url('@drawable/", "");
+			htmlBackground = htmlBackground.replace("')", "");
+		
 			return "android:background=\"@drawable/"+htmlBackground+"\" ";
+		}
 	}
 
 	// HTML Margin값 추출

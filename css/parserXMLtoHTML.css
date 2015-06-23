@@ -33,7 +33,10 @@
 #layout_horizontal div{
 	float:left;
 }
-
+.LinearLayout {
+	background: #000000;
+	float:left;
+}
 .EditText {
 	color:#000000;
 	background-color:#FFFFFF;
@@ -58,5 +61,3 @@
 	color:#FFFFFF;
 	background-color:#000000;
 }
-=======
->>>>>>> 9ac0314c0cbdf9b5d12b563699484f69459deeac

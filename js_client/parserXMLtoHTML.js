@@ -26,14 +26,6 @@ $(document).ready(function()
 
 	console.log("hi parser");
     	
-    function directParser(){
-    	editor = ace.edit("right_editor_inner");
-
-		console.log("click");
-		var cur_contents = editor.getValue();
-		console.log(cur_contents);
-		makeParser(cur_contents);
-    }
 
 	
 	// XML parser
@@ -50,6 +42,15 @@ $(document).ready(function()
 		/*dpi_x = document.getElementById('testdiv').offsetWidth;
    		dpi_y = document.getElementById('testdiv').offsetHeight;*/
 	}
+
+   directParser = function(){
+      editor = ace.edit("right_editor_inner");
+
+      console.log("click");
+      var cur_contents = editor.getValue();
+      console.log(cur_contents);
+      makeParser(cur_contents);
+    }
 
  	// XML parser를 시작한다.
    function makeChildeNode(xmlDoc)
@@ -194,7 +195,8 @@ $(document).ready(function()
       //SPAN CLASS생성
       viewHTML += "<span ";
       //TextView Class 생성
-      viewHTML += setClass("TextView");
+      viewHTML += setClass("TextView ");
+
       //Real ID생성
       viewHTML += getRealId(xml);
       //SPAN STYLE생성

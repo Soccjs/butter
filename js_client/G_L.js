@@ -31,7 +31,6 @@ var add_flag = 0;
 
 var editor;
 
-document.write('<script language="javascript" src="./js_client/parserXMLtoHTML.js"></script>');
 
 $(document).ready(function() {
 
@@ -59,11 +58,11 @@ $(document).ready(function() {
 	
 	_GLOBAL.file=getParameterByName('path');
 		$.post('openFile', {path : _GLOBAL.file}, function(data) {
-					make_editor(data, _GLOBAL.file, 1, 1);	//파일트리에서 열면: read-only
+					make_editor(data, _GLOBAL.file, 1, 0);	//파일트리에서 열면: read-only
 
-					parser.parse.xToh();
 		});
-				//	directParser();
+
+			
 
 	//로그인 처음 되면 리빙룸에 있도록 in
 	socket.emit("in",{id: _GLOBAL.id});
@@ -127,6 +126,7 @@ $(document).ready(function() {
 					});
 				}
 				else {
+					_GLOBAL.project=getParameterByName('proj');
 					prv_contents = cur_contents;
 					$.post('/file_save', {
 					 	id : _GLOBAL.id,
@@ -184,6 +184,12 @@ $(document).ready(function() {
 		}
 		// ace 에디터에 자동완성을 위한 이벤트핸들러 등록 
         $(".ace_text-input").keydown(hdlr_showBox);
+
+        console.log("hi");
+			directParser();
+				$( ".TextView", $trash ).draggable();
+
+			console.log("bye");
 	}
 
 	// Using jQuery File Tree - fileTree({root : root dir, script : serverside file}, callback func when chosing file})
@@ -193,6 +199,7 @@ $(document).ready(function() {
 					make_editor(data, file, 1, 1);
 					//파일트리에서 열면: read-only
 		});
+		
 	}
 
 	// Draggable settings...
@@ -419,119 +426,6 @@ $(document).ready(function() {
 		$("#left_tree_hoverdItem").val($(e.target).attr('rel'));
 	});
 
-	$(function(){
-		$.contextMenu({
-			selector: "#left_tree",
-			items: {
-				"new_dir": {name: "New Directory", icon: "directory", callback: function(){
-					$("#dialog_makeDirFile").dialog({
-						dialogClass : "bottom_dialog",
-						modal : true,
-						resizable : true,
-						width : 350,
-						height : 250,
-						show : {
-							effect : "fade",
-							duration : 500
-						},
-						hide : {
-							effect : "fade",
-							duration : 500
-						},
-						open: function(){
-							__filePath = $("#left_tree_hoverdItem").val();
-						}
-					});
-				}},
-				"new_file": {name: "New File", icon: "file", callback: function(){
-					$("#dialog_makeDirFile2").dialog({
-						dialogClass : "bottom_dialog",
-						modal : true,
-						resizable : true,
-						width : 350,
-						height : 250,
-						show : {
-							effect : "fade",
-							duration : 500
-						},
-						hide : {
-							effect : "fade",
-							duration : 500
-						},
-						open: function(){
-							__filePath = $("#left_tree_hoverdItem").val();
-						}
-					});
-				}},
-				"delete": {name: "Delete", icon: "delete", callback: function(){
-					var ok = confirm("Delete?");
-					if(ok){
-						$.get('/delete_file?path=' + $("#left_tree_hoverdItem").val(), function(data, status){
-
-							console.log("client : " + data);
-
-							$("#mini_popup_img").attr("src", "img/check.png");
-							$("#mini_popup_text").text("Delete Complete");
-							$("#mini_popup").fadeIn("slow", function() {
-								setTimeout(function() {
-									$("#mini_popup").fadeOut("slow");
-								}, pupup_time);
-							});  
-
-							make_fileTree(fileTreePath);
-						});
-					}
-				}},
-					"sep1": "---------",
-				"refresh": {name: "Refresh", icon: "refresh", callback: function(){
-					make_fileTree(fileTreePath);
-				}},
-			
-				
-	        }
-		});
-	});
-
-	$("#makeDirFile_btn").click(function(){
-		var name = $("#makeDirFile_name").val();
-		var path = __filePath + name;
-		
-		$.get('/make_dir?path=' + path, function(data, status){
-			console.log("client : " +data);
-			
-			$("#mini_popup_img").attr("src", "img/check.png");
-			$("#mini_popup_text").text("Make New Directory Complete");
-			$("#mini_popup").fadeIn("slow", function() {
-				setTimeout(function() {
-					$("#mini_popup").fadeOut("slow");
-				}, pupup_time);
-			});
-		});
-
-		$("#dialog_makeDirFile").dialog("close");
-		make_fileTree(fileTreePath);
-
-	});
-	
-	$("#makeDirFile_btn2").click(function() {
-		var name = $("#makeDirFile_name2").val();
-		var path = __filePath + name;
-
-		$.get('/make_file?path=' + path, function(data, status) {
-			console.log("client : " +data);
-			
-			$("#mini_popup_img").attr("src", "img/check.png");
-			$("#mini_popup_text").text("Make New File Complete");
-			$("#mini_popup").fadeIn("slow", function() {
-				setTimeout(function() {
-					$("#mini_popup").fadeOut("slow");
-				}, pupup_time);
-			});
-		});
-
-		$("#dialog_makeDirFile2").dialog("close");
-		make_fileTree(fileTreePath);
-	});
 
 	$("#personal_info > img").click(function() {
 		if (isPerInfoVisible) {
@@ -1173,18 +1067,24 @@ $(document).ready(function() {
     $("#input").draggable();
 
     $("#complete").click(function() {
-		var background = $("#input").find("input[name=" + "background" + "]").val();
 		var id = $("#input").find("input[name="+"obj_id"+"]").val();
+		
+		var background = $("#input").find("input[name=" + "background" + "]").val();
 		var width = $("#input").find("input[name="+"width"+"]").val();
 		var height = $("#input").find("input[name="+"height"+"]").val();
 		var text = $("#input").find("input[name="+"text"+"]").val();
-
+		var gravity = $("#input").find("input[name="+"text_align"+"]").val();
+		var textColor = $("#input").find("input[name="+"color"+"]").val();
+		var textSize = $("#input").find("input[name="+"font_size"+"]").val();
+		
 		$('#' + id).css("background",background);
 		$('#' + id).css("width",width);
 		$('#' + id).css("height",height);
-		//$('#' + id).html(text);
-		//$('#' + id).text(text);
-		
+		$('#' + id).find("span").text(text);
+		$('#' + id).css("text-align",gravity);
+		$('#' + id).css("color",textColor);
+		$('#' + id).css("font-size",textSize);
+
 		console.log(text);
 
 		
@@ -1199,16 +1099,35 @@ $(document).ready(function() {
 
     var click_cnt = true;
 
-    $(trash).on('click mousedown mouseup',"div.TextView", function(){
+    $(trash).on('click mousedown mouseup', function(){
 		var $target = $( this ),
         $obj = $( event.target );
 		
-		console.log($obj.attr('id'));
-		console.log($target.attr('id'));
+		console.log($obj.attr('id') +"  " + $target.attr('id'));
 		
  		console.log(event.type);
-		console.log($obj.attr('class'));
- 	
+ 		var full_class= $obj.attr('class');
+
+ 		console.log("class = " + full_class);
+ 		if(typeof full_class==="undefined"){//click span
+ 			$obj=$obj.parent();
+ 			console.log("null");
+			full_class=$obj.attr('id');
+			console.log("id" + full_class);
+ 		}
+ 		if(full_class.search("TextView")!==-1){
+			console.log("textview");
+		}
+		else if(full_class.search("LinearLayout_H")!==-1){
+			console.log("layout");
+		}
+		else if($obj.attr('id')==="trash"&&$target.attr('id')==="trash"){
+			return;
+		}
+		else{
+			return;
+		}
+
 		if(event.type==="click"){
 			if(typeof $obj.attr("id") !=="undefined"){
 				$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
@@ -1230,6 +1149,7 @@ $(document).ready(function() {
 	});
 
 
+	$( ".TextView", $trash ).draggable();
 
     // let the gallery items be draggable
     $( "li", $gallery ).draggable({
@@ -1260,7 +1180,7 @@ $(document).ready(function() {
 					$( this ).find( ".placeholder" ).remove();
 
 			if(ui.draggable.text()==="TextView"){
-				$( "<div id=\"TextView"+t_v_cnt+ "\" ></div>" ).text( ui.draggable.text()).appendTo( this )
+				$( "<div id=\"TextView"+t_v_cnt+ "\" ><span>textview</span></div>" ).appendTo( this )
 					.addClass("TextView")
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({
@@ -1362,5 +1282,4 @@ $(document).ready(function() {
       return false;
     });
 
-  
 });
