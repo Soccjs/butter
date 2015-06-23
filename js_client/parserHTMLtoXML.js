@@ -61,11 +61,33 @@ $(document).ready(function()
 			if($(this).children().length >= 1)
 			{
 				childHtml += makeInChildeNode($(this));
-				if(type != null)
+				if(type != null && validationView(type) == true)
 					childHtml += "</"+type+">"; // Child 노드가 있을 경우 재귀 종료시 Close
 			}
 		});	
 		return childHtml;
+	}
+
+	// 유효한 HTML 태그만 파싱한다.
+	function validationView(type)
+	{
+		var validationViewResult = false;
+		switch(type)
+		{
+			case "TextView" :
+			case "Button" :
+			case "EditText" :
+			case "RadioButton" :
+			case "CheckBox" :
+			case "WebView" :
+			case "ImageView" :
+			case "ScrollView" :
+			case "LinearLayout" :
+			case "RelativeLayout" :
+			case "FrameLayout" :
+			 validationViewResult = true; break;
+		}
+		return validationViewResult;
 	}
 
 	// XML elemets의 Type에 따라 다른 형태의 View를 생성한다.
@@ -297,7 +319,14 @@ $(document).ready(function()
 	// HTML Id값 추출
 	function getClass(html)
 	{
-		return html.attr("class");
+		var className = html.attr("class")
+		if(className != null)
+		{
+			var firstName = className.split(" ");
+			return firstName[0];
+		}
+		else
+			return "";
 	}
 
 	// HTML Id값 추출
