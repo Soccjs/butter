@@ -1171,6 +1171,8 @@ $(document).ready(function() {
 	var l_l_H_cnt=0;//LenearLayout count
 	var btn_cnt=0;//button count
 	var e_t_cnt=0;//EditText count
+	var c_b_cnt=0;
+	var r_b_cnt=0;
     // let the trash be droppable, accepting the gallery items
     $trash.droppable({
 
@@ -1221,7 +1223,35 @@ $(document).ready(function() {
 						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
 					.children().addClass("EditText");
 			
-				btn_cnt++;
+				e_t_cnt++;
+			}
+			else if(ui.draggable.text()==="CheckBox"){
+						console.log("this is CheckBox");
+				$( "<div id=\"CheckBox"+c_b_cnt+ "\" class=\"inputType\" style=\"width:100px;height:30px;\" ><input type=\"checkbox\" value=\"CheckBox\" >CheckBox</input></div>" ).appendTo( this )
+					.draggable({containment:"#trash",scroll:false})
+					.resizable({
+						maxHeight: 300,
+						maxWidth: 280,
+						minHeight: 30,
+						minWidth: 50,
+						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+					.children().addClass("CheckBox");
+			
+				c_b_cnt++;
+			}
+			else if(ui.draggable.text()==="RadioButton"){
+						console.log("this is RadioButton");
+				$( "<div id=\"RadioButton"+r_b_cnt+ "\" class=\"inputType\" style=\"width:100px;height:30px;\" ><input type=\"radio\" value=\"RadioButton\" >RadioButton</input></div>" ).appendTo( this )
+					.draggable({containment:"#trash",scroll:false})
+					.resizable({
+						maxHeight: 300,
+						maxWidth: 280,
+						minHeight: 30,
+						minWidth: 50,
+						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+					.children().addClass("RadioButton");
+			
+				r_b_cnt++;
 			}
 			else if(ui.draggable.text()==="LinearLayout_H"){
 

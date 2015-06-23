@@ -286,12 +286,16 @@ $(document).ready(function()
 	function getStyleValue(html, key)
 	{
 		var styleValue = null;
-		var stylesBox = html.attr("style").split(";");
-		for (var x = 0; x < stylesBox.length; x++) 
-		{
-		    var cmpKey = stylesBox[x].split(':');
-		    if(cmpKey[0] == key)
-				styleValue = cmpKey[1];
+		console.log(html.attr("style"));
+		if(html.attr("style")!=="undefined"){
+			var stylesBox = html.attr("style").split(";");
+		
+			for (var x = 0; x < stylesBox.length; x++) 
+			{
+			    var cmpKey = stylesBox[x].split(':');
+			    if(cmpKey[0] == key)
+					styleValue = cmpKey[1];
+			}
 		}
 		return styleValue;
 	}

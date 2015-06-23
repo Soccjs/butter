@@ -138,14 +138,15 @@ html, body {
 
 }
   #table_dialog input[type=text] , input[type=button]{
-	width: 100%;
-	height: 15px;
-	margin-top:10px;
-	font-family: 'Montserrat', sans-serif !important;
-	border-radius: 3px;
-	border: 0px;
-	opacity: 0.8;
-	clear:both;
+  width: 100%;
+  height: 30px;
+  margin-top: 5px;
+  font-family: 'Montserrat', sans-serif !important;
+  text-align: center;
+  border-radius: 3px;
+  border: 0px;
+  opacity: 0.8;
+  clear: both;
 }
   #table_dialog input[type=button]{
   	position:fixed;
