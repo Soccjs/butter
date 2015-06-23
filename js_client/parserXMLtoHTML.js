@@ -9,6 +9,8 @@ var _GLOBAL = {};
 
 var editor;
 
+var undefinedViewCnt=0;//textview count
+var undefinedViewPrefix="UndefinedID";//textview count
 
 $(document).ready(function() 
 {
@@ -38,11 +40,38 @@ $(document).ready(function()
 		var fullHtml = makeChildeNode(xmlDoc);
 
 		$("#trash").html(fullHtml);
+      makeDraggableAndResizable();
+
+
 
 		/*dpi_x = document.getElementById('testdiv').offsetWidth;
    		dpi_y = document.getElementById('testdiv').offsetHeight;*/
 	}
 
+   // set Draggable Event and Resizable Event
+   function makeDraggableAndResizable()
+   {
+      setEvent(".TextView");
+      setEvent(".Button");
+      setEvent(".inputType"); //editText
+      setEvent(".RadioButton");
+      setEvent(".CheckBox");
+
+      setEvent(".WebView");
+      setEvent(".ImageView");
+      setEvent(".ScrollView");
+      setEvent(".LinearLayout");
+      setEvent(".RelativeLayout");
+      setEvent(".FrameLayout");
+   }
+
+
+
+   function setEvent(type)
+   {
+      $(type).draggable({containment:"#trash",scroll:false})
+      .resizable({maxHeight: 600,maxWidth: 560,minHeight: 50,minWidth: 100,containment:"#trash" , autoHide:true, handles:"n,e,s,w"  });
+   }
    directParser = function(){
       editor = ace.edit("right_editor_inner");
 
@@ -109,7 +138,7 @@ $(document).ready(function()
       //Orientation생성
       viewHTML += defaultOrientation+"\">";
       //Orientation생성
-      viewHTML += "<ul id=\"layout_frame\" style=\"display:block;\">";
+      viewHTML += "<ul class=\"layout_frame\" style=\"display:block;\">";
       return viewHTML;
    }
 
@@ -124,7 +153,7 @@ $(document).ready(function()
       //Orientation생성
       viewHTML += defaultOrientation+"\">";
       //Orientation생성
-      viewHTML += "<ul id=\"layout_relative\" style=\"display:block;\">";
+      viewHTML += "<ul class=\"layout_relative\" style=\"display:block;\">";
       return viewHTML;
    }
 
@@ -139,7 +168,7 @@ $(document).ready(function()
       //Orientation생성
       viewHTML += defaultOrientation+"\">";
       //Orientation생성
-      viewHTML +="<ul id=\"layout_vertical\" style=\"display:block;\">";
+      viewHTML +="<ul class=\""+getOrientation(xml)+"\" style=\"display:block;\">";
       return viewHTML;
    }
 
@@ -163,7 +192,7 @@ $(document).ready(function()
       //Root Information생성
       viewHTML += getRootInfo(xml);
       //Global Orientation 정보 설정
-      viewHTML += getOrientation(xml);
+      getOrientation(xml);
       //ID생성
       viewHTML += getId(xml);
       //DIV STYLE생성
@@ -177,44 +206,34 @@ $(document).ready(function()
       return viewHTML;
    }
 
-   // TextView 속성 추출
+ // TextView 속성 추출
    function makeTextView(xml)
    {
       //DIV생성
       var viewHTML = "<div ";
+
       //ID생성
       viewHTML += getId(xml);
       //DIV STYLE생성
-      viewHTML += "style=\""+defaultOrientation;
-      //MARGIN생성
-      viewHTML += getMargin(xml);
-      //RELATIVE MARGIN생성
-      viewHTML += getRelativeMargin(xml);
-      //END DIV생성
-      viewHTML += "\">";
-      //SPAN CLASS생성
-      viewHTML += "<span ";
-      //TextView Class 생성
-      viewHTML += setClass("TextView ");
-
-      //Real ID생성
-      viewHTML += getRealId(xml);
-      //SPAN STYLE생성
-      viewHTML += "style=\"";
+      viewHTML += "style=\"background-color:#FFF;"+defaultOrientation;
       //SPAN 기본 Default View 속성 생성
       viewHTML += makeDefaultView(xml);
+      //END STYLE생성
+      viewHTML += "\" ";
+      //TextView Class 생성
+      viewHTML += setClass("TextView");
+      //END DIV생성
+      viewHTML += ">";
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-      viewHTML += "\">"+getText(xml)+"</span></div>";
+      viewHTML += getText(xml)+"</div>";
       return viewHTML;
-   }
+      }
 
    // Button 속성 추출
    function makeButton(xml)
    {
       //DIV생성
       var viewHTML = "<div ";
-      //ID생성
-      viewHTML += getId(xml);
       //STYLE생성
       viewHTML += "style=\""+defaultOrientation+";padding:5px;display:inline-block;";
       //MARGIN생성
@@ -227,8 +246,8 @@ $(document).ready(function()
       viewHTML += "<span ";
       //Button Class 생성
       viewHTML += setClass("Button");
-      //Real ID생성
-      viewHTML += getRealId(xml);
+      //ID생성
+      viewHTML += getId(xml);
       //SPAN STYLE생성
       viewHTML += "style=\"";
       // 기본 Default View 속성 생성
@@ -243,8 +262,6 @@ $(document).ready(function()
    {
       //DIV생성
       var viewHTML = "<div ";
-      //ID생성
-      viewHTML += getId(xml);
       //STYLE생성
       viewHTML += "style=\""+defaultOrientation+";padding:5px;display:inline-block;";
       //MARGIN생성
@@ -257,8 +274,8 @@ $(document).ready(function()
       viewHTML += "<span ";
       //Button Class 생성
       viewHTML += setClass("ImageView");
-      //Real ID생성
-      viewHTML += getRealId(xml);
+      //ID생성
+      viewHTML += getId(xml);
       //SPAN STYLE생성
       viewHTML += "style=\"";
       // 기본 Default View 속성 생성
@@ -314,9 +331,7 @@ $(document).ready(function()
    function makeInputTypeView(xml, type)
    {
       //DIV생성
-      var viewHTML = "<div ";
-      //ID생성
-      viewHTML += getId(xml);
+      var viewHTML = "<div class=\"inputType\" ";
       //STYLE생성
       viewHTML += "style=\""+defaultOrientation;
       //MARGIN생성
@@ -332,8 +347,8 @@ $(document).ready(function()
          case "radio" : viewHTML += "<input class=\"RadioButton\" "; break;
          case "checkbox" : viewHTML += "<input class=\"CheckBox\" "; break;
       }
-      //Real ID생성
-      viewHTML += getRealId(xml);
+      //ID생성
+      viewHTML += getId(xml);
       //SPAN STYLE생성
       viewHTML += "style=\"";
       // 기본 Default View 속성 생성
@@ -351,7 +366,7 @@ $(document).ready(function()
       return viewHTML+"</div>";
    }
 
-   // 기본 View 속성 추출
+  // 기본 View 속성 추출
    function makeDefaultView(xml)
    {
       var viewHTML = "";
@@ -399,10 +414,15 @@ $(document).ready(function()
    {
       var xmlOrientation = xml.attr("android:orientation");
       if(xmlOrientation == null || xmlOrientation == "vertical") 
+      {
          defaultOrientation = "display:block;";
+         return "layout_vertical";
+      }
       else
+      { 
          defaultOrientation = "display:inline;"; // "display:inline-block;";
-      return "";
+         return "layout_horizontal";
+      }
    }
 
    // XML Id값 추출
@@ -410,7 +430,7 @@ $(document).ready(function()
    {
       var xmlID = xml.attr("android:id");
       if(xmlID == null)
-         return "";
+         return "id=\""+xml.tagName+"_"+(undefinedViewCnt++)+"\" ";
       else
          return "id=\""+xmlID.replace("@+id/", "")+"\" ";
    }
@@ -421,7 +441,7 @@ $(document).ready(function()
       // 고유 아이디를 사용하기 위해 임시로 id+[$-R]형태로 아이디 부여
       var xmlID = xml.attr("android:id");
       if(xmlID == null)
-         return "";
+         return "id="+xml.tagName+"_"+(undefinedViewCnt++)+"[$-R]\" ";
       else
          return "id=\""+xmlID.replace("@+id/", "")+"[$-R]\" ";
    }

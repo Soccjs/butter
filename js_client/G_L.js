@@ -1083,8 +1083,8 @@ $(document).ready(function() {
 		var textSize = $("#input").find("input[name="+"font_size"+"]").val();
 		
 		$('#' + id).css("background",background);
-		$('#' + id).css("width",width);
-		$('#' + id).css("height",height);
+		$('#' + id).parent().css("width",width);
+		$('#' + id).parent().css("height",height);
 		$('#' + id).find("span").text(text);
 		$('#' + id).css("text-align",gravity);
 		$('#' + id).css("color",textColor);
@@ -1114,18 +1114,16 @@ $(document).ready(function() {
  		var full_class= $obj.attr('class');
 
  		console.log("class = " + full_class);
- 		if(typeof full_class==="undefined"){//click span
- 			$obj=$obj.parent();
- 			console.log("null");
-			full_class=$obj.attr('id');
-			console.log("id " + full_class);
- 		}
+ 		
  		if(full_class.search("TextView")!==-1){
 			console.log("textview");
 		}
-		else if(full_class.search("LinearLayout_H")!==-1){
+		else if(full_class.search("LinearLayout")!==-1){
 			console.log("layout");
-		}
+			$obj = $obj.children();
+			full_class= $obj.attr('id');
+			console.log(full_class);
+		} 	
 		else if($obj.attr('id')==="trash"&&$target.attr('id')==="trash"){
 			return;
 		}
@@ -1171,6 +1169,8 @@ $(document).ready(function() {
 
 	var t_v_cnt=0;//textview count
 	var l_l_H_cnt=0;//LenearLayout count
+	var btn_cnt=0;//button count
+	var e_t_cnt=0;//EditText count
     // let the trash be droppable, accepting the gallery items
     $trash.droppable({
 
@@ -1183,17 +1183,45 @@ $(document).ready(function() {
 	    drop: function( event, ui ) {
 					$( this ).find( ".placeholder" ).remove();
 
+					console.log("ui" + ui.draggable.text());
 			if(ui.draggable.text()==="TextView"){
-				$( "<div id=\"TextView"+t_v_cnt+ "\" ><span>textview</span></div>" ).appendTo( this )
-					.addClass("TextView")
-					.draggable({containment:"#trash",scroll:false})
+				$( "<div id=\"TextView"+t_v_cnt+ "\">TextView</div>" ).appendTo( this )
+					.addClass("TextView").draggable({containment:"#trash",scroll:false})
 					.resizable({
 						maxHeight: 300,
 						maxWidth: 280,
 						minHeight: 30,
 						minWidth: 50,
 						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
+					
 				t_v_cnt++;
+			}
+			else if(ui.draggable.text()==="button"){
+						console.log("this is button");
+				$( "<div id=\"Button"+btn_cnt+ "\">button</div>" ).appendTo( this )
+					.addClass("Button").draggable({containment:"#trash",scroll:false})
+					.resizable({
+						maxHeight: 300,
+						maxWidth: 280,
+						minHeight: 30,
+						minWidth: 50,
+						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
+			
+				btn_cnt++;
+			}
+			else if(ui.draggable.text()==="EditText"){
+						console.log("this is EditText");
+				$( "<div id=\"EditText"+e_t_cnt+ "\" class=\"inputType\" style=\"width:100px;height:30px;\" ><input type=\"text\" value=\"EditText\"/>" ).appendTo( this )
+					.draggable({containment:"#trash",scroll:false})
+					.resizable({
+						maxHeight: 300,
+						maxWidth: 280,
+						minHeight: 30,
+						minWidth: 50,
+						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+					.children().addClass("EditText");
+			
+				btn_cnt++;
 			}
 			else if(ui.draggable.text()==="LinearLayout_H"){
 

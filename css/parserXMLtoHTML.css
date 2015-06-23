@@ -1,36 +1,36 @@
-#layout_frame {
+.layout_frame {
  	background: #000000;
 	-webkit-padding-start: 0px;
 }
 
-#layout_relative {
+.layout_relative {
  	background: #000000;
 	-webkit-padding-start: 0px;
 }
 
-#layout_vertical{
+.layout_vertical{
  	background: #000000;
 	-webkit-padding-start: 0px;
 }
 
-#layout_horizontal{
+.layout_horizontal{
  	background: #000000;
 	-webkit-padding-start: 0px;
 }
 
-#layout_frame div{
+.layout_frame div{
   	position: absolute;
 }
 
-#layout_relative div{
+.layout_relative div{
   	position: relative;
 }
 
-#layout_vertical div{
+.layout_vertical div{
 	float:none;
 }
 
-#layout_horizontal div{
+.layout_horizontal div{
 	float:left;
 }
 .LinearLayout {
@@ -38,6 +38,8 @@
 	float:left;
 }
 .EditText {
+	height:30px;
+	width:80px;
 	color:#000000;
 	background-color:#FFFFFF;
 }
@@ -58,6 +60,9 @@
 }
 
 .TextView {
+	height:30px;
+	width:80px;
 	color:#FFFFFF;
 	background-color:#000000;
 }
+

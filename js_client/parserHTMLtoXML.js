@@ -7,11 +7,15 @@ function getParameterByName(name) {
 		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+var editor;
 $(document).ready(function() 
 {
 
 	$("#leftToright").click(function() {
-				makeParser();
+			editor = ace.edit("right_editor_inner");
+
+			editor.setValue(makeParser(), 1);
+
 	});
 	// HTML parser
 	function makeParser()
@@ -22,8 +26,8 @@ $(document).ready(function()
 
 		var fullHtml = makeChildeNode(htmlDoc);
 		console.log(fullHtml);
-		$("#right_editor").text(fullHtml);
-
+		
+		return fullHtml;
 		/*_GLOBAL.id = getParameterByName('id');
 		_GLOBAL.file = getParameterByName('path');
 		_GLOBAL.project = $("#dialog_selected_project").val();
