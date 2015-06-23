@@ -1066,6 +1066,11 @@ $(document).ready(function() {
 
     $("#input").draggable();
 
+     $("#delete").click(function() { //object delete
+		var id = $("#input").find("input[name="+"obj_id"+"]").val();
+		$('#' + id).remove();
+	});	
+
     $("#complete").click(function() {
 		var id = $("#input").find("input[name="+"obj_id"+"]").val();
 		
@@ -1113,7 +1118,7 @@ $(document).ready(function() {
  			$obj=$obj.parent();
  			console.log("null");
 			full_class=$obj.attr('id');
-			console.log("id" + full_class);
+			console.log("id " + full_class);
  		}
  		if(full_class.search("TextView")!==-1){
 			console.log("textview");
@@ -1149,7 +1154,6 @@ $(document).ready(function() {
 	});
 
 
-	$( ".TextView", $trash ).draggable();
 
     // let the gallery items be draggable
     $( "li", $gallery ).draggable({
@@ -1201,9 +1205,20 @@ $(document).ready(function() {
 				      maxWidth: 280,
 				      minHeight: 30,
 				      minWidth: 50,
-				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
-						
-				l_l_H_cnt++;
+				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+					 .droppable({
+			 		  accept: "div",
+				      activeClass: "custom-state-active",
+			  	      drop: function( event, ui ) {
+				  	      var ui_id=ui.draggable.attr('id');
+				  	      console.log("ui_id=" + ui_id);
+				  	      console.log("this is + " + $(this).attr('id'));
+				  	      ui.draggable.clone(true).appendTo(this);
+				  	      ui.draggable.remove();
+			      	  }
+				 	  });	
+				
+					l_l_H_cnt++;
 			}
 		}
 
@@ -1211,7 +1226,7 @@ $(document).ready(function() {
     });
 
  	
- 	
+
     // let the gallery be droppable as well, accepting items from the trash
     $gallery.droppable({
       accept: "#trash li",
@@ -1220,7 +1235,8 @@ $(document).ready(function() {
         recycleImage( ui.draggable );
       }
     });
- 
+ 	
+
     // image deletion function
     var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
     function deleteImage( $item ) {
