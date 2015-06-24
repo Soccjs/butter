@@ -1202,9 +1202,9 @@ $(document).ready(function() {
 			
 
 	    drop: function( event, ui ) {
-					$( this ).find( ".placeholder" ).remove();
+			$( this ).find( ".placeholder" ).remove();
 
-					console.log("ui" + ui.draggable.text());
+			console.log("ui" + ui.draggable.text());
 			if(ui.draggable.text()==="TextView"){
 				$( "<div id=\"TextView"+t_v_cnt+ "\">TextView</div>" ).appendTo( this )
 					.addClass("TextView").draggable({containment:"#trash",scroll:false})
@@ -1274,7 +1274,7 @@ $(document).ready(function() {
 			}
 			else if(ui.draggable.text()==="LinearLayout"){
 
-					$( "<div id=\"LinearLayout"+l_l_H_cnt+ "\" ><ul class=\"layout_vertical\"></ul></div>" ).appendTo( this )
+					$( "<div id=\"LinearLayout"+l_l_cnt+ "\" ><ul class=\"layout_vertical\"></ul></div>" ).appendTo( this )
 					.addClass("LinearLayout")
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({ 
@@ -1283,6 +1283,7 @@ $(document).ready(function() {
 				      minHeight: 30,
 				      minWidth: 50,
 				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+					 
 					 .droppable({
 			 		  accept: "div",
 				      activeClass: "custom-state-active",
@@ -1293,13 +1294,14 @@ $(document).ready(function() {
 				  	      ui.draggable.clone(true).appendTo(this);
 				  	      ui.draggable.remove();
 			      	  }
-				 	  });	
+				 	  })
+					 .children().find("ul").sortable().disableSelection();	
 				
-					l_l_H_cnt++;
+					l_l_cnt++;
 			}
 			else if(ui.draggable.text()==="FrameLayout"){
 
-					$( "<div id=\"FrameLayout"+f_l_cnt+ "\" ><ul class=\"layout_frame\"></ul></div>" ).appendTo( this )
+					$( "<div id=\"FrameLayout"+f_l_cnt+ "\"  ><ul class=\"layout_frame\"></ul></div>" ).appendTo( this )
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({ 
 					  maxHeight: 600,
@@ -1323,7 +1325,7 @@ $(document).ready(function() {
 			}
 			else if(ui.draggable.text()==="RelativeLayout"){
 
-					$( "<div id=\"RelativeLayout"+f_l_cnt+ "\" ><ul class=\"layout_relative\"></ul></div>" ).appendTo( this )
+					$( "<div id=\"RelativeLayout"+r_l_cnt+ "\" ><ul class=\"layout_relative\"></ul></div>" ).appendTo( this )
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({ 
 					  maxHeight: 600,
@@ -1338,7 +1340,14 @@ $(document).ready(function() {
 				  	      var ui_id=ui.draggable.attr('id');
 				  	      console.log("ui_id=" + ui_id);
 				  	      console.log("this is + " + $(this).attr('id'));
-				  	      ui.draggable.clone(true).appendTo(this);
+				  	      ui.draggable.clone(true).appendTo(this)
+				  	      .draggable({containment:"#trash",scroll:false})
+							.resizable({
+							maxHeight: 300,
+							maxWidth: 400,
+							minHeight: 30,
+							minWidth: 50,
+							containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
 				  	      ui.draggable.remove();
 			      	  }
 				 	  });	
