@@ -10,13 +10,12 @@ function getParameterByName(name) {
 var editor;
 $(document).ready(function() 
 {
-
-	$("#leftToright").click(function() {
-			editor = ace.edit("right_editor_inner");
-
-			editor.setValue(makeParser(), 1);
-
+	$("#leftToright").click(function() 
+	{
+		editor = ace.edit("right_editor_inner");
+		editor.setValue(makeParser(), 1);
 	});
+
 	// HTML parser
 	function makeParser()
 	{
@@ -25,17 +24,7 @@ $(document).ready(function()
 		$html = $(htmlDoc);
 
 		var fullHtml = makeChildeNode(htmlDoc);
-		console.log(fullHtml);
-		
 		return fullHtml;
-		/*_GLOBAL.id = getParameterByName('id');
-		_GLOBAL.file = getParameterByName('path');
-		_GLOBAL.project = $("#dialog_selected_project").val();
-
-		console.log(_GLOBAL.id+":"+_GLOBAL.file+":"+_GLOBAL.project);
-
-		dpi_x = document.getElementById('testdiv').offsetWidth;
-   		dpi_y = document.getElementById('testdiv').offsetHeight;*/
 	}
 
 	// HTML parser를 시작한다.
@@ -68,19 +57,12 @@ $(document).ready(function()
 		return childHtml;
 	}
 
-	// 유효한 HTML 태그만 파싱한다.
+	// 유효한 HTML 태그만 종료 태깅한다.
 	function validationView(type)
 	{
 		var validationViewResult = false;
 		switch(type)
 		{
-			case "TextView" :
-			case "Button" :
-			case "EditText" :
-			case "RadioButton" :
-			case "CheckBox" :
-			case "WebView" :
-			case "ImageView" :
 			case "ScrollView" :
 			case "LinearLayout" :
 			case "RelativeLayout" :
@@ -102,7 +84,7 @@ $(document).ready(function()
 			case "RadioButton" : eachXML += makeRadioButton(htmlDoc); break;
 			case "CheckBox" : eachXML += makeCheckBox(htmlDoc); break;
 			case "WebView" : eachXML += makeWebView(htmlDoc); break;
-			case "ImageView" : eachXML += makeImageView(xmlDoc); break;
+			case "ImageView" : eachXML += makeImageView(htmlDoc); break;
 			case "ScrollView" : eachXML += makeScrollView(htmlDoc); break;
 			case "LinearLayout" : eachXML += makeLinearLayout(htmlDoc); break;
 			case "RelativeLayout" : eachXML += makeRelativeLayout(htmlDoc); break;
@@ -154,13 +136,13 @@ $(document).ready(function()
 	{
 		var viewXML = "";
 		//Root Information생성
-		viewXML += getRootInfo(html);
+		viewXML += getRootInfo(html)+"\n";
 		//ID생성
-		viewXML += getId(html);
+		viewXML += getId(html)+"\n";
 		//WIDTH생성
-		viewXML += getWidth(html);
+		viewXML += getWidth(html)+"\n";
 		//HEIGHT생성
-		viewXML += getHeight(html);
+		viewXML += getHeight(html)+"\n";
 		//BACKGROUND생성
 		viewXML += getBackground(html);
 		return viewXML;
@@ -172,7 +154,7 @@ $(document).ready(function()
 		//TextView생성
 		var viewXML = "<TextView ";
 		//기본 Default View 속성 생성
-		viewXML += makeDefaultView(html);
+		viewXML += makeDefaultView(html)+"\n";
 		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
 		viewXML += getText(html);
 		return viewXML+"/>";
@@ -184,7 +166,7 @@ $(document).ready(function()
 		//Button생성
 		var viewXML = "<Button ";
 		//기본 Default View 속성 생성
-		viewXML += makeDefaultView(html);
+		viewXML += makeDefaultView(html)+"\n";
 		//TEXT생성
 		viewXML += getText(html);
 		return viewXML+"/>";
@@ -196,7 +178,7 @@ $(document).ready(function()
 		//Button생성
 		var viewXML = "<ImageView ";
 		//기본 Default View 속성 생성
-		viewXML += makeDefaultView(html);
+		viewXML += makeDefaultView(html)+"\n";
 		return viewXML+"/>";
 	}
 
@@ -235,9 +217,9 @@ $(document).ready(function()
 	{
 		var viewXML = "<WebView ";
 		//ID생성
-		viewXML += getId(html);
+		viewXML += getId(html)+"\n";
 		//WIDTH생성
-		viewXML += getWidth(html);
+		viewXML += getWidth(html)+"\n";
 		//HEIGHT생성
 		viewXML += getHeight(html);
 		return viewXML+"/>";
@@ -260,23 +242,23 @@ $(document).ready(function()
 	{
 		var viewXML = "";
 		//ID생성
-		viewXML += getId(html);
+		viewXML += getId(html)+"\n";
 		//WIDTH생성
-		viewXML += getWidth(html);
+		viewXML += getWidth(html)+"\n";
 		//HEIGHT생성
-		viewXML += getHeight(html);
+		viewXML += getHeight(html)+"\n";
 		//MARGIN생성
-		viewXML += getMargin(html);
+		viewXML += getMargin(html)+"\n";
 		//TEXTSIZE생성
-		viewXML += getTextSize(html);
+		viewXML += getTextSize(html)+"\n";
 		//TEXTSTYLE생성
-		viewXML += getTextStyle(html);
+		viewXML += getTextStyle(html)+"\n";
 		//TEXTCOLOR생성
-		viewXML += getTextColor(html);
+		viewXML += getTextColor(html)+"\n";
 		//GRAVITY생성
-		viewXML += getGravity(html);
+		viewXML += getGravity(html)+"\n";
 		//ELLIPSIZE생성
-		viewXML += getEllipsize(html);
+		viewXML += getEllipsize(html)+"\n";
 		//BACKGROUND생성
 		viewXML += getBackground(html);
 		return viewXML;
