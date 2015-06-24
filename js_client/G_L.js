@@ -1107,10 +1107,10 @@ $(document).ready(function() {
     $(trash).on('click mousedown mouseup', function(){
 		var $target = $( this ),
         $obj = $( event.target );
-		
-		console.log($obj.attr('id') +"  " + $target.attr('id'));
-		
  		console.log(event.type);
+
+		console.log("id = " + $obj.attr('id') +"  " + $target.attr('id'));
+		
  		var full_class= $obj.attr('class');
 
  		console.log("class = " + full_class);
@@ -1118,7 +1118,11 @@ $(document).ready(function() {
  		if(full_class.search("TextView")!==-1){
 			console.log("textview");
 		}
-		else if(full_class.search("LinearLayout")!==-1){
+		
+		else if(full_class.search("EditText")!==-1){
+			console.log("EditText");
+		}
+		 else if(full_class.search("LinearLayout")!==-1){
 			console.log("layout");
 			$obj = $obj.children();
 			full_class= $obj.attr('id');
@@ -1145,13 +1149,25 @@ $(document).ready(function() {
 			$obj.end();
 
 		}
+		else if(event.type ==="mouseup"){
+			var id = $("#input").find("input[name="+"obj_id"+"]").val();
+			var id_class= $('#' + id).attr("class");
+			console.log("[editText] id and id_class");
+			console.log(id + " " + id_class);
+			if(id_class === "EditText"){
+				var $div_edit = $('#' + id).parent();
+				$('#'+id).css("width", $div_edit.css("width"));
+				$('#'+id).css("height", $div_edit.css("height"));
+
+			}
+		}
 	
 				
 
 	
 	});
 
-
+	
 
     // let the gallery items be draggable
     $( "li", $gallery ).draggable({
@@ -1168,11 +1184,14 @@ $(document).ready(function() {
 
 
 	var t_v_cnt=0;//textview count
-	var l_l_H_cnt=0;//LenearLayout count
+
 	var btn_cnt=0;//button count
 	var e_t_cnt=0;//EditText count
 	var c_b_cnt=0;
 	var r_b_cnt=0;
+	var r_l_cnt=0;
+	var l_l_cnt=0;//LenearLayout count
+	var f_l_cnt=0;//FrameLayout count
     // let the trash be droppable, accepting the gallery items
     $trash.droppable({
 
@@ -1191,7 +1210,7 @@ $(document).ready(function() {
 					.addClass("TextView").draggable({containment:"#trash",scroll:false})
 					.resizable({
 						maxHeight: 300,
-						maxWidth: 280,
+						maxWidth: 400,
 						minHeight: 30,
 						minWidth: 50,
 						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
@@ -1204,7 +1223,7 @@ $(document).ready(function() {
 					.addClass("Button").draggable({containment:"#trash",scroll:false})
 					.resizable({
 						maxHeight: 300,
-						maxWidth: 280,
+						maxWidth: 400,
 						minHeight: 30,
 						minWidth: 50,
 						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
@@ -1213,11 +1232,11 @@ $(document).ready(function() {
 			}
 			else if(ui.draggable.text()==="EditText"){
 						console.log("this is EditText");
-				$( "<div id=\"EditText"+e_t_cnt+ "\" class=\"inputType\" style=\"width:100px;height:30px;\" ><input type=\"text\" value=\"EditText\"/>" ).appendTo( this )
+				$( "<div  class=\"inputType\" ><input type=\"text\" id=\"EditText"+e_t_cnt+ "\" value=\"EditText\"/>" ).appendTo( this )
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({
 						maxHeight: 300,
-						maxWidth: 280,
+						maxWidth: 400,
 						minHeight: 30,
 						minWidth: 50,
 						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
@@ -1227,11 +1246,11 @@ $(document).ready(function() {
 			}
 			else if(ui.draggable.text()==="CheckBox"){
 						console.log("this is CheckBox");
-				$( "<div id=\"CheckBox"+c_b_cnt+ "\" class=\"inputType\" style=\"width:100px;height:30px;\" ><input type=\"checkbox\" value=\"CheckBox\" >CheckBox</input></div>" ).appendTo( this )
+				$( "<div class=\"inputType\"  ><input type=\"checkbox\" id=\"CheckBox"+c_b_cnt+ "\"  value=\"CheckBox\" >CheckBox</input></div>" ).appendTo( this )
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({
 						maxHeight: 300,
-						maxWidth: 280,
+						maxWidth: 400,
 						minHeight: 30,
 						minWidth: 50,
 						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
@@ -1241,11 +1260,11 @@ $(document).ready(function() {
 			}
 			else if(ui.draggable.text()==="RadioButton"){
 						console.log("this is RadioButton");
-				$( "<div id=\"RadioButton"+r_b_cnt+ "\" class=\"inputType\" style=\"width:100px;height:30px;\" ><input type=\"radio\" value=\"RadioButton\" >RadioButton</input></div>" ).appendTo( this )
+				$( "<div class=\"inputType\"><input type=\"radio\"  id=\"RadioButton"+r_b_cnt+ "\" value=\"RadioButton\" >RadioButton</input></div>" ).appendTo( this )
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({
 						maxHeight: 300,
-						maxWidth: 280,
+						maxWidth: 400,
 						minHeight: 30,
 						minWidth: 50,
 						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
@@ -1253,14 +1272,14 @@ $(document).ready(function() {
 			
 				r_b_cnt++;
 			}
-			else if(ui.draggable.text()==="LinearLayout_H"){
+			else if(ui.draggable.text()==="LinearLayout"){
 
-					$( "<div id=\"LinearLayout"+l_l_H_cnt+ "\" ></div>" ).text("").appendTo( this )
-					.addClass("LinearLayout_H")
+					$( "<div id=\"LinearLayout"+l_l_H_cnt+ "\" ><ul class=\"layout_vertical\"></ul></div>" ).appendTo( this )
+					.addClass("LinearLayout")
 					.draggable({containment:"#trash",scroll:false})
 					.resizable({ 
-					  maxHeight: 300,
-				      maxWidth: 280,
+					  maxHeight: 600,
+				      maxWidth: 400,
 				      minHeight: 30,
 				      minWidth: 50,
 				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
@@ -1277,6 +1296,54 @@ $(document).ready(function() {
 				 	  });	
 				
 					l_l_H_cnt++;
+			}
+			else if(ui.draggable.text()==="FrameLayout"){
+
+					$( "<div id=\"FrameLayout"+f_l_cnt+ "\" ><ul class=\"layout_frame\"></ul></div>" ).appendTo( this )
+					.draggable({containment:"#trash",scroll:false})
+					.resizable({ 
+					  maxHeight: 600,
+				      maxWidth: 400,
+				      minHeight: 30,
+				      minWidth: 50,
+				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+					 .droppable({
+			 		  accept: "div",
+				      activeClass: "custom-state-active",
+			  	      drop: function( event, ui ) {
+				  	      var ui_id=ui.draggable.attr('id');
+				  	      console.log("ui_id=" + ui_id);
+				  	      console.log("this is + " + $(this).attr('id'));
+				  	      ui.draggable.clone(true).appendTo(this);
+				  	      ui.draggable.remove();
+			      	  }
+				 	  });	
+				
+					f_l_cnt++;
+			}
+			else if(ui.draggable.text()==="RelativeLayout"){
+
+					$( "<div id=\"RelativeLayout"+f_l_cnt+ "\" ><ul class=\"layout_relative\"></ul></div>" ).appendTo( this )
+					.draggable({containment:"#trash",scroll:false})
+					.resizable({ 
+					  maxHeight: 600,
+				      maxWidth: 400,
+				      minHeight: 30,
+				      minWidth: 50,
+				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+					 .droppable({
+			 		  accept: "div",
+				      activeClass: "custom-state-active",
+			  	      drop: function( event, ui ) {
+				  	      var ui_id=ui.draggable.attr('id');
+				  	      console.log("ui_id=" + ui_id);
+				  	      console.log("this is + " + $(this).attr('id'));
+				  	      ui.draggable.clone(true).appendTo(this);
+				  	      ui.draggable.remove();
+			      	  }
+				 	  });	
+				
+					r_l_cnt++;
 			}
 		}
 

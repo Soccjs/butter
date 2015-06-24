@@ -26,16 +26,21 @@
   	position: relative;
 }
 
-.layout_vertical div{
+.layout_vertical  {
 	float:none;
 }
+.layout_vertical div:first-child {
+	display: block;
+}
 
-.layout_horizontal div{
+.layout_horizontal {
 	float:left;
+}
+.layout_horizontal div:first-child{
+	display: inline;
 }
 .LinearLayout {
 	background: #000000;
-	float:left;
 }
 .EditText {
 	height:30px;
@@ -66,3 +71,6 @@
 	background-color:#000000;
 }
 
+.inputType{
+	padding:5px;
+}
