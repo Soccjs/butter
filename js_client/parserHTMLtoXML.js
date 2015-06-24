@@ -136,13 +136,13 @@ $(document).ready(function()
 	{
 		var viewXML = "";
 		//Root Information생성
-		viewXML += getRootInfo(html)+"\n";
+		viewXML += getRootInfo(html);
 		//ID생성
-		viewXML += getId(html)+"\n";
+		viewXML += getId(html);
 		//WIDTH생성
-		viewXML += getWidth(html)+"\n";
+		viewXML += getWidth(html);
 		//HEIGHT생성
-		viewXML += getHeight(html)+"\n";
+		viewXML += getHeight(html);
 		//BACKGROUND생성
 		viewXML += getBackground(html);
 		return viewXML;
@@ -154,7 +154,7 @@ $(document).ready(function()
 		//TextView생성
 		var viewXML = "<TextView ";
 		//기본 Default View 속성 생성
-		viewXML += makeDefaultView(html)+"\n";
+		viewXML += makeDefaultView(html);
 		//TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
 		viewXML += getText(html);
 		return viewXML+"/>";
@@ -166,7 +166,7 @@ $(document).ready(function()
 		//Button생성
 		var viewXML = "<Button ";
 		//기본 Default View 속성 생성
-		viewXML += makeDefaultView(html)+"\n";
+		viewXML += makeDefaultView(html);
 		//TEXT생성
 		viewXML += getText(html);
 		return viewXML+"/>";
@@ -178,7 +178,7 @@ $(document).ready(function()
 		//Button생성
 		var viewXML = "<ImageView ";
 		//기본 Default View 속성 생성
-		viewXML += makeDefaultView(html)+"\n";
+		viewXML += makeDefaultView(html);
 		return viewXML+"/>";
 	}
 
@@ -217,9 +217,9 @@ $(document).ready(function()
 	{
 		var viewXML = "<WebView ";
 		//ID생성
-		viewXML += getId(html)+"\n";
+		viewXML += getId(html);
 		//WIDTH생성
-		viewXML += getWidth(html)+"\n";
+		viewXML += getWidth(html);
 		//HEIGHT생성
 		viewXML += getHeight(html);
 		return viewXML+"/>";
@@ -242,23 +242,23 @@ $(document).ready(function()
 	{
 		var viewXML = "";
 		//ID생성
-		viewXML += getId(html)+"\n";
+		viewXML += getId(html);
 		//WIDTH생성
-		viewXML += getWidth(html)+"\n";
+		viewXML += getWidth(html);
 		//HEIGHT생성
-		viewXML += getHeight(html)+"\n";
+		viewXML += getHeight(html);
 		//MARGIN생성
-		viewXML += getMargin(html)+"\n";
+		viewXML += getMargin(html);
 		//TEXTSIZE생성
-		viewXML += getTextSize(html)+"\n";
+		viewXML += getTextSize(html);
 		//TEXTSTYLE생성
-		viewXML += getTextStyle(html)+"\n";
+		viewXML += getTextStyle(html);
 		//TEXTCOLOR생성
-		viewXML += getTextColor(html)+"\n";
+		viewXML += getTextColor(html);
 		//GRAVITY생성
-		viewXML += getGravity(html)+"\n";
+		viewXML += getGravity(html);
 		//ELLIPSIZE생성
-		viewXML += getEllipsize(html)+"\n";
+		viewXML += getEllipsize(html);
 		//BACKGROUND생성
 		viewXML += getBackground(html);
 		return viewXML;
@@ -268,15 +268,15 @@ $(document).ready(function()
 	function getStyleValue(html, key)
 	{
 		var styleValue = null;
-		console.log(html.attr("style"));
 		if(html.attr("style")!=="undefined"){
 			var stylesBox = html.attr("style").split(";");
 		
 			for (var x = 0; x < stylesBox.length; x++) 
 			{
 			    var cmpKey = stylesBox[x].split(':');
-			    if(cmpKey[0] == key)
+			    if(cmpKey[0] == key){
 					styleValue = cmpKey[1];
+					console.log(cmpKey[1]);}
 			}
 		}
 		return styleValue;
@@ -289,7 +289,7 @@ $(document).ready(function()
 		if(xmlRootInfo == null)
 			return "";
 		else
-			return "xmlns:android=\""+xmlRootInfo+"\" ";
+			return "xmlns:android=\""+xmlRootInfo+"\"\n";
 	}
 
 	// HTML Orientation값 추출
@@ -297,9 +297,9 @@ $(document).ready(function()
 	{
 		var xmlOrientation = getStyleValue(html, "display");
 		if(xmlOrientation == "inline") 
-			return "android:orientation=\"horizontal\" ";
+			return "android:orientation=\"horizontal\"\n";
 		else
-			return "android:orientation=\"vertical\" ";
+			return "android:orientation=\"vertical\"\n";
 	}
 
 	// HTML Id값 추출
@@ -323,7 +323,7 @@ $(document).ready(function()
 		if(xmlID == null)
 			return "";
 		else
-			return "android:id=\"@+id/"+xmlID.replace("[$-R]", "")+"\" ";
+			return "android:id=\"@+id/"+xmlID.replace("[$-R]", "")+"\"\n";
 	}
 
 	//==================================================================================//
@@ -335,11 +335,11 @@ $(document).ready(function()
 	{
 		var htmlWidth = getStyleValue(html, "width");
 		if(htmlWidth == null)
-			return "android:layout_width=\"wrap_content\" ";
+			return "android:layout_width=\"wrap_content\"\n";
 		else if(htmlWidth == "100%")
-			return "android:layout_width=\"match_parent\" ";
+			return "android:layout_width=\"match_parent\"\n";
 		else
-			return "android:layout_width=\""+htmlWidth+"\" ";
+			return "android:layout_width=\""+htmlWidth+"\"\n";
 	}
 
 	// HTML Height값 추출
@@ -347,11 +347,11 @@ $(document).ready(function()
 	{
 		var htmlHeight = getStyleValue(html, "height");
 		if(htmlHeight == null)
-			return "android:layout_height=\"wrap_content\" ";
+			return "android:layout_height=\"wrap_content\"\n";
 		else if(htmlHeight == "100%")
-			return "android:layout_height=\"match_parent\" ";
+			return "android:layout_height=\"match_parent\"\n";
 		else
-			return "android:layout_height=\""+htmlHeight+"\" ";
+			return "android:layout_height=\""+htmlHeight+"\"\n";
 	}
 
 	// HTML Background값 추출
@@ -365,7 +365,7 @@ $(document).ready(function()
 			htmlBackground = htmlBackground.replace("url('@drawable/", "");
 			htmlBackground = htmlBackground.replace("')", "");
 		
-			return "android:background=\"@drawable/"+htmlBackground+"\" ";
+			return "android:background=\"@drawable/"+htmlBackground+"\"\n";
 		}
 	}
 
@@ -376,19 +376,19 @@ $(document).ready(function()
 		if(htmlMargin == null)
 			return "";
 		else
-			return "android:layout_margin=\""+htmlMargin+"\" ";
+			return "android:layout_margin=\""+htmlMargin+"\"\n";
 	}
 	
 	// HTML Text값 추출
 	function getText(html)
 	{
-		return "android:text=\""+html.text()+"\" ";
+		return "android:text=\""+html.text()+"\"\n";
 	}
 
 	// HTML Value Text값 추출
 	function getValueText(html)
 	{
-		return "android:text=\""+html.attr("value")+"\" ";
+		return "android:text=\""+html.attr("value")+"\"\n";
 	}
 
 	// HTML Gravity 추출
@@ -398,7 +398,7 @@ $(document).ready(function()
 		if(htmlGravityn == null)
 			return "";
 		else
-			return "android:gravity=\""+htmlGravityn+"\" ";
+			return "android:gravity=\""+htmlGravityn+"\"\n";
 	}
 
 	//==================================================================================//
@@ -412,7 +412,7 @@ $(document).ready(function()
 		if(htmlTextSize == null)
 			return "";
 		else
-			return "android:textSize=\""+htmlTextSize+"\" ";
+			return "android:textSize=\""+htmlTextSize+"\"\n";
 	}
 
 	// HTML TextStyle값 추출
@@ -422,7 +422,7 @@ $(document).ready(function()
 		if(htmlTextStyle == null)
 			return "";
 		else
-			return "android:textStyle=\""+htmlTextStyle+"\" ";
+			return "android:textStyle=\""+htmlTextStyle+"\"\n";
 	}
 
 	// HTML TextColor값 추출
@@ -432,7 +432,7 @@ $(document).ready(function()
 		if(htmlTextColor == null)
 			return "";
 		else
-			return "android:textColor=\""+htmlTextColor+"\" ";
+			return "android:textColor=\""+htmlTextColor+"\"\n";
 	}
 
 	// HTML Ellipsize 추출
@@ -440,7 +440,7 @@ $(document).ready(function()
 	{
 		var htmlEllipsize = getStyleValue(html, "text-overflow");
 		if(htmlEllipsize == "ellipsis")
-			return "android:ellipsize=\"end\" ";
+			return "android:ellipsize=\"end\"\n";
 		else
 			return "";
 	}
