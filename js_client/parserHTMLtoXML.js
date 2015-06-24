@@ -50,7 +50,7 @@ $(document).ready(function()
 			if($(this).children().length >= 1)
 			{
 				childHtml += makeInChildeNode($(this));
-				if(type != null && validationView(type) == true)
+				if(type !== null && validationView(type) === true)
 					childHtml += "</"+type+">"; // Child 노드가 있을 경우 재귀 종료시 Close
 			}
 		});	
@@ -274,9 +274,8 @@ $(document).ready(function()
 			for (var x = 0; x < stylesBox.length; x++) 
 			{
 			    var cmpKey = stylesBox[x].split(':');
-			    if(cmpKey[0] == key){
-					styleValue = cmpKey[1];
-					console.log(cmpKey[1]);}
+			    if(cmpKey[0] == key)
+					styleValue = cmpKey[1].trim();
 			}
 		}
 		return styleValue;
@@ -285,7 +284,7 @@ $(document).ready(function()
 	// HTML Root 정보 추출
 	function getRootInfo(xml)
 	{
-		var xmlRootInfo = xml.attr("xml");
+		var xmlRootInfo = xml.attr("xml").trim();
 		if(xmlRootInfo == null)
 			return "";
 		else
@@ -305,7 +304,7 @@ $(document).ready(function()
 	// HTML Id값 추출
 	function getClass(html)
 	{
-		var className = html.attr("class")
+		var className = html.attr("class").trim();
 		if(className != null)
 		{
 			var firstName = className.split(" ");
@@ -319,7 +318,7 @@ $(document).ready(function()
 	function getId(html)
 	{
 		// 고유 아이디를 사용하기 위해 임시로 저장된 id+[$-R]의 [$-R]마크 부분 제거
-		var xmlID = html.attr("id");
+		var xmlID = html.attr("id").trim();
 		if(xmlID == null)
 			return "";
 		else
@@ -382,13 +381,13 @@ $(document).ready(function()
 	// HTML Text값 추출
 	function getText(html)
 	{
-		return "android:text=\""+html.text()+"\"\n";
+		return "android:text=\""+html.text().trim()+"\"\n";
 	}
 
 	// HTML Value Text값 추출
 	function getValueText(html)
 	{
-		return "android:text=\""+html.attr("value")+"\"\n";
+		return "android:text=\""+html.attr("value").trim()+"\"\n";
 	}
 
 	// HTML Gravity 추출
