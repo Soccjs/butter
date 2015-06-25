@@ -249,6 +249,8 @@ $(document).ready(function()
 		viewXML += getHeight(html);
 		//MARGIN생성
 		viewXML += getMargin(html);
+	    //RELATIVE MARGIN생성
+	    viewXML += getRelativeMargin(html);
 		//TEXTSIZE생성
 		viewXML += getTextSize(html);
 		//TEXTSTYLE생성
@@ -274,7 +276,7 @@ $(document).ready(function()
 			for (var x = 0; x < stylesBox.length; x++) 
 			{
 			    var cmpKey = stylesBox[x].split(':');
-			    if(cmpKey[0] == key)
+			    if(cmpKey[0] != null && cmpKey[0].trim() == key)
 					styleValue = cmpKey[1].trim();
 			}
 		}
@@ -284,17 +286,18 @@ $(document).ready(function()
 	// HTML Root 정보 추출
 	function getRootInfo(xml)
 	{
-		var xmlRootInfo = xml.attr("xml").trim();
+		var xmlRootInfo = xml.attr("xml");
 		if(xmlRootInfo == null)
 			return "";
 		else
-			return "xmlns:android=\""+xmlRootInfo+"\"\n";
+			return "xmlns:android=\""+xmlRootInfo.trim()+"\"\n";
 	}
 
 	// HTML Orientation값 추출
 	function getOrientation(html)
 	{
 		var xmlOrientation = getStyleValue(html, "display");
+		console.log(xmlOrientation);
 		if(xmlOrientation == "inline") 
 			return "android:orientation=\"horizontal\"\n";
 		else
@@ -304,11 +307,11 @@ $(document).ready(function()
 	// HTML Id값 추출
 	function getClass(html)
 	{
-		var className = html.attr("class").trim();
+		var className = html.attr("class");
 		if(className != null)
 		{
 			var firstName = className.split(" ");
-			return firstName[0];
+			return firstName[0].trim();
 		}
 		else
 			return "";
@@ -318,11 +321,11 @@ $(document).ready(function()
 	function getId(html)
 	{
 		// 고유 아이디를 사용하기 위해 임시로 저장된 id+[$-R]의 [$-R]마크 부분 제거
-		var xmlID = html.attr("id").trim();
+		var xmlID = html.attr("id");
 		if(xmlID == null)
 			return "";
 		else
-			return "android:id=\"@+id/"+xmlID.replace("[$-R]", "")+"\"\n";
+			return "android:id=\"@+id/"+xmlID.replace("[$-R]", "").trim()+"\"\n";
 	}
 
 	//==================================================================================//
@@ -333,7 +336,7 @@ $(document).ready(function()
 	function getWidth(html)
 	{
 		var htmlWidth = getStyleValue(html, "width");
-		if(htmlWidth == null)
+		if(htmlWidth == null || htmlWidth == "0%")
 			return "android:layout_width=\"wrap_content\"\n";
 		else if(htmlWidth == "100%")
 			return "android:layout_width=\"match_parent\"\n";
@@ -345,7 +348,7 @@ $(document).ready(function()
 	function getHeight(html)
 	{
 		var htmlHeight = getStyleValue(html, "height");
-		if(htmlHeight == null)
+		if(htmlHeight == null || htmlHeight == "0%")
 			return "android:layout_height=\"wrap_content\"\n";
 		else if(htmlHeight == "100%")
 			return "android:layout_height=\"match_parent\"\n";
@@ -378,16 +381,44 @@ $(document).ready(function()
 			return "android:layout_margin=\""+htmlMargin+"\"\n";
 	}
 	
+	// XML Relative Margin값 추출
+   function getRelativeMargin(html)
+   {
+      var htmlMarginLeft = getStyleValue(html, "left");
+      var htmlMarginRight = getStyleValue(html, "right");
+      var htmlMarginBottom = getStyleValue(html, "bottom");
+      var htmlMarginTop = getStyleValue(html, "top");
+
+      if(htmlMarginLeft == null && htmlMarginRight == null && 
+         htmlMarginBottom == null && htmlMarginTop == null)
+      {
+         return "";
+      }
+      else
+      {
+         var htmlRelativeMargin = "";
+         if(htmlMarginLeft != null)
+            htmlRelativeMargin += "android:layout_marginLeft=\""+htmlMarginLeft+"\"\n";
+         if(htmlMarginRight != null)
+            htmlRelativeMargin += "android:layout_marginRight=\""+htmlMarginRight+"\"\n";
+         if(htmlMarginBottom != null)
+            htmlRelativeMargin += "android:layout_marginBottom=\""+htmlMarginBottom+"\"\n";
+         if(htmlMarginTop != null)
+            htmlRelativeMargin += "android:layout_marginTop=\""+htmlMarginTop+"\"\n";
+         return htmlRelativeMargin;
+      }
+   }
+
 	// HTML Text값 추출
 	function getText(html)
 	{
-		return "android:text=\""+html.text().trim()+"\"\n";
+		return "android:text=\""+html.text()+"\"\n";
 	}
 
 	// HTML Value Text값 추출
 	function getValueText(html)
 	{
-		return "android:text=\""+html.attr("value").trim()+"\"\n";
+		return "android:text=\""+html.attr("value")+"\"\n";
 	}
 
 	// HTML Gravity 추출

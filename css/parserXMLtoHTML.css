@@ -73,6 +73,9 @@
 .Button {
 	color:#FFFFFF;
 	background-color:#BBBBBB;
+	height:25px;
+	width:60px;
+	text-align: center;
 }
 
 .TextView {
@@ -80,6 +83,7 @@
 	width:80px;
 	color:#FFFFFF;
 	background-color:#000000;
+	text-align: center;
 }
 
 .inputType{
