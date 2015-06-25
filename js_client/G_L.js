@@ -1072,6 +1072,7 @@ $(document).ready(function() {
 	});	
 
     $("#complete").click(function() {
+    	console.log("[input click]");
 		var id = $("#input").find("input[name="+"obj_id"+"]").val();
 		
 		var background = $("#input").find("input[name=" + "background" + "]").val();
@@ -1083,9 +1084,9 @@ $(document).ready(function() {
 		var textSize = $("#input").find("input[name="+"font_size"+"]").val();
 		
 		$('#' + id).css("background",background);
-		$('#' + id).parent().css("width",width);
-		$('#' + id).parent().css("height",height);
-		$('#' + id).find("span").text(text);
+		$('#' + id).css("width",width);
+		$('#' + id).css("height",height);
+		$('#' + id).text(text);
 		$('#' + id).css("text-align",gravity);
 		$('#' + id).css("color",textColor);
 		$('#' + id).css("font-size",textSize);
@@ -1097,21 +1098,21 @@ $(document).ready(function() {
 
 
 
-    $( ".TextView" )
-		.draggable({
-			connectToSortable: "#trash",
-			helper: "clone",
-			revert: "invalid",
-			scroll:false
-		})
-		.resizable({
-			maxHeight: 300,
-			maxWidth: 400,
-			minHeight: 30,
-			minWidth: 50,
-			containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
+  //   $( ".TextView" )
+		// .draggable({
+		// 	connectToSortable: "#trash",
+		// 	helper: "clone",
+		// 	revert: "invalid",
+		// 	scroll:false
+		// })
+		// .resizable({
+		// 	maxHeight: 300,
+		// 	maxWidth: 400,
+		// 	minHeight: 30,
+		// 	minWidth: 50,
+		// 	containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
 
-	$( "ul, div" ).disableSelection();
+	// $( "ul, div" ).disableSelection();
    
     var $current = $("#current");
 	var $widget = $( "#widget" ),
@@ -1128,41 +1129,17 @@ $(document).ready(function() {
     $(trash).on('click mousedown mouseup', function(){
 		var $target = $( this ),
         $obj = $( event.target );
- 		console.log(event.type);
-
-		console.log("id = " + $obj.attr('id') +"  " + $target.attr('id'));
-		
- 		var full_class= $obj.attr('class');
-
- 		console.log("class = " + full_class);
  		
- 		if(full_class.search("TextView")!==-1){
-			console.log("textview");
-		}
+		console.log(event.type+ " " + $obj.attr('id') +"  " + $target.attr('id'));
 		
-		else if(full_class.search("EditText")!==-1){
-			console.log("EditText");
-		}
-		 else if(full_class.search("LinearLayout")!==-1){
-			console.log("layout");
-			$obj = $obj.children();
-			full_class= $obj.attr('id');
-			console.log(full_class);
-		} 	
-		else if($obj.attr('id')==="trash"&&$target.attr('id')==="trash"){
-			return;
-		}
-		else{
-			return;
-		}
-
+ 		
 		if(event.type==="click"){
 			if(typeof $obj.attr("id") !=="undefined"){
-				$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-				$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-				$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-				$input.find("input[name=" + "background" + "]").val($obj.css("background"));
-				$input.find("input[name=" + "text" + "]").val($obj.text());
+				var _class = $obj.attr("class");
+				if(_class.search("TextView")||_class.search("Button")){
+					checkInput($obj);
+				}
+
 				
 			}
 			
@@ -1183,10 +1160,23 @@ $(document).ready(function() {
 			}
 		}
 	
-				
-
-	
 	});
+	function checkInput($obj){
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+		$input.find("input[name=" + "text" + "]").val($obj.text());
+		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+		$input.find("input[name=" + "color" + "]").val($obj.css("text-align"));
+		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+		
+	}
+	// $( "li", $layout ).draggable({
+	// 	helper: "clone",
+	// 	cursor: "move",
+	// 	appendTo:"body"
+	// });
 
 
 	$( "li", $widget ).click(function( event){
@@ -1199,32 +1189,52 @@ $(document).ready(function() {
 		goto_item_box(selected_item);
 	});
 
+	$( "li", $layout ).click(function(event){
+		var $li_target = $(event.target);
+		var selected_item = $li_target.text();
+		console.log("[select] " + selected_item  + " click");
+
+		$("#item_box").children().remove();
+
+		goto_item_box(selected_item);
+	});	
 	function goto_item_box(selected){
 		switch(selected) {
 			case "TextView" :
 				$("<div id=\"textview\" class=\"TextView\">TextView</div>").appendTo("#item_box");
 				break;
 			case "Button" :
-				$("<div id=\"Button\" class=\"Button\">Button</div>").appendTo("#item_box");
+				$("<div id=\"button\" class=\"Button\">Button</div>").appendTo("#item_box");
 				break;
 			case "EditText" :
-				$("<div class=\"inputType\" ><input type=\"text\" id=\"EditText\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
+				$("<div class=\"inputType\" ><input type=\"text\" class=\"EditText\" id=\"edittext\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
 				break;
 			case "CheckBox" :
-				$("<div class=\"inputType\" ><input type=\"checkbox\" id=\"CheckBox\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
+				$("<div class=\"inputType\" ><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
 				break;
 			case "RadioButton" :
-				$("<div class=\"inputType\" ><input type=\"radio\" id=\"RadioButton\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
+				$("<div class=\"inputType\" ><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
 				break;
+			case "LinearLayout" :
+				$("<div class=\"LinearLayout\" id=\"linearlayout\" ><ul class=\"layout_vertical\"></ul></div>").appendTo("#item_box");
+				break;
+			case "RelativeLayout" :
+				$("<div class=\"RelativeLayout\" id=\"relativelayout\"><ul class=\"layout_relative\"></ul></div>").appendTo("#item_box");
+				break;
+			case "FrameLayout" :
+				$("<div class=\"FrameLayout\" id=\"framelayout\" ><ul class=\"layout_frame\"></ul></div>").appendTo("#item_box");
+				break;				
 			default:
 				break;
 		}
 		$("#item_box").children()
 			.draggable({
-				connectToSortable: "#trash",
-				helper: "clone",
-				revert: "invalid",
+				//connectToSortable: "#trash",
+				// helper: "clone",
+				// revert: "invalid",
+				connectToSortable:"div",
 				scroll:false,
+				containment:"#item_box"
 			})
 			.resizable({
 				maxHeight: 300,
@@ -1233,19 +1243,9 @@ $(document).ready(function() {
 				minWidth: 50,
 				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
 			})
-			.disableSelection();
 	}
 
-
-
-
-	$( "li", $layout ).draggable({
-		helper: "clone",
-		cursor: "move",
-		appendTo:"body"
-	});
-
-
+	
 	var t_v_cnt=0;//textview count
 
 	var btn_cnt=0;//button count
@@ -1255,7 +1255,86 @@ $(document).ready(function() {
 	var r_l_cnt=0;
 	var l_l_cnt=0;//LenearLayout count
 	var f_l_cnt=0;//FrameLayout count
-    // let the trash be droppable, accepting the gallery items
+    
+	$("#confirm").click(function(){
+		console.log("[confirm]");
+		var $obj = $("#item_box").children();
+		
+		var _id = $obj.attr("id");
+		var _class = $obj.attr("class");
+
+		if(_class.search("TextView")!==-1 || _class.search("Button")!==-1
+			||_class.search("RelativeLayout")!==-1 || _class.search("LinearLayout")!==-1
+			|| _class.search("FrameLayout")!==-1){
+			_id = $obj.attr("id", _id+getIdcnt(_id));			
+			getCss1($obj);
+		}	
+		else{
+			$obj = $obj.children();
+			_id = $obj.attr("id");
+		    _class = $obj.attr("class");
+			_id = $obj.attr("id", _id+getIdcnt(_id));							
+			getCss2($obj);
+		}
+		
+	});
+	function getCss1($obj){
+		var width = $obj.css("width").split("px")[0]*2;
+		var height = $obj.css("height").split("px")[0]*2;
+		var left = $obj.css("left").split("px")[0]*2;
+		var top = $obj.css("top").split("px")[0]*2;
+
+		$obj.appendTo("#trash");
+		$obj.draggable("option","containment","parent")
+		.css("width",width).css("height",height)
+		.css("left",left).css("top",top)
+		.css("line-height",height+"px")
+		.css("z-index", 201)
+		.resizable("destroy")
+		.disableSelection();
+	}
+	function getCss2($obj){
+		$div_obj = $obj.parent();
+
+		var left = $div_obj.css("left").split("px")[0]*2;
+		var top = $div_obj.css("top").split("px")[0]*2;
+		
+		$div_obj.appendTo("#trash");
+		$div_obj.draggable("option","containment","parent")
+		.css("z-index", 201)
+		.resizable("destroy")
+		.children().css("left",left).css("top",top)
+		.disableSelection();          
+	}
+	function getIdcnt(_id){
+		console.log("[getIdcnt]");
+		switch(_id){
+			case "textview" : return ++t_v_cnt;
+			case "button" : return ++btn_cnt;
+			case "edittext" : return ++e_t_cnt;
+			case "checkbox" : return ++c_b_cnt;
+			case "radiobutton" : return ++r_b_cnt;
+			case "linearlayout" : return ++l_l_cnt;
+			case "relativelayout" : return ++r_l_cnt;
+			case "framelayout" : return ++f_l_cnt;
+			
+			default :break;
+		}
+	}
+	 // $( ".TextView" )
+		// .draggable({
+		// 	containment: "#trash",
+		// 	scroll:false
+		// })
+		// .resizable({
+		// 	maxHeight: 300,
+		// 	maxWidth: 400,
+		// 	minHeight: 30,
+		// 	minWidth: 50,
+		// 	containment: "#trash"});
+
+	
+	// let the trash be droppable, accepting the gallery items
     $trash.droppable({
 
 		accept: "li",

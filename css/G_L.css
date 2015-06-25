@@ -45,20 +45,28 @@ html, body {
 	text-align: center;
 	font-size: 25px;
 }
+#layout li{
+	text-align: center;
+	font-size: 25px;
+}
 #gallery div{
 	width:100%;
 	height:20px;
 }  .gallery.custom-state-active { background: #eee; }
-
+#item_dialog{
+	height:350px;
+	width:180px;
+	position:absolute;
+	margin-left:15%;
+	margin-top:6%;
+}
 #item_box{
 	height: 320px;
 	width: 180px;
-	margin-left:15%;
-	margin-top:6%;
+	
 	border: 5px solid #018dc4;
 	-webkit-border-radius: 5px;
 	border-radius: 15px;
-	position:absolute;
 }
 
 #left_img{
@@ -74,6 +82,8 @@ html, body {
  
 
 #trash {
+	position: absolute;
+	z-index: 200;
  	background: #FFF;
  	height: 640px;
   	width: 360px;

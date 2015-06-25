@@ -41,22 +41,22 @@
 }
 .LinearLayout {
 	background: #000000;
-	width: 400px;
-	height: 600px;
+	width: 150px;
+	height: 300px;
 }
 .RelativeLayout{
 	background: #000000;
-	width: 400px;
-	height: 600px;	
+	width: 150px;
+	height: 300px;
 }
 .FrameLayout{
 	background: #000000;
-	width: 400px;
-	height: 600px;	
+	width: 150px;
+	height: 300px;
 }
 .EditText {
 	height:30px;
-	width:80px;
+	width:160px;
 	background-color:#FFFFFF;
 }
 
