@@ -1114,7 +1114,7 @@ $(document).ready(function() {
 	$( "ul, div" ).disableSelection();
    
     var $current = $("#current");
-	var $gallery = $( "#gallery" ),
+	var $widget = $( "#widget" ),
   	  	 $layout = $( "#layout"),
   	     $trash = $( "#trash"),
  		$input = $( "#input");
@@ -1188,14 +1188,56 @@ $(document).ready(function() {
 	
 	});
 
-	
 
-    // let the gallery items be draggable
-    $( "li", $gallery ).draggable({
-      helper: "clone",
-      cursor: "move",
-      appendTo:"body"
-    });
+	$( "li", $widget ).click(function( event){
+		var $li_target = $(event.target);
+		var selected_item = $li_target.text();
+		console.log("[select] " + selected_item  + " click");
+
+		$("#item_box").children().remove();
+
+		goto_item_box(selected_item);
+	});
+
+	function goto_item_box(selected){
+		switch(selected) {
+			case "TextView" :
+				$("<div id=\"textview\" class=\"TextView\">TextView</div>").appendTo("#item_box");
+				break;
+			case "Button" :
+				$("<div id=\"Button\" class=\"Button\">Button</div>").appendTo("#item_box");
+				break;
+			case "EditText" :
+				$("<div class=\"inputType\" ><input type=\"text\" id=\"EditText\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
+				break;
+			case "CheckBox" :
+				$("<div class=\"inputType\" ><input type=\"checkbox\" id=\"CheckBox\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
+				break;
+			case "RadioButton" :
+				$("<div class=\"inputType\" ><input type=\"radio\" id=\"RadioButton\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
+				break;
+			default:
+				break;
+		}
+		$("#item_box").children()
+			.draggable({
+				connectToSortable: "#trash",
+				helper: "clone",
+				revert: "invalid",
+				scroll:false,
+			})
+			.resizable({
+				maxHeight: 300,
+				maxWidth: 400,
+				minHeight: 30,
+				minWidth: 50,
+				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+			})
+			.disableSelection();
+	}
+
+
+
 
 	$( "li", $layout ).draggable({
 		helper: "clone",
@@ -1227,48 +1269,9 @@ $(document).ready(function() {
 
 			console.log("ui" + ui.draggable.text());
 			
-			if(ui.draggable.text()==="button"){
-						console.log("this is button");
-				$( "<div id=\"Button"+btn_cnt+ "\">button</div>" ).appendTo( this )
-					.addClass("Button").draggable({containment:"#trash",scroll:false})
-					.resizable({
-						maxHeight: 300,
-						maxWidth: 400,
-						minHeight: 30,
-						minWidth: 50,
-						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
-			
-				btn_cnt++;
-			}
-			else if(ui.draggable.text()==="EditText"){
-						console.log("this is EditText");
-				$( "<div  class=\"inputType\" ><input type=\"text\" id=\"EditText"+e_t_cnt+ "\" value=\"EditText\"/>" ).appendTo( this )
-					.draggable({containment:"#trash",scroll:false})
-					.resizable({
-						maxHeight: 300,
-						maxWidth: 400,
-						minHeight: 30,
-						minWidth: 50,
-						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-					.children().addClass("EditText");
-			
-				e_t_cnt++;
-			}
-			else if(ui.draggable.text()==="CheckBox"){
-						console.log("this is CheckBox");
-				$( "<div class=\"inputType\"  ><input type=\"checkbox\" id=\"CheckBox"+c_b_cnt+ "\"  value=\"CheckBox\" >CheckBox</input></div>" ).appendTo( this )
-					.draggable({containment:"#trash",scroll:false})
-					.resizable({
-						maxHeight: 300,
-						maxWidth: 400,
-						minHeight: 30,
-						minWidth: 50,
-						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-					.children().addClass("CheckBox");
-			
-				c_b_cnt++;
-			}
-			else if(ui.draggable.text()==="RadioButton"){
+		
+		
+			 if(ui.draggable.text()==="RadioButton"){
 						console.log("this is RadioButton");
 				$( "<div class=\"inputType\"><input type=\"radio\"  id=\"RadioButton"+r_b_cnt+ "\" value=\"RadioButton\" >RadioButton</input></div>" ).appendTo( this )
 					.draggable({containment:"#trash",scroll:false})
@@ -1301,7 +1304,9 @@ $(document).ready(function() {
 				  	      var ui_id=ui.draggable.attr('id');
 				  	      console.log("ui_id=" + ui_id);
 				  	      console.log("this is + " + $(this).attr('id'));
-				  	      ui.draggable.clone(true).appendTo(this);
+				  	      ui.draggable.clone(true).appendTo(this)					
+				  	      .draggable({containment:this ,scroll:false});
+
 				  	      ui.draggable.remove();
 			      	  }
 				 	  })
@@ -1372,13 +1377,7 @@ $(document).ready(function() {
  	
 
     // let the gallery be droppable as well, accepting items from the trash
-    $gallery.droppable({
-      accept: "#trash li",
-      activeClass: "custom-state-active",
-      drop: function( event, ui ) {
-        recycleImage( ui.draggable );
-      }
-    });
+    
  	
 
     // image deletion function
@@ -1387,23 +1386,7 @@ $(document).ready(function() {
 
     }
  
-    // image recycle function
-    var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
-    function recycleImage( $item ) {
-      $item.fadeOut(function() {
-        $item
-          .find( "a.ui-icon-refresh" )
-            .remove()
-          .end()
-          .css( "width", "96px")
-          .append( trash_icon )
-          .find( "img" )
-            .css( "height", "72px" )
-          .end()
-          .appendTo( $gallery )
-          .fadeIn();
-      });
-    }
+   
  
     // image preview function, demonstrating the ui.dialog used as a modal window
     function viewLargerImage( $link ) {
@@ -1427,7 +1410,7 @@ $(document).ready(function() {
     }
  
     // resolve the icons behavior with event delegation
-    $( "ul.gallery > li" ).click(function( event ) {
+    $( "ul.widget > li" ).click(function( event ) {
       var $item = $( this ),
         $target = $( event.target );
  
