@@ -2,7 +2,7 @@ var parser = require('./parserXMLtoHTML.js');
 
 // global variables
 var isShownBtmMenu = false;			// boolean for bottom menu
-var isPerInfoVisible = false;		// boolean for personal_info menu
+var isPerInfoVisible =a false;		// boolean for personal_info menu
 var tree_root = "/home/soccjs/Documents/butter/";
 var isShownimportMenu=false;
 var _GLOBAL = {};
@@ -187,7 +187,7 @@ $(document).ready(function() {
 
         console.log("hi");
 			directParser();
-				//$( ".TextView", $trash ).draggable();
+				$( ".TextView", $trash ).draggable();
 
 			console.log("bye");
 	}
@@ -1096,23 +1096,6 @@ $(document).ready(function() {
 	});	
 
 
-
-    $( ".TextView" )
-		.draggable({
-			connectToSortable: "#trash",
-			helper: "clone",
-			revert: "invalid",
-			scroll:false
-		})
-		.resizable({
-			maxHeight: 300,
-			maxWidth: 400,
-			minHeight: 30,
-			minWidth: 50,
-			containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
-
-	$( "ul, div" ).disableSelection();
-   
     var $current = $("#current");
 	var $gallery = $( "#gallery" ),
   	  	 $layout = $( "#layout"),
@@ -1120,10 +1103,6 @@ $(document).ready(function() {
  		$input = $( "#input");
 
     var click_cnt = true;
-
-    $(trash).sortable({
-			revert: true
-	});
 
     $(trash).on('click mousedown mouseup', function(){
 		var $target = $( this ),
@@ -1226,8 +1205,19 @@ $(document).ready(function() {
 			$( this ).find( ".placeholder" ).remove();
 
 			console.log("ui" + ui.draggable.text());
-			
-			if(ui.draggable.text()==="button"){
+			if(ui.draggable.text()==="TextView"){
+				$( "<div id=\"TextView"+t_v_cnt+ "\">TextView</div>" ).appendTo( this )
+					.addClass("TextView").draggable({containment:"#trash",scroll:false})
+					.resizable({
+						maxHeight: 300,
+						maxWidth: 400,
+						minHeight: 30,
+						minWidth: 50,
+						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
+					
+				t_v_cnt++;
+			}
+			else if(ui.draggable.text()==="button"){
 						console.log("this is button");
 				$( "<div id=\"Button"+btn_cnt+ "\">button</div>" ).appendTo( this )
 					.addClass("Button").draggable({containment:"#trash",scroll:false})

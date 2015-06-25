@@ -12,23 +12,39 @@
 	</style>
 	<script>
 	$(function() {
+			$(function() {
 		$( "#sortable" ).sortable({
-			revert: true
+			revert: true,
+			connectWith: "#trash",
+			containment: "parent",
+			  axis: "x"
+
 		});
-		$( "#draggable" ).draggable({
+		$( ".draggable" ).draggable({
 			connectToSortable: "#sortable",
 			helper: "clone",
-			revert: "invalid"
-		});
+			revert: "invalid",
+			scroll:false
+
+		})
+		.resizable({
+			maxHeight: 300,
+			maxWidth: 400,
+			minHeight: 30,
+			minWidth: 50,
+			containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
 		$( "ul, div" ).disableSelection();
+		});
 	});
 	</script>
 </head>
 <body>
 
+
 <ul>
-	<div id="draggable" class="ui-state-highlight ui-draggable ui-draggable-handle">Drag me down</div>
+	<div id="hi" class="draggable" style="background:blue;" class="ui-state-highlight ui-draggable ui-draggable-handle">Drag me down</div>
 </ul>
+<div id="trash" style="width:500px;height:500px;background:red;opacity:0.5;">
 
 <ul id="sortable" class="ui-sortable">
 	
@@ -38,7 +54,6 @@
 	<div class="ui-state-default ui-sortable-handle">Item 5</div>
 </ul>
 
-
-
+</div>
 
 </body></html>

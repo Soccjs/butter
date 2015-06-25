@@ -65,7 +65,13 @@
 
 		$( "#a" ).draggable({containment:"#trash",scroll:false});
 
-		
+		$( "#draggable" ).draggable({
+			connectToSortable: "#trash",
+			helper: "clone",
+			revert: "invalid",
+			scroll:false
+		});
+		$( "ul, div" ).disableSelection();
 	});
 
 
@@ -87,7 +93,7 @@
 				<li class="bold"><a class="collapsible-header  waves-effect waves-red" style = "height : 64px;">Form widget</a>
 					<div class="collapsible-body" style="">
 						<ul id="gallery">
-							<li ><div id="textview" class="TextView">TextView</div></li>
+							<li ><div id="draggable" style="width:50px;height:40px;background:blue;">TextView</div></li>
 							<li><a href="http://materializecss.com/color.html">button</a></li>
 							<li><a href="#!">EditText</a></li>
 							<li><a href="#!">ImageView</a></li>
