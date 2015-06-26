@@ -1,59 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Sortable - Connect lists</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <style>
+  #sortable1, #sortable2 {
+    border: 1px solid #eee;
+    width: 600px;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    float: left;
+    margin-right: 10px;
+  }
+  #sortable1 li {
+  	float: left;
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    width: 50px;
+  }
+   #sortable2 li {
+   margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    width: 50px;
+  }
+  </style>
+  <script>
+  $(function() {
+    $( "#sortable1, #sortable2" ).sortable({
+      connectWith: ".connectedSortable"
 
-<html lang="en"><head>
-	<meta charset="utf-8">
-	<title>jQuery UI Draggable + Sortable</title>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<style>
-	ul { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px; }
-	div{ margin: 5px; padding: 5px; width: 150px; }
-	</style>
-	<script>
-	$(function() {
-			$(function() {
-		$( "#sortable" ).sortable({
-			revert: true,
-			connectWith: "#trash",
-			containment: "parent",
-			  axis: "x"
+    }).disableSelection();
 
-		});
-		$( ".draggable" ).draggable({
-			connectToSortable: "#sortable",
-			helper: "clone",
-			revert: "invalid",
-			scroll:false
-
-		})
-		.resizable({
-			maxHeight: 300,
-			maxWidth: 400,
-			minHeight: 30,
-			minWidth: 50,
-			containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
-		$( "ul, div" ).disableSelection();
-		});
-	});
-	</script>
+    $( "#sortable1").sortable({
+    	axis:"x"
+    });
+     $( "#sortable2").sortable({
+    	axis:"y"
+    });
+  });
+  </script>
 </head>
 <body>
-
-
-<ul>
-	<div id="hi" class="draggable" style="background:blue;" class="ui-state-highlight ui-draggable ui-draggable-handle">Drag me down</div>
+ 
+<ul id="sortable1" class="connectedSortable">
+  <li class="ui-state-default">Item 1</li>
+  <li class="ui-state-default">Item 2</li>
+  <li class="ui-state-default">Item 3</li>
+  <li class="ui-state-default">Item 4</li>
+  <li class="ui-state-default">Item 5</li>
 </ul>
-<div id="trash" style="width:500px;height:500px;background:red;opacity:0.5;">
-
-<ul id="sortable" class="ui-sortable">
-	
-	
-	<div class="ui-state-default ui-sortable-handle">Item 3</div><div class="ui-state-default ui-sortable-handle">Item 4</div><div class="ui-state-default ui-sortable-handle">Item 1</div><div class="ui-state-default ui-sortable-handle">Item 2</div>
-	
-	<div class="ui-state-default ui-sortable-handle">Item 5</div>
+ 
+<ul id="sortable2" class="connectedSortable">
+  <li class="ui-state-highlight">Item 1</li>
+  <li class="ui-state-highlight">Item 2</li>
+  <li class="ui-state-highlight">Item 3</li>
+  <li class="ui-state-highlight">Item 4</li>
+  <li class="ui-state-highlight">Item 5</li>
 </ul>
-
-</div>
-
-</body></html>
+ 
+ 
+</body>
+</html>

@@ -1092,7 +1092,7 @@ $(document).ready(function() {
 
     $(trash).sortable({
 			revert: true
-	});
+	}).disableSelection();
 
     $(trash).on('click mousedown mouseup', function(){
 		var $target = $( this ),
@@ -1273,7 +1273,9 @@ $(document).ready(function() {
 			default:
 				break;
 		}
-		$("#item_box").children()
+
+		if($("#item_box").children().attr("class").search("Layout")!==-1){
+			$("#item_box").children()
 			.draggable({
 				//connectToSortable: "#trash",
 				// helper: "clone",
@@ -1283,12 +1285,33 @@ $(document).ready(function() {
 				containment:"#item_box"
 			})
 			.resizable({
-				maxHeight: 300,
-				maxWidth: 400,
+				maxHeight: 320,
+				maxWidth: 180,
 				minHeight: 30,
 				minWidth: 50,
 				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
 			})
+			var _class=$("#item_box").children().attr("class");
+
+		}
+		else{
+			$("#item_box").children()
+			.draggable({
+				//connectToSortable: "#trash",
+				// helper: "clone",
+				// revert: "invalid",
+				connectToSortable:"div",
+				scroll:false,
+				containment:"#item_box"
+			})
+			.resizable({
+				maxHeight: 400,
+				maxWidth: 360,
+				minHeight: 30,
+				minWidth: 50,
+				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+			})
+		}
 	}
 
 	
@@ -1337,7 +1360,6 @@ $(document).ready(function() {
 		.css("line-height",height+"px")
 		.css("z-index", 201)
 		.resizable("destroy")
-		.disableSelection();
 	}
 	function getCss2($obj){
 		$div_obj = $obj.parent();
@@ -1350,7 +1372,6 @@ $(document).ready(function() {
 		.css("z-index", 201)
 		.resizable("destroy")
 		.children().css("left",left).css("top",top)
-		.disableSelection();          
 	}
 	function getIdcnt(_id){
 		console.log("[getIdcnt] " + _id );
@@ -1383,118 +1404,118 @@ $(document).ready(function() {
 	// let the trash be droppable, accepting the gallery items
     $trash.droppable({
 
-		accept: "li",
+		// accept: "li",
 
-      activeClass: "ui-state-highlight",
-	  hoverClass: "ui-state-hover",
+  //     activeClass: "ui-state-highlight",
+	 //  hoverClass: "ui-state-hover",
 			
 
-	    drop: function( event, ui ) {
-			$( this ).find( ".placeholder" ).remove();
+	 //    drop: function( event, ui ) {
+		// 	$( this ).find( ".placeholder" ).remove();
 
-			console.log("ui" + ui.draggable.text());
+		// 	console.log("ui" + ui.draggable.text());
 			
 		
 		
-			 if(ui.draggable.text()==="RadioButton"){
-						console.log("this is RadioButton");
-				$( "<div class=\"inputType\"><input type=\"radio\"  id=\"RadioButton"+r_b_cnt+ "\" value=\"RadioButton\" >RadioButton</input></div>" ).appendTo( this )
-					.draggable({containment:"#trash",scroll:false})
-					.resizable({
-						maxHeight: 300,
-						maxWidth: 400,
-						minHeight: 30,
-						minWidth: 50,
-						containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-					.children().addClass("RadioButton");
+		// 	 if(ui.draggable.text()==="RadioButton"){
+		// 				console.log("this is RadioButton");
+		// 		$( "<div class=\"inputType\"><input type=\"radio\"  id=\"RadioButton"+r_b_cnt+ "\" value=\"RadioButton\" >RadioButton</input></div>" ).appendTo( this )
+		// 			.draggable({containment:"#trash",scroll:false})
+		// 			.resizable({
+		// 				maxHeight: 300,
+		// 				maxWidth: 400,
+		// 				minHeight: 30,
+		// 				minWidth: 50,
+		// 				containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+		// 			.children().addClass("RadioButton");
 			
-				r_b_cnt++;
-			}
-			else if(ui.draggable.text()==="LinearLayout"){
+		// 		r_b_cnt++;
+		// 	}
+		// 	else if(ui.draggable.text()==="LinearLayout"){
 
-					$( "<div id=\"LinearLayout"+l_l_cnt+ "\" ><ul class=\"layout_vertical\"></ul></div>" ).appendTo( this )
-					.addClass("LinearLayout")
-					.draggable({containment:"#trash",scroll:false})
-					.resizable({ 
-					  maxHeight: 600,
-				      maxWidth: 400,
-				      minHeight: 30,
-				      minWidth: 50,
-				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+		// 			$( "<div id=\"LinearLayout"+l_l_cnt+ "\" ><ul class=\"layout_vertical\"></ul></div>" ).appendTo( this )
+		// 			.addClass("LinearLayout")
+		// 			.draggable({containment:"#trash",scroll:false})
+		// 			.resizable({ 
+		// 			  maxHeight: 600,
+		// 		      maxWidth: 400,
+		// 		      minHeight: 30,
+		// 		      minWidth: 50,
+		// 		      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
 					 
-					 .droppable({
-			 		  accept: "div",
-				      activeClass: "custom-state-active",
-			  	      drop: function( event, ui ) {
-				  	      var ui_id=ui.draggable.attr('id');
-				  	      console.log("ui_id=" + ui_id);
-				  	      console.log("this is + " + $(this).attr('id'));
-				  	      ui.draggable.clone(true).appendTo(this)					
-				  	      .draggable({containment:this ,scroll:false});
+		// 			 .droppable({
+		// 	 		  accept: "div",
+		// 		      activeClass: "custom-state-active",
+		// 	  	      drop: function( event, ui ) {
+		// 		  	      var ui_id=ui.draggable.attr('id');
+		// 		  	      console.log("ui_id=" + ui_id);
+		// 		  	      console.log("this is + " + $(this).attr('id'));
+		// 		  	      ui.draggable.clone(true).appendTo(this)					
+		// 		  	      .draggable({containment:this ,scroll:false});
 
-				  	      ui.draggable.remove();
-			      	  }
-				 	  })
-					 .children().find("ul").sortable().disableSelection();	
+		// 		  	      ui.draggable.remove();
+		// 	      	  }
+		// 		 	  })
+		// 			 .children().find("ul").sortable().disableSelection();	
 				
-					l_l_cnt++;
-			}
-			else if(ui.draggable.text()==="FrameLayout"){
+		// 			l_l_cnt++;
+		// 	}
+		// 	else if(ui.draggable.text()==="FrameLayout"){
 
-					$( "<div id=\"FrameLayout"+f_l_cnt+ "\"  ><ul class=\"layout_frame\"></ul></div>" ).appendTo( this )
-					.draggable({containment:"#trash",scroll:false})
-					.resizable({ 
-					  maxHeight: 600,
-				      maxWidth: 400,
-				      minHeight: 30,
-				      minWidth: 50,
-				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-					 .droppable({
-			 		  accept: "div",
-				      activeClass: "custom-state-active",
-			  	      drop: function( event, ui ) {
-				  	      var ui_id=ui.draggable.attr('id');
-				  	      console.log("ui_id=" + ui_id);
-				  	      console.log("this is + " + $(this).attr('id'));
-				  	      ui.draggable.clone(true).appendTo(this);
-				  	      ui.draggable.remove();
-			      	  }
-				 	  });	
+		// 			$( "<div id=\"FrameLayout"+f_l_cnt+ "\"  ><ul class=\"layout_frame\"></ul></div>" ).appendTo( this )
+		// 			.draggable({containment:"#trash",scroll:false})
+		// 			.resizable({ 
+		// 			  maxHeight: 600,
+		// 		      maxWidth: 400,
+		// 		      minHeight: 30,
+		// 		      minWidth: 50,
+		// 		      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+		// 			 .droppable({
+		// 	 		  accept: "div",
+		// 		      activeClass: "custom-state-active",
+		// 	  	      drop: function( event, ui ) {
+		// 		  	      var ui_id=ui.draggable.attr('id');
+		// 		  	      console.log("ui_id=" + ui_id);
+		// 		  	      console.log("this is + " + $(this).attr('id'));
+		// 		  	      ui.draggable.clone(true).appendTo(this);
+		// 		  	      ui.draggable.remove();
+		// 	      	  }
+		// 		 	  });	
 				
-					f_l_cnt++;
-			}
-			else if(ui.draggable.text()==="RelativeLayout"){
+		// 			f_l_cnt++;
+		// 	}
+		// 	else if(ui.draggable.text()==="RelativeLayout"){
 
-					$( "<div id=\"RelativeLayout"+r_l_cnt+ "\" ><ul class=\"layout_relative\"></ul></div>" ).appendTo( this )
-					.draggable({containment:"#trash",scroll:false})
-					.resizable({ 
-					  maxHeight: 600,
-				      maxWidth: 400,
-				      minHeight: 30,
-				      minWidth: 50,
-				      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-					 .droppable({
-			 		  accept: "div",
-				      activeClass: "custom-state-active",
-			  	      drop: function( event, ui ) {
-				  	      var ui_id=ui.draggable.attr('id');
-				  	      console.log("ui_id=" + ui_id);
-				  	      console.log("this is + " + $(this).attr('id'));
-				  	      ui.draggable.clone(true).appendTo(this)
-				  	      .draggable({containment:"#trash",scroll:false})
-							.resizable({
-							maxHeight: 300,
-							maxWidth: 400,
-							minHeight: 30,
-							minWidth: 50,
-							containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
-				  	      ui.draggable.remove();
-			      	  }
-				 	  });	
+		// 			$( "<div id=\"RelativeLayout"+r_l_cnt+ "\" ><ul class=\"layout_relative\"></ul></div>" ).appendTo( this )
+		// 			.draggable({containment:"#trash",scroll:false})
+		// 			.resizable({ 
+		// 			  maxHeight: 600,
+		// 		      maxWidth: 400,
+		// 		      minHeight: 30,
+		// 		      minWidth: 50,
+		// 		      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
+		// 			 .droppable({
+		// 	 		  accept: "div",
+		// 		      activeClass: "custom-state-active",
+		// 	  	      drop: function( event, ui ) {
+		// 		  	      var ui_id=ui.draggable.attr('id');
+		// 		  	      console.log("ui_id=" + ui_id);
+		// 		  	      console.log("this is + " + $(this).attr('id'));
+		// 		  	      ui.draggable.clone(true).appendTo(this)
+		// 		  	      .draggable({containment:"#trash",scroll:false})
+		// 					.resizable({
+		// 					maxHeight: 300,
+		// 					maxWidth: 400,
+		// 					minHeight: 30,
+		// 					minWidth: 50,
+		// 					containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
+		// 		  	      ui.draggable.remove();
+		// 	      	  }
+		// 		 	  });	
 				
-					r_l_cnt++;
-			}
-		}
+		// 			r_l_cnt++;
+		// 	}
+		// }
 
 
     });

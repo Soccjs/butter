@@ -59,6 +59,8 @@
 	width:160px;
 	max-width: 360px;
 	max-height: 360px;
+	min-height: 30px;
+	min-width: 80px;
 	background-color:#FFFFFF;
 }
 
@@ -78,6 +80,10 @@
 	height:25px;
 	width:60px;
 	text-align: center;
+	max-width: 360px;
+	max-height: 360px;
+	min-height: 30px;
+	min-width: 80px;
 }
 
 .TextView {
@@ -86,8 +92,16 @@
 	color:#FFFFFF;
 	background-color:#000000;
 	text-align: center;
+	max-width: 360px;
+	max-height: 360px;
+	min-height: 30px;
+	min-width: 80px;
 }
 
 .inputType{
 	padding:5px;
+	max-width: 360px;
+	max-height: 360px;
+	min-height: 30px;
+	min-width: 80px;
 }

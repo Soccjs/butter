@@ -73,7 +73,7 @@ html, body {
   	height: 650px;
   	width: 370px;
 	margin-left:50%;
-	margin-top:6%;
+	margin-top:15%;
 	border: 5px solid #018dc4;
 	-webkit-border-radius: 5px;
  	border-radius: 15px;
@@ -139,8 +139,8 @@ html, body {
 }
 #input {
   background: #1f1f1f;
-  margin-top: 21%;
-  margin-left: +7%;
+  margin-top: 23%;
+  margin-left: +6%;
   width: 250px;
   height: 350px;
   position:absolute;
