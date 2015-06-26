@@ -57,6 +57,8 @@
 .EditText {
 	height:30px;
 	width:160px;
+	max-width: 360px;
+	max-height: 360px;
 	background-color:#FFFFFF;
 }
 

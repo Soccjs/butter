@@ -1064,38 +1064,6 @@ $(document).ready(function() {
     });
 
 
-    $("#input").draggable();
-
-     $("#delete").click(function() { //object delete
-		var id = $("#input").find("input[name="+"obj_id"+"]").val();
-		$('#' + id).remove();
-	});	
-
-    $("#complete").click(function() {
-    	console.log("[input click]");
-		var id = $("#input").find("input[name="+"obj_id"+"]").val();
-		
-		var background = $("#input").find("input[name=" + "background" + "]").val();
-		var width = $("#input").find("input[name="+"width"+"]").val();
-		var height = $("#input").find("input[name="+"height"+"]").val();
-		var text = $("#input").find("input[name="+"text"+"]").val();
-		var gravity = $("#input").find("input[name="+"text_align"+"]").val();
-		var textColor = $("#input").find("input[name="+"color"+"]").val();
-		var textSize = $("#input").find("input[name="+"font_size"+"]").val();
-		
-		$('#' + id).css("background",background);
-		$('#' + id).css("width",width);
-		$('#' + id).css("height",height);
-		$('#' + id).text(text);
-		$('#' + id).css("text-align",gravity);
-		$('#' + id).css("color",textColor);
-		$('#' + id).css("font-size",textSize);
-
-		console.log(text);
-
-		
-	});	
-
 
 
   //   $( ".TextView" )
@@ -1132,15 +1100,16 @@ $(document).ready(function() {
  		
 		console.log(event.type+ " " + $obj.attr('id') +"  " + $target.attr('id'));
 		
- 		
 		if(event.type==="click"){
 			if(typeof $obj.attr("id") !=="undefined"){
 				var _class = $obj.attr("class");
-				if(_class.search("TextView")||_class.search("Button")){
-					checkInput($obj);
+				checkInput($obj);
+			}
+			else{
+				var _class = $obj.children().attr("class");
+				if(_class.search("CheckBox")!==-1||_class.search("RadioButton")!==-1){
+					checkInput($obj.children());
 				}
-
-				
 			}
 			
 			$target.end();
@@ -1148,30 +1117,106 @@ $(document).ready(function() {
 
 		}
 		else if(event.type ==="mouseup"){
-			var id = $("#input").find("input[name="+"obj_id"+"]").val();
-			var id_class= $('#' + id).attr("class");
-			console.log("[editText] id and id_class");
-			console.log(id + " " + id_class);
-			if(id_class === "EditText"){
-				var $div_edit = $('#' + id).parent();
-				$('#'+id).css("width", $div_edit.css("width"));
-				$('#'+id).css("height", $div_edit.css("height"));
+			// var id = $("#input").find("input[name="+"obj_id"+"]").val();
+			// var id_class= $('#' + id).attr("class");
+			// console.log("[editText] id and id_class");
+			// console.log(id + " " + id_class);
+			// if(id_class === "EditText"){
+			// 	var $div_edit = $('#' + id).parent();
+			// 	$('#'+id).css("width", $div_edit.css("width"));
+			// 	$('#'+id).css("height", $div_edit.css("height"));
 
-			}
+			// }
 		}
-	
 	});
 	function checkInput($obj){
+		console.log("[checkInput]");
+		//console.log($obj.attr("class"));
 		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-		$input.find("input[name=" + "background" + "]").val($obj.css("background"));
-		$input.find("input[name=" + "text" + "]").val($obj.text());
-		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-		$input.find("input[name=" + "color" + "]").val($obj.css("text-align"));
-		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+
+		if($obj.attr("class").search("CheckBox")!==-1
+		 ||$obj.attr("class").search("RadioButton")!==-1	){
+			$input.find("input[name=" + "height" + "]").val(  $obj.parent().css("height"));
+			$input.find("input[name=" + "width" + "]").val( $obj.parent().css("width"));
+			$input.find("input[name=" + "background" + "]").val($obj.parent().css("background"));
+			$input.find("input[name=" + "text_align" + "]").val($obj.parent().css("text-align"));
+			$input.find("input[name=" + "color" + "]").val($obj.parent().css("color"));
+			$input.find("input[name=" + "font_size" + "]").val($obj.parent().css("font-size"));
+		}
+		else{
+			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+			$input.find("input[name=" + "background" + "]").val($obj.css("background"));	
+			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+			$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+	
+		}
 		
+		if($obj.attr("class").search("EditText")!==-1){
+			$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
+		}
+		else if($obj.attr("class").search("CheckBox")!==-1
+			  ||$obj.attr("class").search("RadioButton")!==-1){
+			$input.find("input[name=" + "text" + "]").val($obj.parent().text());
+		}
+		else{
+			$input.find("input[name=" + "text" + "]").val($obj.text());
+		}
+
+			
 	}
+
+
+    $("#input").draggable();
+
+     $("#delete").click(function() { //object delete
+		var id = $("#input").find("input[name="+"obj_id"+"]").val();
+		$('#' + id).remove();
+	});	
+
+    $("#complete").click(function() {
+    	console.log("[input click]");
+		var id = $("#input").find("input[name="+"obj_id"+"]").val();
+		
+		var background = $("#input").find("input[name=" + "background" + "]").val();
+		var width = $("#input").find("input[name="+"width"+"]").val();
+		var height = $("#input").find("input[name="+"height"+"]").val();
+		var text = $("#input").find("input[name="+"text"+"]").val();
+		var gravity = $("#input").find("input[name="+"text_align"+"]").val();
+		var textColor = $("#input").find("input[name="+"color"+"]").val();
+		var textSize = $("#input").find("input[name="+"font_size"+"]").val();
+		
+
+		if($('#' + id).attr("class").search("CheckBox")!==-1
+		 ||$('#' + id).attr("class").search("RadioButton")!==-1){
+			$('#' + id).parent().css("background",background);
+			$('#' + id).parent().css("width",width);
+			$('#' + id).parent().css("height",height);$('#' + id).css("line-height",height);
+			$('#' + id).parent().css("text-align",gravity);
+			$('#' + id).parent().css("color",textColor);
+			$('#' + id).parent().css("font-size",textSize);
+		}else{
+			$('#' + id).css("background",background);
+			$('#' + id).css("width",width);
+			$('#' + id).css("height",height);$('#' + id).css("line-height",height);
+			$('#' + id).css("text-align",gravity);
+			$('#' + id).css("color",textColor);
+			$('#' + id).css("font-size",textSize);
+		}	
+
+		if($('#' + id).attr("class").search("EditText")!==-1){
+			$('#' + id).attr("value",text);
+		}
+		else if($('#' + id).attr("class").search("CheckBox")!==-1
+		 	  ||$('#' + id).attr("class").search("RadioButton")!==-1){
+			console.log("이건 아직 안됨");
+		}
+		else{
+			$('#' + id).text(text);
+		}
+	});	
+
 	// $( "li", $layout ).draggable({
 	// 	helper: "clone",
 	// 	cursor: "move",
@@ -1199,6 +1244,7 @@ $(document).ready(function() {
 		goto_item_box(selected_item);
 	});	
 	function goto_item_box(selected){
+		console.log("[goto_item_box]");
 		switch(selected) {
 			case "TextView" :
 				$("<div id=\"textview\" class=\"TextView\">TextView</div>").appendTo("#item_box");
@@ -1307,7 +1353,7 @@ $(document).ready(function() {
 		.disableSelection();          
 	}
 	function getIdcnt(_id){
-		console.log("[getIdcnt]");
+		console.log("[getIdcnt] " + _id );
 		switch(_id){
 			case "textview" : return ++t_v_cnt;
 			case "button" : return ++btn_cnt;
