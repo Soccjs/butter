@@ -3,11 +3,42 @@
 <head>
   <meta charset="utf-8">
   <title>jQuery UI Sortable - Connect lists</title>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+     <link href="http://johnny.github.io/jquery-sortable/css/vendor.css" rel="stylesheet">
+    <link href="http://johnny.github.io/jquery-sortable/css/application.css" rel="stylesheet">
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
   <style>
-  #sortable1, #sortable2 {
+  body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ol.example li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol.example li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}
+  #sortable1 {
+    border: 1px solid #eee;
+    width: 400px;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    float: left;
+    margin-right: 10px;
+  }
+  #sortable2 {
     border: 1px solid #eee;
     width: 600px;
     min-height: 20px;
@@ -33,23 +64,15 @@
   </style>
   <script>
   $(function() {
-    $( "#sortable1, #sortable2" ).sortable({
-      connectWith: ".connectedSortable"
-
-    }).disableSelection();
-
-    $( "#sortable1").sortable({
-    	axis:"x"
-    });
-     $( "#sortable2").sortable({
-    	axis:"y"
-    });
+   $("#test").sortable();
+    $("#sortable1").sortable();
+     $("#sortable2").sortable();
   });
   </script>
 </head>
 <body>
- 
-<ul id="sortable1" class="connectedSortable">
+ <div id="test" class="default vertical" style="width:700px;height:700px;background:green;opacity:0.5">
+<ul id="sortable1" class="">
   <li class="ui-state-default">Item 1</li>
   <li class="ui-state-default">Item 2</li>
   <li class="ui-state-default">Item 3</li>
@@ -57,7 +80,7 @@
   <li class="ui-state-default">Item 5</li>
 </ul>
  
-<ul id="sortable2" class="connectedSortable">
+<ul id="sortable2" class="">
   <li class="ui-state-highlight">Item 1</li>
   <li class="ui-state-highlight">Item 2</li>
   <li class="ui-state-highlight">Item 3</li>
@@ -65,6 +88,14 @@
   <li class="ui-state-highlight">Item 5</li>
 </ul>
  
- 
+ </div>
+
+ <ol class='example'>
+  <li>First</li>
+  <li>Second</li>
+  <li>Third</li>
+</ol>
+<script src='js/jquery-sortable.js'></script>
+  
 </body>
 </html>

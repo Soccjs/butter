@@ -21,10 +21,10 @@ var pupup_time = 2000;
 var userIndexArray = [0,0,0,0];
 
 function getParameterByName(name) {
-		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-				results = regex.exec(location.search);
-		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	results = regex.exec(location.search);
+	return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 var add_flag = 0;
@@ -43,26 +43,26 @@ $(document).ready(function() {
 
 	
 //	loadjscssfile("parserXMLtoHTML.js", "js");
-	$(document).on({
-		ajaxStart : function(){
-			console.log("AJAX START");
-			$("#spinner_container").animate({opacity: '1'}, "slow");
-			$("#spinner_container").css("z-index", "9999999");
-		},
-		ajaxStop : function(){
-			console.log("AJAX STOP");
-			$("#spinner_container").animate({opacity: '0'}, "slow");
-			$("#spinner_container").css("z-index", "-9999");
-		}
-	});
-	
-	_GLOBAL.file=getParameterByName('path');
-		$.post('openFile', {path : _GLOBAL.file}, function(data) {
+$(document).on({
+	ajaxStart : function(){
+		console.log("AJAX START");
+		$("#spinner_container").animate({opacity: '1'}, "slow");
+		$("#spinner_container").css("z-index", "9999999");
+	},
+	ajaxStop : function(){
+		console.log("AJAX STOP");
+		$("#spinner_container").animate({opacity: '0'}, "slow");
+		$("#spinner_container").css("z-index", "-9999");
+	}
+});
+
+_GLOBAL.file=getParameterByName('path');
+$.post('openFile', {path : _GLOBAL.file}, function(data) {
 					make_editor(data, _GLOBAL.file, 1, 0);	//파일트리에서 열면: read-only
 
-		});
+				});
 
-			
+
 
 	//로그인 처음 되면 리빙룸에 있도록 in
 	socket.emit("in",{id: _GLOBAL.id});
@@ -129,8 +129,8 @@ $(document).ready(function() {
 					_GLOBAL.project=getParameterByName('proj');
 					prv_contents = cur_contents;
 					$.post('/file_save', {
-					 	id : _GLOBAL.id,
-					 	project : _GLOBAL.project,
+						id : _GLOBAL.id,
+						project : _GLOBAL.project,
 						fileName : file,
 						contents : editor.getValue()
 					}, function(data,status) {
@@ -140,15 +140,15 @@ $(document).ready(function() {
 							setTimeout(function() {
 								$("#mini_popup").fadeOut("slow");
 							}, pupup_time);
-						$("#right_log_inner").append(data);
+							$("#right_log_inner").append(data);
 						}); 
 					});
 				}
 			},
 			readOnly : false
 		});
-		
-		
+
+
 		// Change Values when choosing other file
 		prv_contents = data;
 		editor.setValue(prv_contents, 1);
@@ -183,22 +183,22 @@ $(document).ready(function() {
 			}
 		}
 		// ace 에디터에 자동완성을 위한 이벤트핸들러 등록 
-        $(".ace_text-input").keydown(hdlr_showBox);
+		$(".ace_text-input").keydown(hdlr_showBox);
 
-        console.log("hi");
-			directParser();
+		console.log("hi");
+		directParser();
 				//$( ".TextView", $trash ).draggable();
 
-			console.log("bye");
-	}
+				console.log("bye");
+			}
 
 	// Using jQuery File Tree - fileTree({root : root dir, script : serverside file}, callback func when chosing file})
 	function make_fileTree(folder_path){
 
 		$.post('openFile', {path : file}, function(data) {
-					make_editor(data, file, 1, 1);
+			make_editor(data, file, 1, 1);
 					//파일트리에서 열면: read-only
-		});
+				});
 		
 	}
 
@@ -212,7 +212,7 @@ $(document).ready(function() {
 			file_cnt--;
 			/*
 			prv_contents = "";
-						editor.setValue(prv_contents, 0);*/
+			editor.setValue(prv_contents, 0);*/
 			editor.container.remove();
 		}
 	});
@@ -260,22 +260,22 @@ $(document).ready(function() {
 
 
 	});
-	
 
-	$("#right_topbar_sortable").sortable({
-		axis : "x"
-	});
-	$("#right_topbar_sortable").disableSelection();
-	$("#li_dummy").remove();
 
-	
+$("#right_topbar_sortable").sortable({
+	axis : "x"
+});
+$("#right_topbar_sortable").disableSelection();
+$("#li_dummy").remove();
 
-	$("#dialog_select_project_proj").scroll();
 
-	$("#dialog_select_project_proj").on("click", "a", function(){
-		var proj_name = $(this).text();
 
-		$("#dialog_selected_project").val(proj_name);
+$("#dialog_select_project_proj").scroll();
+
+$("#dialog_select_project_proj").on("click", "a", function(){
+	var proj_name = $(this).text();
+
+	$("#dialog_selected_project").val(proj_name);
 
 		// 서버에서 프로젝트 정보 받기
 		$.get("/project_info?project=" + proj_name, function(data, status){
@@ -296,74 +296,19 @@ $(document).ready(function() {
 		});
 	});
 
-	// 프로젝트 불러오기
-	$("#dialog_select_project_select").click(function() {
-		var target = $("#dialog_selected_project").val();
 
-		_GLOBAL.project = target;
 
-		if (target) {
-			fileTreePath = _GLOBAL.project + "/_" + _GLOBAL.id + "/";
-			console.log(fileTreePath);
-
-			$.get('/updatetarget?path=' +fileTreePath);
-			$.get('/makeGitTree?path=' +_GLOBAL.project+ "&id=" +_GLOBAL.id, function(data, status){
-				console.log("/makeGitTree complete");
-				$("#git_tree_container").empty();
-				$("#git_tree_container").append(data);
-			});
-
-			$("#right_topbar_sortable").children().remove();
-			if(editor != null)
-				editor.container.remove();
-
-			make_fileTree(fileTreePath);
-			
-			$("#left_project_name").css("visibility", "visible");
-			$("#left_project_name").text(_GLOBAL.project);
-
-		    //*************************//
-		    // Switch the room 
-		    //*************************//
-		    $("#user_0").css("visibility", "hidden");
-			$("#user_1").css("visibility", "hidden");
-			$("#user_2").css("visibility", "hidden");
-			$("#user_3").css("visibility", "hidden");
-			//userIndexArray[] = 0; 
-
-			socket.emit("switch", {project:_GLOBAL.project, id:_GLOBAL.id});
-			//내꺼에다가, 이미 참여중이였던 사용자꺼를 그려준다.
-			//socket.emit("roon_in_init_draw", {project: _GLOBAL.project, id: _GLOBAL.id});
-
-			$("#dialog_select_project").dialog("close");
-			$("#mini_popup_img").attr("src", "img/check.png");
-			$("#mini_popup_text").text("Loading Project Complete");
-			$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-			}, pupup_time);});
-		} else {
-			$("#mini_popup_img").attr("src", "img/not_check.png");
-				$("#mini_popup_text").text("Please Select a Project to open");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-				});
-		}
-	});
-	
-	socket.on("room_in_msg", function(data) {
-		alert(data.project + " 에 " + data.id + " 님 참여!");	
-	});	
+socket.on("room_in_msg", function(data) {
+	alert(data.project + " 에 " + data.id + " 님 참여!");	
+});	
 
 	// data : {project: _GLOBAL.project, id: _GLOBAL.id}
 	// data.works = CurrentProjectsArray[i].workArray;
 	socket.on("room_in_init_draw", function(data) {
 		//alert("오나?!?!");
 		//***************************alert(data.works);//****얘 여러번옴. 추후 수정 요. ()
-	var position = 0;
-	var tempArray = [];
+		var position = 0;
+		var tempArray = [];
 		for(var p in data.works) {
 			tempArray.push(data.works[p].name);
 		} // 이름만 다 넣어줌
@@ -411,12 +356,12 @@ $(document).ready(function() {
 				//******************************************
 				// 	}				
 				// });
-			
-			}
 
-		}
+}
 
-	});
+}
+
+});
 
 
 	// Context Menu
@@ -482,7 +427,7 @@ $(document).ready(function() {
 				beforeClose : function() {
 				}
 			});
-		
+
 			socket.emit("invitelist_request", _GLOBAL.id);	
 			
 		}else if(menu == "Logout"){
@@ -500,89 +445,9 @@ $(document).ready(function() {
 		$("#personal_info_menu").css("visibility", "hidden");
 	});
 
-	
-	
-	// preject_invite.html
 
-	$("#btn_pinvite").click(function() {
 
-		var user_id = $("#form_id").val();
 
-		var inv_id = $("#form_inv_id").val();
-		var inv_project = $("#form_inv_project").val();
-		var inv_msg = $("#form_inv_msg").val();
-
-		if (user_id != "" && inv_id != "" && inv_project != "" && inv_msg != "") {
-			$.post("/project_invite", {
-				id : user_id,
-				inv_id : inv_id,
-				inv_project : inv_project,
-				inv_msg : inv_msg
-			}, function(data) {
-
-				if (data == "project_invite_successed") {
-					$("#mini_popup_img").attr("src", "img/check.png");
-						$("#mini_popup_text").text("Invite User to Project Success");
-						$("#mini_popup").fadeIn("slow", function() {
-							setTimeout(function() {
-								$("#mini_popup").fadeOut("slow");
-							}, pupup_time);
-					});
-				} else {
-					// case1. 존재하지 않는 상대방입니다.
-					// case2. 존재하지 않는 프로젝트입니다.
-					// case3. 상대방이 이미 프로젝트에 참여중입니다.
-					$("#mini_popup_img").attr("src", "img/not_check.png");
-						$("#mini_popup_text").text("Invite User to Project Failed");
-						$("#mini_popup").fadeIn("slow", function() {
-							setTimeout(function() {
-								$("#mini_popup").fadeOut("slow");
-							}, pupup_time);
-					});
-				}
-			});
-			
-			$("#dialog_invite").dialog("close");
-			
-			$("#form_inv_id").val("");
-			$("#form_inv_msg").val("");
-			
-		} else {
-			$("#mini_popup_img").attr("src", "img/not_check.png");
-				$("#mini_popup_text").text("Please Fill Out the Form");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-			});
-		}
-	});
-
-	//////////////////////
-	// BTN ACCEPT
-	/////////////////////
-	$("#btn_accept").click(function() {
-
-		var content = $(".invitem.selected").html();
-		var project_name = content.substr(content.search(':') + 1).trim().split('<br>')[0];
-		
-		console.log("[invitelist_accept request] : ", _GLOBAL.id, project_name);		
-		socket.emit("invitelist_accept", {id:_GLOBAL.id, project:project_name});
-	});
-
-	//////////////////////
-	// BTN DECLINE
-	/////////////////////
-	$("#btn_decline").click(function() {
-
-	console.log("btn_decline");
-		var content = $(".invitem.selected").html();
-		var project_name = content.substr(content.search(':') + 1).trim().split('<br>')[0];
-		
-		console.log("[invitelist_decline request] : ", _GLOBAL.id, project_name);		
-		socket.emit("invitelist_decline", {id:_GLOBAL.id, project:project_name});
-	});
-	
 	// git Tree client script...2015.2.24 cwlsn88
 	
 
@@ -609,7 +474,7 @@ $(document).ready(function() {
 	////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////socket = io();
-	console.log("connect to socket.io");
+console.log("connect to socket.io");
 
 	////////////////////////////////////
 	// SEND
@@ -636,17 +501,17 @@ $(document).ready(function() {
 			socket.emit("push", {id: _GLOBAL.id, project: _GLOBAL.project});
 		}else if(git_case == "pull"){
 			socket.emit("pull", {id: _GLOBAL.id, project: _GLOBAL.project});
-			}
-		}); 
+		}
+	}); 
 
 
 			//*************************//
 		    // room test
 		    //*************************//
 		    //SEND
-			$("#btm_menu_subtract").click(function(){
-				socket.emit("push_msg", {id: _GLOBAL.id, project: _GLOBAL.project});
-			});
+		    $("#btm_menu_subtract").click(function(){
+		    	socket.emit("push_msg", {id: _GLOBAL.id, project: _GLOBAL.project});
+		    });
 			//RECEIVE
 			socket.on("get_msg", function(data) {
 				alert(data.project + "에 변경사항!" + "\n" + data.id + "님이 push하셨습니다.");
@@ -656,7 +521,7 @@ $(document).ready(function() {
 					$("#git_tree_container").append(data);
 				});
 			}); 
-	
+
 
 	////////////////////////////////////
 	// RECEIVE
@@ -664,18 +529,18 @@ $(document).ready(function() {
 	
 	
 	
-		socket.on("pull_response", function(data) {
+	socket.on("pull_response", function(data) {
 
-			console.log(data);
-			if (data === null)
-			{
-				$("#mini_popup_img").attr("src", "img/not_check.png");
-				$("#mini_popup_text").text("Please Load the Project First");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-				});
+		console.log(data);
+		if (data === null)
+		{
+			$("#mini_popup_img").attr("src", "img/not_check.png");
+			$("#mini_popup_text").text("Please Load the Project First");
+			$("#mini_popup").fadeIn("slow", function() {
+				setTimeout(function() {
+					$("#mini_popup").fadeOut("slow");
+				}, pupup_time);
+			});
 				//$("#git_pull").html("pull");
 				return;
 			}
@@ -714,31 +579,31 @@ $(document).ready(function() {
 				console.log("pull fail.", data.reason);
 		});
 
-		socket.on("commit_response", function(data) {
+socket.on("commit_response", function(data) {
 
-			console.log(data);
-			if (data === null)
-			{
-				$("#mini_popup_img").attr("src", "img/not_check.png");
-				$("#mini_popup_text").text("Please Load the Project First");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-				});
-				return;
-			}
+	console.log(data);
+	if (data === null)
+	{
+		$("#mini_popup_img").attr("src", "img/not_check.png");
+		$("#mini_popup_text").text("Please Load the Project First");
+		$("#mini_popup").fadeIn("slow", function() {
+			setTimeout(function() {
+				$("#mini_popup").fadeOut("slow");
+			}, pupup_time);
+		});
+		return;
+	}
 
-			if (data.result === "successful")
-			{
-				console.log("commit successful.", data.reason);
-				$("#mini_popup_img").attr("src", "img/check.png");
-				$("#mini_popup_text").text("Commit Project Success");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-				});
+	if (data.result === "successful")
+	{
+		console.log("commit successful.", data.reason);
+		$("#mini_popup_img").attr("src", "img/check.png");
+		$("#mini_popup_text").text("Commit Project Success");
+		$("#mini_popup").fadeIn("slow", function() {
+			setTimeout(function() {
+				$("#mini_popup").fadeOut("slow");
+			}, pupup_time);
+		});
 				//gitTree draw
 				$.get('/makeGitTree?path=' +_GLOBAL.project+ "&id=" +_GLOBAL.id, function(data, status){
 					console.log("/makeGitTree complete");
@@ -763,35 +628,35 @@ $(document).ready(function() {
 
 		});
 
-		socket.on("push_response", function(data) {
+socket.on("push_response", function(data) {
 
-			console.log(data);
-			if (data === null)
-			{
-				$("#mini_popup_img").attr("src", "img/not_check.png");
-				$("#mini_popup_text").text("Please Load the Project First");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-				});
-				return;
-			}
+	console.log(data);
+	if (data === null)
+	{
+		$("#mini_popup_img").attr("src", "img/not_check.png");
+		$("#mini_popup_text").text("Please Load the Project First");
+		$("#mini_popup").fadeIn("slow", function() {
+			setTimeout(function() {
+				$("#mini_popup").fadeOut("slow");
+			}, pupup_time);
+		});
+		return;
+	}
 
-			if (data.result === "successful")
-			{
-				console.log("push successful.", data.reason);
-				$("#mini_popup_img").attr("src", "img/check.png");
-				$("#mini_popup_text").text("Push Project Success");
-				$("#mini_popup").fadeIn("slow", function() {
-					setTimeout(function() {
-						$("#mini_popup").fadeOut("slow");
-					}, pupup_time);
-				});
+	if (data.result === "successful")
+	{
+		console.log("push successful.", data.reason);
+		$("#mini_popup_img").attr("src", "img/check.png");
+		$("#mini_popup_text").text("Push Project Success");
+		$("#mini_popup").fadeIn("slow", function() {
+			setTimeout(function() {
+				$("#mini_popup").fadeOut("slow");
+			}, pupup_time);
+		});
 
-				alert(data.project + "에 변경사항!" + "\n" + data.id + "님이 push하셨습니다.");
-				
-				socket.emit("pushids",{project: data.project, id: data.id});
+		alert(data.project + "에 변경사항!" + "\n" + data.id + "님이 push하셨습니다.");
+
+		socket.emit("pushids",{project: data.project, id: data.id});
 
 				//gitTree draw
 				$.get('/makeGitTree?path=' +_GLOBAL.project+ "&id=" +_GLOBAL.id, function(data, status){
@@ -806,7 +671,7 @@ $(document).ready(function() {
 			//$("#git_push").html("push");
 
 		});
-		
+
 	///////////////////////////////////
 	//	INVITE LIST RESPONSE
 	///////////////////////////////////
@@ -832,45 +697,11 @@ $(document).ready(function() {
 					$(".invitem").removeClass("selected");
 					$(this).addClass("selected");
 				});	
-	
+
 			}
 		}
 	});
-		
-	///////////////////////////////////
-	//	INVITE ACCEPT RESPONSE
-	///////////////////////////////////
-	socket.on("invitelist_accept_response", function(project_name) {
-		
-		console.log("[invitelist_accept_response] : ", project_name);
-		
-		if (project_name == null)
-		{
-			console.log("accept request failed.");				
-		}
-		else
-		{
-			$("#invitation_list").children(".selected").remove();
-		}
-	});
-		
-		
-	///////////////////////////////////
-	//	INVITE DECLINE RESPONSE
-	///////////////////////////////////
-	socket.on("invitelist_decline_response", function(project_name) {
-		
-		console.log("[invitelist_decline_response] : ", project_name);
-		
-		if (project_name == null)
-		{
-			console.log("decline request failed.");				
-		}
-		else
-		{
-			$("#invitation_list").children(".selected").remove();
-		}
-	});
+
 	
     ////////////////////////////////////////////
     //  AUTO COMPLETE
@@ -883,33 +714,33 @@ $(document).ready(function() {
     function hdlr_showBox(e)
     {
     	if (e.ctrlKey)
-        {
-            if (e.which == 13)
-            {
-            	ac.cursor = editor.selection.getCursor()
-		        
+    	{
+    		if (e.which == 13)
+    		{
+    			ac.cursor = editor.selection.getCursor()
+
 		        // 서버에 메소드 리스트 요청하기
 
-				var code = editor.getValue().trim();
-				var current_line = editor.session.getLine(editor.selection.getCursor().row).substr(0, editor.selection.getCursor().column).trim();
+		        var code = editor.getValue().trim();
+		        var current_line = editor.session.getLine(editor.selection.getCursor().row).substr(0, editor.selection.getCursor().column).trim();
 
-				console.log("[current line] :", current_line);
-				
+		        console.log("[current line] :", current_line);
+
 				// 클래스인지 메소드인지 판단하기
 				var arr = [];
 				arr.push(current_line.lastIndexOf(';'));
 				arr.push(current_line.lastIndexOf('{'));
 				arr.push(current_line.lastIndexOf('}'));
 				arr.push(current_line.lastIndexOf('('));
-				arr.push(current_line.lastIndexOf('\n'));
-				arr.push(current_line.lastIndexOf(' '));
-				
-				console.log("[array] : ", arr);
+					arr.push(current_line.lastIndexOf('\n'));
+					arr.push(current_line.lastIndexOf(' '));
+
+					console.log("[array] : ", arr);
 					
-				var target = current_line.substr(Math.max.apply(null, arr) + 1);
-				
-				console.log("[target] : ", target);
-				
+					var target = current_line.substr(Math.max.apply(null, arr) + 1);
+
+					console.log("[target] : ", target);
+
 				////////////////////////////////////
 				//	자동완성 알고리즘
 				////////////////////////////////////
@@ -931,11 +762,11 @@ $(document).ready(function() {
 							for (var i=0; i<ac.DATA.length; i++)
 							{
 								var arr = ac.DATA[i].label.split('.');
-							    var className = arr[arr.length - 1];
-							    
-							    if (className.search(target) == 0)
-							    	ac.list.push( { name: className, arr: ["", ""] } );
-					    	}
+								var className = arr[arr.length - 1];
+
+								if (className.search(target) == 0)
+									ac.list.push( { name: className, arr: ["", ""] } );
+							}
 						}
 						// 소문자로 시작 - 문서 내 조회
 						else if (target[0] <= 'z' && target[0] >= 'a')
@@ -950,118 +781,118 @@ $(document).ready(function() {
 						
 						// 창 띄워주기
 						$("#methods_list").empty();
-				    	for (var i=0; i<ac.list.length; i++)
+						for (var i=0; i<ac.list.length; i++)
 						{
 							$("#methods_list").append($("<li>").val(i).html(ac.list[i].arr[0] + ' ' + ac.list[i].name + ' ' + ac.list[i].arr[1]));
 						}	
-				    	$('#autocomplete_listbox').css("display", "block");
+						$('#autocomplete_listbox').css("display", "block");
 						
 						break;
-					
+
 					// target이 '.' 포함하면 메소드 ; api 사용				
 					case 2:
-						ac.requestMethods(ac.getClass(code, current_line));
-						break;
+					ac.requestMethods(ac.getClass(code, current_line));
+					break;
 					
 				}
 				
-	        }
-        }
-        else if ($('#autocomplete_listbox').css('display') != "none")
-        {
-        	li = $('#autocomplete_listbox li');
-            
-            console.log(li);
-            
-            switch(e.which)
-            {
-            case 40:
-                if(liSelected)
-                {
-                    liSelected.removeClass('selected');
-                    next = liSelected.next();
-                    if(next.length > 0)
-                        liSelected = next.addClass('selected');
-                    else
-                        liSelected = li.eq(0).addClass('selected');
-                }
-                else
-                {
-                    liSelected = li.eq(0).addClass('selected');
-                }
-                break;
+			}
+		}
+		else if ($('#autocomplete_listbox').css('display') != "none")
+		{
+			li = $('#autocomplete_listbox li');
 
-            case 38:
-                if(liSelected)
-                {
-                    liSelected.removeClass('selected');
-                    next = liSelected.prev();
-                    if (next.length > 0)
-                        liSelected = next.addClass('selected');
-                    else
-                        liSelected = li.last().addClass('selected');
-                }
-                else
-                {
-                    liSelected = li.last().addClass('selected');
-                }
-                break;
+			console.log(li);
 
-            case 13:
-                if(liSelected)
-                {
-                    $('#autocomplete_listbox').css("display", "none");
-                    console.log("selected NO: ", liSelected.val())
+			switch(e.which)
+			{
+				case 40:
+				if(liSelected)
+				{
+					liSelected.removeClass('selected');
+					next = liSelected.next();
+					if(next.length > 0)
+						liSelected = next.addClass('selected');
+					else
+						liSelected = li.eq(0).addClass('selected');
+				}
+				else
+				{
+					liSelected = li.eq(0).addClass('selected');
+				}
+				break;
 
-                    var targetMethod = ac.list[liSelected.val()];
+				case 38:
+				if(liSelected)
+				{
+					liSelected.removeClass('selected');
+					next = liSelected.prev();
+					if (next.length > 0)
+						liSelected = next.addClass('selected');
+					else
+						liSelected = li.last().addClass('selected');
+				}
+				else
+				{
+					liSelected = li.last().addClass('selected');
+				}
+				break;
 
-                    if (ac.nameStarts != null)
-                    	targetMethod.name = targetMethod.name.split(ac.nameStarts)[1];
-                    editor.moveCursorTo(ac.cursor.row, ac.cursor.column);
-                    editor.insert(targetMethod.name + targetMethod.arr[1]); 
-                    console.log("hideBox", "display:none");
-                }
-                break;
-            } 
-        }
-    }
+				case 13:
+				if(liSelected)
+				{
+					$('#autocomplete_listbox').css("display", "none");
+					console.log("selected NO: ", liSelected.val())
+
+					var targetMethod = ac.list[liSelected.val()];
+
+					if (ac.nameStarts != null)
+						targetMethod.name = targetMethod.name.split(ac.nameStarts)[1];
+					editor.moveCursorTo(ac.cursor.row, ac.cursor.column);
+					editor.insert(targetMethod.name + targetMethod.arr[1]); 
+					console.log("hideBox", "display:none");
+				}
+				break;
+			} 
+		}
+	}
 
 	///////////////////
 	// AUTO COMPLETE
 	///////////////////
-    
-    socket.on("autocomplete_response", function(list) {
 
-    	ac.list = [];
-    	$("#methods_list").empty();
+	socket.on("autocomplete_response", function(list) {
 
-    	if (ac.nameStarts == null)
-    	{
-    		console.log("ac.nameStarts null,")
-    		ac.list = list;
-    	}
-    	else
-    	{
-    		console.log("ac.nameStarts NOT null,")
+		ac.list = [];
+		$("#methods_list").empty();
 
-	        for (var i=0; i<list.length; i++)
-	        {
-	        	if (list[i].name.search(ac.nameStarts) == 0)
-	        	{
-	        		console.log(list[i].name);
-	        		ac.list.push(list[i]);
-	        	}
-	        }
-    	}
+		if (ac.nameStarts == null)
+		{
+			console.log("ac.nameStarts null,")
+			ac.list = list;
+		}
+		else
+		{
+			console.log("ac.nameStarts NOT null,")
 
-    	for (var i=0; i<ac.list.length; i++)
+			for (var i=0; i<list.length; i++)
+			{
+				if (list[i].name.search(ac.nameStarts) == 0)
+				{
+					console.log(list[i].name);
+					ac.list.push(list[i]);
+				}
+			}
+		}
+
+		for (var i=0; i<ac.list.length; i++)
 		{
 			$("#methods_list").append($("<li>").val(i).html(ac.list[i].arr[0] + ' ' + ac.list[i].name + ' ' + ac.list[i].arr[1]));
 		}
 
-    	$('#autocomplete_listbox').css("display", "block");
+		$('#autocomplete_listbox').css("display", "block");
 
-    });
+	});
 
 
 
@@ -1081,23 +912,37 @@ $(document).ready(function() {
 		// 	containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
 
 	// $( "ul, div" ).disableSelection();
-   
-    var $current = $("#current");
+
+	var $current = $("#current");
 	var $widget = $( "#widget" ),
-  	  	 $layout = $( "#layout"),
-  	     $trash = $( "#trash"),
- 		$input = $( "#input");
+	$layout = $( "#layout"),
+	$trash = $( "#trash"),
+	$input = $( "#input");
 
-    var click_cnt = true;
+	var click_cnt = true;
 
-    $(trash).sortable({
-			revert: true
+	$("#item_box").sortable({
+		connectWith:".LinearLayout",
+		revert: true
 	}).disableSelection();
+	$(trash).sortable({
+    	//	containment:"parent",
+    	revert: true
+    }).disableSelection();
 
-    $(trash).on('click mousedown mouseup', function(){
+	$(trash).on('click mousedown mouseup', function(){
 		var $target = $( this ),
-        $obj = $( event.target );
- 		
+		$obj = $( event.target );
+
+		//////////////////////////////////////////////////////box_item 으로 넣기 
+		var $li_target = $(event.target);
+		var selected_item = $li_target.text();
+		console.log("[select] " + selected_item  + " click");
+
+		$("#item_box").children().remove();
+
+		goto_item_box(selected_item);
+		//////////////////////////////////////////////////////
 		console.log(event.type+ " " + $obj.attr('id') +"  " + $target.attr('id'));
 		
 		if(event.type==="click"){
@@ -1129,93 +974,93 @@ $(document).ready(function() {
 			// }
 		}
 	});
-	function checkInput($obj){
-		console.log("[checkInput]");
+function checkInput($obj){
+	console.log("[checkInput]");
 		//console.log($obj.attr("class"));
 		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
 
 		if($obj.attr("class").search("CheckBox")!==-1
-		 ||$obj.attr("class").search("RadioButton")!==-1	){
+			||$obj.attr("class").search("RadioButton")!==-1	){
 			$input.find("input[name=" + "height" + "]").val(  $obj.parent().css("height"));
-			$input.find("input[name=" + "width" + "]").val( $obj.parent().css("width"));
-			$input.find("input[name=" + "background" + "]").val($obj.parent().css("background"));
-			$input.find("input[name=" + "text_align" + "]").val($obj.parent().css("text-align"));
-			$input.find("input[name=" + "color" + "]").val($obj.parent().css("color"));
-			$input.find("input[name=" + "font_size" + "]").val($obj.parent().css("font-size"));
-		}
-		else{
-			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-			$input.find("input[name=" + "background" + "]").val($obj.css("background"));	
-			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-			$input.find("input[name=" + "color" + "]").val($obj.css("color"));
-			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
-	
-		}
-		
-		if($obj.attr("class").search("EditText")!==-1){
-			$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
-		}
-		else if($obj.attr("class").search("CheckBox")!==-1
-			  ||$obj.attr("class").search("RadioButton")!==-1){
-			$input.find("input[name=" + "text" + "]").val($obj.parent().text());
-		}
-		else{
-			$input.find("input[name=" + "text" + "]").val($obj.text());
-		}
+		$input.find("input[name=" + "width" + "]").val( $obj.parent().css("width"));
+		$input.find("input[name=" + "background" + "]").val($obj.parent().css("background"));
+		$input.find("input[name=" + "text_align" + "]").val($obj.parent().css("text-align"));
+		$input.find("input[name=" + "color" + "]").val($obj.parent().css("color"));
+		$input.find("input[name=" + "font_size" + "]").val($obj.parent().css("font-size"));
+	}
+	else{
+		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "background" + "]").val($obj.css("background"));	
+		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
 
-			
 	}
 
+	if($obj.attr("class").search("EditText")!==-1){
+		$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
+	}
+	else if($obj.attr("class").search("CheckBox")!==-1
+		||$obj.attr("class").search("RadioButton")!==-1){
+		$input.find("input[name=" + "text" + "]").val($obj.parent().text());
+}
+else{
+	$input.find("input[name=" + "text" + "]").val($obj.text());
+}
 
-    $("#input").draggable();
+
+}
+
+
+$("#input").draggable();
 
      $("#delete").click(function() { //object delete
-		var id = $("#input").find("input[name="+"obj_id"+"]").val();
-		$('#' + id).remove();
-	});	
+     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+     	$('#' + id).remove();
+     });	
 
-    $("#complete").click(function() {
-    	console.log("[input click]");
-		var id = $("#input").find("input[name="+"obj_id"+"]").val();
-		
-		var background = $("#input").find("input[name=" + "background" + "]").val();
-		var width = $("#input").find("input[name="+"width"+"]").val();
-		var height = $("#input").find("input[name="+"height"+"]").val();
-		var text = $("#input").find("input[name="+"text"+"]").val();
-		var gravity = $("#input").find("input[name="+"text_align"+"]").val();
-		var textColor = $("#input").find("input[name="+"color"+"]").val();
-		var textSize = $("#input").find("input[name="+"font_size"+"]").val();
-		
+     $("#complete").click(function() {
+     	console.log("[input click]");
+     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
 
-		if($('#' + id).attr("class").search("CheckBox")!==-1
-		 ||$('#' + id).attr("class").search("RadioButton")!==-1){
-			$('#' + id).parent().css("background",background);
-			$('#' + id).parent().css("width",width);
-			$('#' + id).parent().css("height",height);$('#' + id).css("line-height",height);
-			$('#' + id).parent().css("text-align",gravity);
-			$('#' + id).parent().css("color",textColor);
-			$('#' + id).parent().css("font-size",textSize);
-		}else{
-			$('#' + id).css("background",background);
-			$('#' + id).css("width",width);
-			$('#' + id).css("height",height);$('#' + id).css("line-height",height);
-			$('#' + id).css("text-align",gravity);
-			$('#' + id).css("color",textColor);
-			$('#' + id).css("font-size",textSize);
-		}	
+     	var background = $("#input").find("input[name=" + "background" + "]").val();
+     	var width = $("#input").find("input[name="+"width"+"]").val();
+     	var height = $("#input").find("input[name="+"height"+"]").val();
+     	var text = $("#input").find("input[name="+"text"+"]").val();
+     	var gravity = $("#input").find("input[name="+"text_align"+"]").val();
+     	var textColor = $("#input").find("input[name="+"color"+"]").val();
+     	var textSize = $("#input").find("input[name="+"font_size"+"]").val();
 
-		if($('#' + id).attr("class").search("EditText")!==-1){
-			$('#' + id).attr("value",text);
-		}
-		else if($('#' + id).attr("class").search("CheckBox")!==-1
-		 	  ||$('#' + id).attr("class").search("RadioButton")!==-1){
-			console.log("이건 아직 안됨");
-		}
-		else{
-			$('#' + id).text(text);
-		}
-	});	
+
+     	if($('#' + id).attr("class").search("CheckBox")!==-1
+     		||$('#' + id).attr("class").search("RadioButton")!==-1){
+     		$('#' + id).parent().css("background",background);
+     	$('#' + id).parent().css("width",width);
+     	$('#' + id).parent().css("height",height);$('#' + id).css("line-height",height);
+     	$('#' + id).parent().css("text-align",gravity);
+     	$('#' + id).parent().css("color",textColor);
+     	$('#' + id).parent().css("font-size",textSize);
+     }else{
+     	$('#' + id).css("background",background);
+     	$('#' + id).css("width",width);
+     	$('#' + id).css("height",height);$('#' + id).css("line-height",height);
+     	$('#' + id).css("text-align",gravity);
+     	$('#' + id).css("color",textColor);
+     	$('#' + id).css("font-size",textSize);
+     }	
+
+     if($('#' + id).attr("class").search("EditText")!==-1){
+     	$('#' + id).attr("value",text);
+     }
+     else if($('#' + id).attr("class").search("CheckBox")!==-1
+     	||$('#' + id).attr("class").search("RadioButton")!==-1){
+     	console.log("이건 아직 안됨");
+ }
+ else{
+ 	$('#' + id).text(text);
+ }
+});	
 
 	// $( "li", $layout ).draggable({
 	// 	helper: "clone",
@@ -1224,97 +1069,100 @@ $(document).ready(function() {
 	// });
 
 
-	$( "li", $widget ).click(function( event){
-		var $li_target = $(event.target);
-		var selected_item = $li_target.text();
-		console.log("[select] " + selected_item  + " click");
+$( "li", $widget ).click(function( event){
+	var $li_target = $(event.target);
+	var selected_item = $li_target.text();
+	console.log("[select] " + selected_item  + " click");
 
-		$("#item_box").children().remove();
+	$("#item_box").children().remove();
 
-		goto_item_box(selected_item);
-	});
+	goto_item_box(selected_item);
+});
 
-	$( "li", $layout ).click(function(event){
-		var $li_target = $(event.target);
-		var selected_item = $li_target.text();
-		console.log("[select] " + selected_item  + " click");
+$( "li", $layout ).click(function(event){
+	var $li_target = $(event.target);
+	var selected_item = $li_target.text();
+	console.log("[select] " + selected_item  + " click");
 
-		$("#item_box").children().remove();
+	$("#item_box").children().remove();
 
-		goto_item_box(selected_item);
-	});	
-	function goto_item_box(selected){
-		console.log("[goto_item_box]");
-		switch(selected) {
-			case "TextView" :
-				$("<div id=\"textview\" class=\"TextView\">TextView</div>").appendTo("#item_box");
-				break;
-			case "Button" :
-				$("<div id=\"button\" class=\"Button\">Button</div>").appendTo("#item_box");
-				break;
-			case "EditText" :
-				$("<div class=\"inputType\" ><input type=\"text\" class=\"EditText\" id=\"edittext\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
-				break;
-			case "CheckBox" :
-				$("<div class=\"inputType\" ><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
-				break;
-			case "RadioButton" :
-				$("<div class=\"inputType\" ><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
-				break;
-			case "LinearLayout" :
-				$("<div class=\"LinearLayout\" id=\"linearlayout\" ><ul class=\"layout_vertical\"></ul></div>").appendTo("#item_box");
-				break;
-			case "RelativeLayout" :
-				$("<div class=\"RelativeLayout\" id=\"relativelayout\"><ul class=\"layout_relative\"></ul></div>").appendTo("#item_box");
-				break;
-			case "FrameLayout" :
-				$("<div class=\"FrameLayout\" id=\"framelayout\" ><ul class=\"layout_frame\"></ul></div>").appendTo("#item_box");
-				break;				
-			default:
-				break;
-		}
+	goto_item_box(selected_item);
+});	
+function goto_item_box(selected){
+	console.log("[goto_item_box]");
+	switch(selected) {
+		case "TextView" :
+		$("<div id=\"textview\" class=\"TextView\">TextView</div>").appendTo("#item_box");
+		break;
+		case "Button" :
+		$("<div id=\"button\" class=\"Button\">Button</div>").appendTo("#item_box");
+		break;
+		case "EditText" :
+		$("<div class=\"inputType\" ><input type=\"text\" class=\"EditText\" id=\"edittext\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
+		break;
+		case "CheckBox" :
+		$("<div class=\"inputType\" ><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
+		break;
+		case "RadioButton" :
+		$("<div class=\"inputType\" ><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
+		break;
+		case "LinearLayout" :
+		$("<div class=\"LinearLayout\" id=\"linearlayout\" ><ul class=\"layout_vertical\"></ul></div>").appendTo("#item_box");
+		break;
+		case "RelativeLayout" :
+		$("<div class=\"RelativeLayout\" id=\"relativelayout\"><ul class=\"layout_relative\"></ul></div>").appendTo("#item_box");
+		break;
+		case "FrameLayout" :
+		$("<div class=\"FrameLayout\" id=\"framelayout\" ><ul class=\"layout_frame\"></ul></div>").appendTo("#item_box");
+		break;				
+		default:
+		break;
+	}
 
-		if($("#item_box").children().attr("class").search("Layout")!==-1){
-			$("#item_box").children()
-			.draggable({
-				//connectToSortable: "#trash",
-				// helper: "clone",
-				// revert: "invalid",
-				connectToSortable:"div",
-				scroll:false,
-				containment:"#item_box"
-			})
+	if($("#item_box").children().attr("class").search("Layout")!==-1){
+		$("#item_box").children()
+			// 	.draggable({
+			// 	//connectToSortable: "#trash",
+			// 	// helper: "clone",
+			// 	// revert: "invalid",
+			// 	connectToSortable:"div",
+			// 	scroll:false,
+			// 	containment:"#item_box"
+			// })
 			.resizable({
 				maxHeight: 320,
 				maxWidth: 180,
 				minHeight: 30,
 				minWidth: 50,
 				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
-			})
+			});
 			var _class=$("#item_box").children().attr("class");
 
-		}
-		else{
-			$("#item_box").children()
-			.draggable({
-				//connectToSortable: "#trash",
-				// helper: "clone",
-				// revert: "invalid",
-				connectToSortable:"div",
-				scroll:false,
-				containment:"#item_box"
-			})
+	}
+	else{
+	$("#item_box").children()
+			// .draggable({
+			// 	//connectToSortable: "#trash",
+			// 	// helper: "clone",
+			// 	connectToSortable:"div",
+			// 	// revert: "invalid",
+			// 	scroll:false,
+			// 	containment:"#item_box"
+			// })
 			.resizable({
 				maxHeight: 400,
 				maxWidth: 360,
 				minHeight: 30,
 				minWidth: 50,
 				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
-			})
-		}
+			});
 	}
 
-	
+	checkInput($("#item_box").children());
+
+}
+
+
 	var t_v_cnt=0;//textview count
 
 	var btn_cnt=0;//button count
@@ -1324,7 +1172,7 @@ $(document).ready(function() {
 	var r_l_cnt=0;
 	var l_l_cnt=0;//LenearLayout count
 	var f_l_cnt=0;//FrameLayout count
-    
+
 	$("#confirm").click(function(){
 		console.log("[confirm]");
 		var $obj = $("#item_box").children();
@@ -1336,42 +1184,57 @@ $(document).ready(function() {
 			||_class.search("RelativeLayout")!==-1 || _class.search("LinearLayout")!==-1
 			|| _class.search("FrameLayout")!==-1){
 			_id = $obj.attr("id", _id+getIdcnt(_id));			
-			getCss1($obj);
-		}	
-		else{
-			$obj = $obj.children();
-			_id = $obj.attr("id");
-		    _class = $obj.attr("class");
-			_id = $obj.attr("id", _id+getIdcnt(_id));							
-			getCss2($obj);
-		}
-		
-	});
+		getCss1($obj);
+	}	
+	else{
+		$obj = $obj.children();
+		_id = $obj.attr("id");
+		_class = $obj.attr("class");
+		_id = $obj.attr("id", _id+getIdcnt(_id));							
+		getCss2($obj);
+	}
+
+});
 	function getCss1($obj){
-		var width = $obj.css("width").split("px")[0]*2;
-		var height = $obj.css("height").split("px")[0]*2;
-		var left = $obj.css("left").split("px")[0]*2;
-		var top = $obj.css("top").split("px")[0]*2;
+		console.log("[getCss1]");
+		var width = $obj.css("width").split("px")[0];
+		var height = $obj.css("height").split("px")[0];
+		
 
 		$obj.appendTo("#trash");
-		$obj.draggable("option","containment","parent")
-		.css("width",width).css("height",height)
-		.css("left",left).css("top",top)
-		.css("line-height",height+"px")
-		.css("z-index", 201)
-		.resizable("destroy")
+		$obj//.draggable("option","containment","parent")
+		// .css("width",width).css("height",height)
+		// .css("left",left).css("top",top)
+		// .css("line-height",height+"px")
+		// .css("z-index", 201)
+		//.draggable("destroy")
+		.resizable("destroy");
+
+		var _class = $obj.attr("class");
+		console.log(_class);
+		if(_class.search("Layout")!==-1){//레이아웃 일 경우 
+			console.log("this is Layout");
+			checkLayout($obj, _class);
+		}
 	}
 	function getCss2($obj){
-		$div_obj = $obj.parent();
-
-		var left = $div_obj.css("left").split("px")[0]*2;
-		var top = $div_obj.css("top").split("px")[0]*2;
-		
+		$div_obj = $obj.parent();		
 		$div_obj.appendTo("#trash");
-		$div_obj.draggable("option","containment","parent")
-		.css("z-index", 201)
-		.resizable("destroy")
-		.children().css("left",left).css("top",top)
+		$div_obj//.draggable("option","containment","parent")
+		// .css("z-index", 201)
+		.resizable("destroy");
+		//.draggable("destroy")
+		// .children().css("left",left).css("top",top);
+	}
+	function checkLayout($obj,_class){
+		console.log(_class);
+		switch(_class.split(" ")[0]){
+			case "LinearLayout" : $obj.sortable({revert:false,axis:"y",connectWith:".LinearLayout"}).disableSelection(); break;
+			case "RelativeLayout" : $obj.sortable({}).disableSelection();break;
+			case "FrameLayout" : break;
+			default:break;
+		}
+
 	}
 	function getIdcnt(_id){
 		console.log("[getIdcnt] " + _id );
@@ -1400,21 +1263,21 @@ $(document).ready(function() {
 		// 	minWidth: 50,
 		// 	containment: "#trash"});
 
-	
+
 	// let the trash be droppable, accepting the gallery items
-    $trash.droppable({
+    //$trash.droppable({
 
 		// accept: "li",
 
   //     activeClass: "ui-state-highlight",
 	 //  hoverClass: "ui-state-hover",
-			
+
 
 	 //    drop: function( event, ui ) {
 		// 	$( this ).find( ".placeholder" ).remove();
 
 		// 	console.log("ui" + ui.draggable.text());
-			
+
 		
 		
 		// 	 if(ui.draggable.text()==="RadioButton"){
@@ -1428,7 +1291,7 @@ $(document).ready(function() {
 		// 				minWidth: 50,
 		// 				containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
 		// 			.children().addClass("RadioButton");
-			
+
 		// 		r_b_cnt++;
 		// 	}
 		// 	else if(ui.draggable.text()==="LinearLayout"){
@@ -1442,7 +1305,7 @@ $(document).ready(function() {
 		// 		      minHeight: 30,
 		// 		      minWidth: 50,
 		// 		      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-					 
+
 		// 			 .droppable({
 		// 	 		  accept: "div",
 		// 		      activeClass: "custom-state-active",
@@ -1457,7 +1320,7 @@ $(document).ready(function() {
 		// 	      	  }
 		// 		 	  })
 		// 			 .children().find("ul").sortable().disableSelection();	
-				
+
 		// 			l_l_cnt++;
 		// 	}
 		// 	else if(ui.draggable.text()==="FrameLayout"){
@@ -1481,7 +1344,7 @@ $(document).ready(function() {
 		// 		  	      ui.draggable.remove();
 		// 	      	  }
 		// 		 	  });	
-				
+
 		// 			f_l_cnt++;
 		// 	}
 		// 	else if(ui.draggable.text()==="RelativeLayout"){
@@ -1512,63 +1375,64 @@ $(document).ready(function() {
 		// 		  	      ui.draggable.remove();
 		// 	      	  }
 		// 		 	  });	
-				
+
 		// 			r_l_cnt++;
 		// 	}
 		// }
 
 
-    });
+   // });
 
- 	
+
 
     // let the gallery be droppable as well, accepting items from the trash
     
- 	
+
 
     // image deletion function
-    var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
-    function deleteImage( $item ) {
+    // var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
+    // function deleteImage( $item ) {
 
-    }
- 
-   
- 
+    // }
+
+
+
     // image preview function, demonstrating the ui.dialog used as a modal window
-    function viewLargerImage( $link ) {
-      var src = $link.attr( "href" ),
-        title = $link.siblings( "img" ).attr( "alt" ),
-        $modal = $( "img[src$='" + src + "']" );
- 
-      if ( $modal.length ) {
-        $modal.dialog( "open" );
-      } else {
-        var img = $( "<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />" )
-          .attr( "src", src ).appendTo( "body" );
-        setTimeout(function() {
-          img.dialog({
-            title: title,
-            width: 400,
-            modal: true
-          });
-        }, 1 );
-      }
-    }
- 
+    // function viewLargerImage( $link ) {
+    //   var src = $link.attr( "href" ),
+    //     title = $link.siblings( "img" ).attr( "alt" ),
+    //     $modal = $( "img[src$='" + src + "']" );
+
+    //   if ( $modal.length ) {
+    //     $modal.dialog( "open" );
+    //   } else {
+    //     var img = $( "<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />" )
+    //       .attr( "src", src ).appendTo( "body" );
+    //     setTimeout(function() {
+    //       img.dialog({
+    //         title: title,
+    //         width: 400,
+    //         modal: true
+    //       });
+    //     }, 1 );
+    //   }
+    // }
+
     // resolve the icons behavior with event delegation
-    $( "ul.widget > li" ).click(function( event ) {
-      var $item = $( this ),
-        $target = $( event.target );
- 
-      if ( $target.is( "a.ui-icon-trash" ) ) {
-        deleteImage( $item );
-      } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
-        viewLargerImage( $target );
-      } else if ( $target.is( "a.ui-icon-refresh" ) ) {
-        recycleImage( $item );
-      }
- 	
-      return false;
-    });
+    // $( "ul.widget > li" ).click(function( event ) {
+    //  	console.log("what?");
+    //   var $item = $( this ),
+    //     $target = $( event.target );
+
+    //   if ( $target.is( "a.ui-icon-trash" ) ) {
+    //     deleteImage( $item );
+    //   } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+    //     viewLargerImage( $target );
+    //   } else if ( $target.is( "a.ui-icon-refresh" ) ) {
+    //     recycleImage( $item );
+    //   }
+
+    //   return false;
+    // });
 
 });
