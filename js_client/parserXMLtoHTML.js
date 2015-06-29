@@ -186,7 +186,9 @@ $(document).ready(function()
    function makeTextView(xml)
    {
       //DIV생성
-      var viewHTML = "<div ";
+      var viewHTML = "<div>";
+      //SPAN생성
+      viewHTML += "<span ";
       //ID생성
       viewHTML += getId(xml, "TextView");
       //TextView Class 생성
@@ -198,7 +200,7 @@ $(document).ready(function()
       //END DIV생성
       viewHTML += "\">";
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-      viewHTML += getText(xml)+"</div>";
+      viewHTML += getText(xml)+"</span></div>";
       return viewHTML;
    }
 
@@ -206,7 +208,9 @@ $(document).ready(function()
    function makeButton(xml)
    {
       //DIV생성
-      var viewHTML = "<div ";
+      var viewHTML = "<div>";
+      //SPAN생성
+      viewHTML += "<span ";
       //ID생성
       viewHTML += getId(xml, "Button");
       //TextView Class 생성
@@ -218,7 +222,7 @@ $(document).ready(function()
       //END DIV생성
       viewHTML += "\">";
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-      viewHTML += getText(xml)+"</div>";
+      viewHTML += getText(xml)+"</span></div>";
       return viewHTML;
    }
 
@@ -226,7 +230,9 @@ $(document).ready(function()
    function makeImageView(xml)
    {
       //DIV생성
-      var viewHTML = "<div ";
+      var viewHTML = "<div>";
+      //SPAN생성
+      viewHTML += "<span ";
       //ID생성
       viewHTML += getId(xml, "ImageView");
       //TextView Class 생성
@@ -238,7 +244,7 @@ $(document).ready(function()
       //END DIV생성
       viewHTML += "\">";
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
-      viewHTML += getText(xml)+"</div>";
+      viewHTML += getText(xml)+"</span></div>";
       return viewHTML;
    }
 
