@@ -895,8 +895,16 @@ socket.on("push_response", function(data) {
 	});
 
 
+////////////////////////////////////////graphical layout/////////////////
+	var t_v_cnt=0;//textview count
 
-
+	var btn_cnt=0;//button count
+	var e_t_cnt=0;//EditText count
+	var c_b_cnt=0;
+	var r_b_cnt=0;
+	var r_l_cnt=0;
+	var l_l_cnt=0;//LenearLayout count
+	var f_l_cnt=0;//FrameLayout count
   //   $( ".TextView" )
 		// .draggable({
 		// 	connectToSortable: "#trash",
@@ -904,170 +912,14 @@ socket.on("push_response", function(data) {
 		// 	revert: "invalid",
 		// 	scroll:false
 		// })
-		// .resizable({
-		// 	maxHeight: 300,
-		// 	maxWidth: 400,
-		// 	minHeight: 30,
-		// 	minWidth: 50,
-		// 	containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
 
-	// $( "ul, div" ).disableSelection();
+var $current = $("#current");
+var $widget = $( "#widget" ),
+$layout = $( "#layout"),
+$trash = $( "#trash"),
+$input = $( "#input");
 
-	var $current = $("#current");
-	var $widget = $( "#widget" ),
-	$layout = $( "#layout"),
-	$trash = $( "#trash"),
-	$input = $( "#input");
-
-	var click_cnt = true;
-
-	$("#item_box").sortable({
-		connectWith:".LinearLayout",
-		revert: true
-	}).disableSelection();
-	$(trash).sortable({
-    	//	containment:"parent",
-    	revert: true
-    }).disableSelection();
-
-	$(trash).on('click mousedown mouseup', function(){
-		var $target = $( this ),
-		$obj = $( event.target );
-
-		//////////////////////////////////////////////////////box_item 으로 넣기 
-		var $li_target = $(event.target);
-		var selected_item = $li_target.text();
-		console.log("[select] " + selected_item  + " click");
-
-		$("#item_box").children().remove();
-
-		goto_item_box(selected_item);
-		//////////////////////////////////////////////////////
-		console.log(event.type+ " " + $obj.attr('id') +"  " + $target.attr('id'));
-		
-		if(event.type==="click"){
-			if(typeof $obj.attr("id") !=="undefined"){
-				var _class = $obj.attr("class");
-				checkInput($obj);
-			}
-			else{
-				var _class = $obj.children().attr("class");
-				if(_class.search("CheckBox")!==-1||_class.search("RadioButton")!==-1){
-					checkInput($obj.children());
-				}
-			}
-			
-			$target.end();
-			$obj.end();
-
-		}
-		else if(event.type ==="mouseup"){
-			// var id = $("#input").find("input[name="+"obj_id"+"]").val();
-			// var id_class= $('#' + id).attr("class");
-			// console.log("[editText] id and id_class");
-			// console.log(id + " " + id_class);
-			// if(id_class === "EditText"){
-			// 	var $div_edit = $('#' + id).parent();
-			// 	$('#'+id).css("width", $div_edit.css("width"));
-			// 	$('#'+id).css("height", $div_edit.css("height"));
-
-			// }
-		}
-	});
-function checkInput($obj){
-	console.log("[checkInput]");
-		//console.log($obj.attr("class"));
-		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-
-		if($obj.attr("class").search("CheckBox")!==-1
-			||$obj.attr("class").search("RadioButton")!==-1	){
-			$input.find("input[name=" + "height" + "]").val(  $obj.parent().css("height"));
-		$input.find("input[name=" + "width" + "]").val( $obj.parent().css("width"));
-		$input.find("input[name=" + "background" + "]").val($obj.parent().css("background"));
-		$input.find("input[name=" + "text_align" + "]").val($obj.parent().css("text-align"));
-		$input.find("input[name=" + "color" + "]").val($obj.parent().css("color"));
-		$input.find("input[name=" + "font_size" + "]").val($obj.parent().css("font-size"));
-	}
-	else{
-		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-		$input.find("input[name=" + "background" + "]").val($obj.css("background"));	
-		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
-		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
-
-	}
-
-	if($obj.attr("class").search("EditText")!==-1){
-		$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
-	}
-	else if($obj.attr("class").search("CheckBox")!==-1
-		||$obj.attr("class").search("RadioButton")!==-1){
-		$input.find("input[name=" + "text" + "]").val($obj.parent().text());
-}
-else{
-	$input.find("input[name=" + "text" + "]").val($obj.text());
-}
-
-
-}
-
-
-$("#input").draggable();
-
-     $("#delete").click(function() { //object delete
-     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
-     	$('#' + id).remove();
-     });	
-
-     $("#complete").click(function() {
-     	console.log("[input click]");
-     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
-
-     	var background = $("#input").find("input[name=" + "background" + "]").val();
-     	var width = $("#input").find("input[name="+"width"+"]").val();
-     	var height = $("#input").find("input[name="+"height"+"]").val();
-     	var text = $("#input").find("input[name="+"text"+"]").val();
-     	var gravity = $("#input").find("input[name="+"text_align"+"]").val();
-     	var textColor = $("#input").find("input[name="+"color"+"]").val();
-     	var textSize = $("#input").find("input[name="+"font_size"+"]").val();
-
-
-     	if($('#' + id).attr("class").search("CheckBox")!==-1
-     		||$('#' + id).attr("class").search("RadioButton")!==-1){
-     		$('#' + id).parent().css("background",background);
-     	$('#' + id).parent().css("width",width);
-     	$('#' + id).parent().css("height",height);$('#' + id).css("line-height",height);
-     	$('#' + id).parent().css("text-align",gravity);
-     	$('#' + id).parent().css("color",textColor);
-     	$('#' + id).parent().css("font-size",textSize);
-     }else{
-     	$('#' + id).css("background",background);
-     	$('#' + id).css("width",width);
-     	$('#' + id).css("height",height);$('#' + id).css("line-height",height);
-     	$('#' + id).css("text-align",gravity);
-     	$('#' + id).css("color",textColor);
-     	$('#' + id).css("font-size",textSize);
-     }	
-
-     if($('#' + id).attr("class").search("EditText")!==-1){
-     	$('#' + id).attr("value",text);
-     }
-     else if($('#' + id).attr("class").search("CheckBox")!==-1
-     	||$('#' + id).attr("class").search("RadioButton")!==-1){
-     	console.log("이건 아직 안됨");
- }
- else{
- 	$('#' + id).text(text);
- }
-});	
-
-	// $( "li", $layout ).draggable({
-	// 	helper: "clone",
-	// 	cursor: "move",
-	// 	appendTo:"body"
-	// });
-
+var click_cnt = true;
 
 $( "li", $widget ).click(function( event){
 	var $li_target = $(event.target);
@@ -1089,119 +941,285 @@ $( "li", $layout ).click(function(event){
 	goto_item_box(selected_item);
 });	
 function goto_item_box(selected){
-	console.log("[goto_item_box]");
+	console.log("[goto_item_box] : " + selected);
 	switch(selected) {
 		case "TextView" :
-		$("<div id=\"textview\" class=\"TextView\">TextView</div>").appendTo("#item_box");
+		$("<div id=\"textview"+(t_v_cnt++)+"\" class=\"TextView\"><span>TextView</span></div>").appendTo("#item_box");
 		break;
 		case "Button" :
-		$("<div id=\"button\" class=\"Button\">Button</div>").appendTo("#item_box");
+		$("<div id=\"button"+(btn_cnt++)+"\" class=\"Button\"><span>Button</span></div>").appendTo("#item_box");
 		break;
 		case "EditText" :
-		$("<div class=\"inputType\" ><input type=\"text\" class=\"EditText\" id=\"edittext\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
+		$("<div class=\"inputType\" ><input type=\"text\" class=\"EditText\" id=\"edittext"+(e_t_cnt++)+"\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
 		break;
 		case "CheckBox" :
-		$("<div class=\"inputType\" ><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
+		$("<div class=\"inputType\" ><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox"+(c_b_cnt++)+"\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
 		break;
 		case "RadioButton" :
-		$("<div class=\"inputType\" ><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
+		$("<div class=\"inputType\" ><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton"+(r_b_cnt++)+"\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
 		break;
 		case "LinearLayout" :
-		$("<div class=\"LinearLayout\" id=\"linearlayout\" ><ul class=\"layout_vertical\"></ul></div>").appendTo("#item_box");
+		$("<div class=\"LinearLayout\" id=\"linearlayout"+(l_l_cnt++)+"\" ><ul class=\"layout_vertical\"></ul></div>").appendTo("#item_box");
 		break;
 		case "RelativeLayout" :
-		$("<div class=\"RelativeLayout\" id=\"relativelayout\"><ul class=\"layout_relative\"></ul></div>").appendTo("#item_box");
+		$("<div class=\"RelativeLayout\" id=\"relativelayout"+(r_l_cnt++)+"\"><ul class=\"layout_relative\"></ul></div>").appendTo("#item_box");
 		break;
 		case "FrameLayout" :
-		$("<div class=\"FrameLayout\" id=\"framelayout\" ><ul class=\"layout_frame\"></ul></div>").appendTo("#item_box");
+		$("<div class=\"FrameLayout\" id=\"framelayout"+(f_l_cnt++)+"\" ><ul class=\"layout_frame\"></ul></div>").appendTo("#item_box");
 		break;				
 		default:
 		break;
 	}
+	console.log("[resizable]");
+	switch(selected){
+		case "TextView" : case "Button": case"CheckBox": case"RadioButton":
+		$("#item_box").children().resizable({
+			maxHeight: 360,
+			maxWidth: 360,
+			minHeight: 30,
+			minWidth: 50,
+			containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+		});
+		break;
+		case "EditText" :
+		$("#item_box").find(".EditText").parent().resizable({
+			maxHeight: 360,
+			maxWidth: 360,
+			minHeight: 30,
+			minWidth: 100,
+			containment:"#item_box" , autoHide:true, handles:"n,e,s,w",
 
-	if($("#item_box").children().attr("class").search("Layout")!==-1){
-		$("#item_box").children()
-			// 	.draggable({
-			// 	//connectToSortable: "#trash",
-			// 	// helper: "clone",
-			// 	// revert: "invalid",
-			// 	connectToSortable:"div",
-			// 	scroll:false,
-			// 	containment:"#item_box"
-			// })
-			.resizable({
-				maxHeight: 320,
-				maxWidth: 180,
-				minHeight: 30,
-				minWidth: 50,
-				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
-			});
-			var _class=$("#item_box").children().attr("class");
+			stop: function( event , ui ){
+				ui.element.children().css("width",ui.element.css("width"));
+				ui.element.children().css("height",ui.element.css("height"));
+					//line-height
+				}
+			});break;
+ 		case"LinearLayout": case"RelativeLayout": case"FrameLayout":
+ 		$("#item_box").children().resizable({
+			maxHeight: 360,
+			maxWidth: 360,
+			minHeight: 30,
+			minWidth: 50,
+			containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+		}).sortable({revert:false,axis:"y",connectWith:".LinearLayout"}).disableSelection();
+ 			break;
 
+ 		default:break;
 	}
-	else{
-	$("#item_box").children()
-			// .draggable({
-			// 	//connectToSortable: "#trash",
-			// 	// helper: "clone",
-			// 	connectToSortable:"div",
-			// 	// revert: "invalid",
-			// 	scroll:false,
-			// 	containment:"#item_box"
-			// })
-			.resizable({
-				maxHeight: 400,
-				maxWidth: 360,
-				minHeight: 30,
-				minWidth: 50,
-				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
-			});
-	}
-
 	checkInput($("#item_box").children());
 
 }
 
+function checkInput($obj){
+	console.log("[checkInput]");
+	var _class = $obj.attr("class");
 
-	var t_v_cnt=0;//textview count
 
-	var btn_cnt=0;//button count
-	var e_t_cnt=0;//EditText count
-	var c_b_cnt=0;
-	var r_b_cnt=0;
-	var r_l_cnt=0;
-	var l_l_cnt=0;//LenearLayout count
-	var f_l_cnt=0;//FrameLayout count
+	if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
 
-	$("#confirm").click(function(){
-		console.log("[confirm]");
-		var $obj = $("#item_box").children();
-		
-		var _id = $obj.attr("id");
-		var _class = $obj.attr("class");
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+		$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+		$input.find("input[name=" + "text" + "]").val($obj.children().text());
+	}
+	else if(_class.search("inputType")!==-1){
+		$obj=$obj.children();
+		_class=$obj.attr("class");
+		if(_class.search("EditText")!==-1){
+			$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+			$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+			$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+			$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
+		}
+		else{
+			$obj=$obj.parent();
+			$input.find("input[name=" + "obj_id" + "]").val( $obj.children().attr("id"));
+			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+			$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+			$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+			$input.find("input[name=" + "text" + "]").val($obj.text());
+		}
+	}
+	else if(_class.search("Layout")!==-1){
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+		$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+	}
+}
 
-		if(_class.search("TextView")!==-1 || _class.search("Button")!==-1
-			||_class.search("RelativeLayout")!==-1 || _class.search("LinearLayout")!==-1
-			|| _class.search("FrameLayout")!==-1){
-			_id = $obj.attr("id", _id+getIdcnt(_id));			
-		getCss1($obj);
-	}	
-	else{
-		$obj = $obj.children();
-		_id = $obj.attr("id");
-		_class = $obj.attr("class");
-		_id = $obj.attr("id", _id+getIdcnt(_id));							
-		getCss2($obj);
+
+$( "#trash").sortable({
+	scroll:false
+}).disableSelection();
+
+$("#item_box").sortable({
+	connectWith: ".LinearLayout,.RelativeLayout",scroll:false,
+	revert: true
+}).disableSelection();
+
+
+
+$(trash).on('click mousedown mouseup', function(){
+	//var $target = $( this ),
+	$obj = $( event.target );
+	console.log(event.target);
+	var _class = $obj.attr("class");
+	console.log("class= " + _class);
+
+	if(event.type==="click"){
+
+		console.log(event.type+ " " + $obj.attr('id') +"  " + $obj.attr('class'));
+
+		if(typeof _class ==="undefined"){//TextView, Button
+			console.log("1");
+			checkInput($obj.parent());
+		}
+		else if(_class.search("EditText") !==-1){
+			console.log("5");
+			checkInput($obj.parent());
+		}
+		else if(_class.search("inputType") !==-1){
+			console.log("3");
+			checkInput($obj);
+		}
+		else if(_class.search("RadioButton") !==-1||_class.search("CheckBox")!==-1){
+			console.log("2");
+			checkInput($obj.parent());
+		}
+		else if(_class.search("Layout")!==-1){
+			console.log("4");
+			checkInput($obj);
+		}
+		else{checkInput($obj);
+
+		}
+		//$target.end();
+		$obj.end();
+	}
+	else if(event.type ==="mouseup"){
+	
+	}
+	
+});
+
+
+
+	$("#input").draggable();
+
+     $("#delete").click(function() { //object delete
+     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+     	$('#' + id).remove();
+     });	
+
+     $("#complete").click(function() {
+     	console.log("[complete click]");
+     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+     	var _class = $('#' + id).attr("class");
+
+     	var background = $("#input").find("input[name=" + "background" + "]").val();
+     	var width = $("#input").find("input[name="+"width"+"]").val();
+     	var height = $("#input").find("input[name="+"height"+"]").val();
+     	var text = $("#input").find("input[name="+"text"+"]").val();
+     	var gravity = $("#input").find("input[name="+"text_align"+"]").val();
+     	var textColor = $("#input").find("input[name="+"color"+"]").val();
+     	var textSize = $("#input").find("input[name="+"font_size"+"]").val();
+
+
+
+	if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
+     	$('#' + id).css("background",background);
+     	$('#' + id).css("width",width);
+     	$('#' + id).css("height",height);
+     	$('#' + id).css("line-height",height);
+     	$('#' + id).css("text-align",gravity);
+     	$('#' + id).css("color",textColor);
+     	$('#' + id).css("font-size",textSize);
+     	$('#' + id).text(text);
+     }
+     else if(_class.search("inputType")!==-1){
+		$obj=$obj.children();
+		_class=$obj.attr("class");
+		if(_class.search("EditText")!==-1){
+			$('#' + id).css("background",background);
+	     	$('#' + id).css("width",width);
+	     	$('#' + id).css("height",height);
+	     	$('#' + id).css("line-height",height);
+	     	$('#' + id).css("text-align",gravity);
+	     	$('#' + id).css("color",textColor);
+	     	$('#' + id).css("font-size",textSize);
+ 	     	$('#' + id).attr("value",text);
+		}
+		else{//radio,check
+			$obj=$obj.parent();
+			$('#' + id).css("background",background);
+	     	$('#' + id).css("width",width);
+	     	$('#' + id).css("height",height);
+	     	$('#' + id).css("line-height",height);
+	     	$('#' + id).css("text-align",gravity);
+	     	$('#' + id).css("color",textColor);
+	     	$('#' + id).css("font-size",textSize);
+			//$input.find("input[name=" + "text" + "]").val($obj.text());
+		}
+	}
+	else if(_class.search("Layout")!==-1){
+			$('#' + id).css("background",background);
+	     	$('#' + id).css("width",width);
+	     	$('#' + id).css("height",height);
+	     	$('#' + id).css("line-height",height);
+	     	$('#' + id).css("text-align",gravity);
+	     	$('#' + id).css("color",textColor);
+	     	$('#' + id).css("font-size",textSize);
 	}
 
-});
-	function getCss1($obj){
-		console.log("[getCss1]");
-		var width = $obj.css("width").split("px")[0];
-		var height = $obj.css("height").split("px")[0];
-		
+     
+ 	
+ });	
 
-		$obj.appendTo("#trash");
+
+
+
+$("#confirm").click(function(){
+	console.log("[confirm]");
+	var $obj = $("#item_box").children();
+
+	var _id = $obj.attr("id");
+	var _class = $obj.attr("class");
+
+	if(_class.search("TextView")!==-1 || _class.search("Button")!==-1
+		||_class.search("RelativeLayout")!==-1 || _class.search("LinearLayout")!==-1
+		|| _class.search("FrameLayout")!==-1){
+		getCss1($obj);
+}	
+else{
+	$obj = $obj.children();
+	_id = $obj.attr("id");
+	_class = $obj.attr("class");
+	getCss2($obj);
+}
+});
+function getCss1($obj){
+	console.log("[getCss1]");
+	var width = $obj.css("width").split("px")[0];
+	var height = $obj.css("height").split("px")[0];
+
+
+	$obj.appendTo("#trash");
 		$obj//.draggable("option","containment","parent")
 		// .css("width",width).css("height",height)
 		// .css("left",left).css("top",top)
@@ -1236,203 +1254,7 @@ function goto_item_box(selected){
 		}
 
 	}
-	function getIdcnt(_id){
-		console.log("[getIdcnt] " + _id );
-		switch(_id){
-			case "textview" : return ++t_v_cnt;
-			case "button" : return ++btn_cnt;
-			case "edittext" : return ++e_t_cnt;
-			case "checkbox" : return ++c_b_cnt;
-			case "radiobutton" : return ++r_b_cnt;
-			case "linearlayout" : return ++l_l_cnt;
-			case "relativelayout" : return ++r_l_cnt;
-			case "framelayout" : return ++f_l_cnt;
-			
-			default :break;
-		}
-	}
-	 // $( ".TextView" )
-		// .draggable({
-		// 	containment: "#trash",
-		// 	scroll:false
-		// })
-		// .resizable({
-		// 	maxHeight: 300,
-		// 	maxWidth: 400,
-		// 	minHeight: 30,
-		// 	minWidth: 50,
-		// 	containment: "#trash"});
 
 
-	// let the trash be droppable, accepting the gallery items
-    //$trash.droppable({
-
-		// accept: "li",
-
-  //     activeClass: "ui-state-highlight",
-	 //  hoverClass: "ui-state-hover",
-
-
-	 //    drop: function( event, ui ) {
-		// 	$( this ).find( ".placeholder" ).remove();
-
-		// 	console.log("ui" + ui.draggable.text());
-
-		
-		
-		// 	 if(ui.draggable.text()==="RadioButton"){
-		// 				console.log("this is RadioButton");
-		// 		$( "<div class=\"inputType\"><input type=\"radio\"  id=\"RadioButton"+r_b_cnt+ "\" value=\"RadioButton\" >RadioButton</input></div>" ).appendTo( this )
-		// 			.draggable({containment:"#trash",scroll:false})
-		// 			.resizable({
-		// 				maxHeight: 300,
-		// 				maxWidth: 400,
-		// 				minHeight: 30,
-		// 				minWidth: 50,
-		// 				containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-		// 			.children().addClass("RadioButton");
-
-		// 		r_b_cnt++;
-		// 	}
-		// 	else if(ui.draggable.text()==="LinearLayout"){
-
-		// 			$( "<div id=\"LinearLayout"+l_l_cnt+ "\" ><ul class=\"layout_vertical\"></ul></div>" ).appendTo( this )
-		// 			.addClass("LinearLayout")
-		// 			.draggable({containment:"#trash",scroll:false})
-		// 			.resizable({ 
-		// 			  maxHeight: 600,
-		// 		      maxWidth: 400,
-		// 		      minHeight: 30,
-		// 		      minWidth: 50,
-		// 		      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-
-		// 			 .droppable({
-		// 	 		  accept: "div",
-		// 		      activeClass: "custom-state-active",
-		// 	  	      drop: function( event, ui ) {
-		// 		  	      var ui_id=ui.draggable.attr('id');
-		// 		  	      console.log("ui_id=" + ui_id);
-		// 		  	      console.log("this is + " + $(this).attr('id'));
-		// 		  	      ui.draggable.clone(true).appendTo(this)					
-		// 		  	      .draggable({containment:this ,scroll:false});
-
-		// 		  	      ui.draggable.remove();
-		// 	      	  }
-		// 		 	  })
-		// 			 .children().find("ul").sortable().disableSelection();	
-
-		// 			l_l_cnt++;
-		// 	}
-		// 	else if(ui.draggable.text()==="FrameLayout"){
-
-		// 			$( "<div id=\"FrameLayout"+f_l_cnt+ "\"  ><ul class=\"layout_frame\"></ul></div>" ).appendTo( this )
-		// 			.draggable({containment:"#trash",scroll:false})
-		// 			.resizable({ 
-		// 			  maxHeight: 600,
-		// 		      maxWidth: 400,
-		// 		      minHeight: 30,
-		// 		      minWidth: 50,
-		// 		      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-		// 			 .droppable({
-		// 	 		  accept: "div",
-		// 		      activeClass: "custom-state-active",
-		// 	  	      drop: function( event, ui ) {
-		// 		  	      var ui_id=ui.draggable.attr('id');
-		// 		  	      console.log("ui_id=" + ui_id);
-		// 		  	      console.log("this is + " + $(this).attr('id'));
-		// 		  	      ui.draggable.clone(true).appendTo(this);
-		// 		  	      ui.draggable.remove();
-		// 	      	  }
-		// 		 	  });	
-
-		// 			f_l_cnt++;
-		// 	}
-		// 	else if(ui.draggable.text()==="RelativeLayout"){
-
-		// 			$( "<div id=\"RelativeLayout"+r_l_cnt+ "\" ><ul class=\"layout_relative\"></ul></div>" ).appendTo( this )
-		// 			.draggable({containment:"#trash",scroll:false})
-		// 			.resizable({ 
-		// 			  maxHeight: 600,
-		// 		      maxWidth: 400,
-		// 		      minHeight: 30,
-		// 		      minWidth: 50,
-		// 		      containment:"#trash" , autoHide:true, handles:"n,e,s,w"	})
-		// 			 .droppable({
-		// 	 		  accept: "div",
-		// 		      activeClass: "custom-state-active",
-		// 	  	      drop: function( event, ui ) {
-		// 		  	      var ui_id=ui.draggable.attr('id');
-		// 		  	      console.log("ui_id=" + ui_id);
-		// 		  	      console.log("this is + " + $(this).attr('id'));
-		// 		  	      ui.draggable.clone(true).appendTo(this)
-		// 		  	      .draggable({containment:"#trash",scroll:false})
-		// 					.resizable({
-		// 					maxHeight: 300,
-		// 					maxWidth: 400,
-		// 					minHeight: 30,
-		// 					minWidth: 50,
-		// 					containment:"#trash" , autoHide:true, handles:"n,e,s,w"	});
-		// 		  	      ui.draggable.remove();
-		// 	      	  }
-		// 		 	  });	
-
-		// 			r_l_cnt++;
-		// 	}
-		// }
-
-
-   // });
-
-
-
-    // let the gallery be droppable as well, accepting items from the trash
-    
-
-
-    // image deletion function
-    // var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
-    // function deleteImage( $item ) {
-
-    // }
-
-
-
-    // image preview function, demonstrating the ui.dialog used as a modal window
-    // function viewLargerImage( $link ) {
-    //   var src = $link.attr( "href" ),
-    //     title = $link.siblings( "img" ).attr( "alt" ),
-    //     $modal = $( "img[src$='" + src + "']" );
-
-    //   if ( $modal.length ) {
-    //     $modal.dialog( "open" );
-    //   } else {
-    //     var img = $( "<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />" )
-    //       .attr( "src", src ).appendTo( "body" );
-    //     setTimeout(function() {
-    //       img.dialog({
-    //         title: title,
-    //         width: 400,
-    //         modal: true
-    //       });
-    //     }, 1 );
-    //   }
-    // }
-
-    // resolve the icons behavior with event delegation
-    // $( "ul.widget > li" ).click(function( event ) {
-    //  	console.log("what?");
-    //   var $item = $( this ),
-    //     $target = $( event.target );
-
-    //   if ( $target.is( "a.ui-icon-trash" ) ) {
-    //     deleteImage( $item );
-    //   } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
-    //     viewLargerImage( $target );
-    //   } else if ( $target.is( "a.ui-icon-refresh" ) ) {
-    //     recycleImage( $item );
-    //   }
-
-    //   return false;
-    // });
-
+	
 });

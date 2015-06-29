@@ -53,10 +53,10 @@
 	background: #000000;
 	width: 150px;
 	height: 300px;
-}
+}t
 .EditText {
 	height:30px;
-	width:160px;
+	width:100px;
 	max-width: 360px;
 	max-height: 360px;
 	min-height: 30px;
@@ -92,7 +92,7 @@
 
 .TextView {
 	height:30px;
-	width:80px;
+	width:100px;
 	color:#FFFFFF;
 	background-color:#000000;
 	text-align: center;
@@ -103,6 +103,9 @@
 }
 
 .inputType{
+	height:30px;
+	width:160px;
+
 	padding:5px;
 	max-width: 360px;
 	max-height: 360px;
