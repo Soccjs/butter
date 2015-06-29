@@ -53,16 +53,19 @@ $(document).ready(function()
 
    function setEvent(type)
    {
-      $(type).draggable({
-         connectToSortable: ".LinearLayout ul", revert: "invalid", containment:"#left_editor", scroll:false
+      $(".layout_relative").children().draggable({
+         scroll:false ,containment:"parent" 
+         ,connectToSortable:".layout_relative"
+      //,helper:"clone"
+       //connectToSortable: ".LinearLayout ul", revert: "invalid", 
       });//.resizable({maxHeight: 600,maxWidth: 560,minHeight: 50,minWidth: 100,autoHide:true, handles:"n,e,s,w"});
    }
 
    function setSortable()
    {
-      $( ".LinearLayout .layout_vertical" ).sortable({containment:"parent", axis:"x"});
-      $( ".LinearLayout .layout_horizontal" ).sortable({containment:"parent", axis:"y"});
-      $( "ul, div" ).disableSelection();
+      $( ".layout_vertical,.layout_horizontal,.layout_frame" ).sortable({
+            revert:false,axis:"y",//containment:"parent",
+            connectWith:".layout_vertical,.layout_horizontal,.layout_frame,.layout_relative"}).disableSelection();
    }
 
    directParser = function(){

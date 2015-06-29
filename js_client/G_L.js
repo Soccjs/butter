@@ -995,16 +995,36 @@ function goto_item_box(selected){
 					//line-height
 				}
 			});break;
- 		case"LinearLayout": case"RelativeLayout": case"FrameLayout":
- 		$("#item_box").children().resizable({
-			maxHeight: 360,
-			maxWidth: 360,
-			minHeight: 30,
-			minWidth: 50,
-			containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
-		}).sortable({revert:false,axis:"y",connectWith:".LinearLayout"}).disableSelection();
- 			break;
-
+ 		case"LinearLayout": 
+	 		$("#item_box").children().resizable({
+				maxHeight: 360,
+				maxWidth: 360,
+				minHeight: 30,
+				minWidth: 50,
+				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+			}).sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
+	 			break;
+ 		case"RelativeLayout": 
+ 			$("#item_box").children().resizable({
+				maxHeight: 360,
+				maxWidth: 360,
+				minHeight: 30,
+				minWidth: 50,
+				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+			}).sortable({connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"})
+			.disableSelection()
+			.children().draggable({connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"});
+	 			
+	 			break;
+ 		case"FrameLayout":	
+ 			$("#item_box").children().resizable({
+				maxHeight: 360,
+				maxWidth: 360,
+				minHeight: 30,
+				minWidth: 50,
+				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+			}).sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
+	 			break;
  		default:break;
 	}
 	checkInput($("#item_box").children());
@@ -1060,6 +1080,13 @@ function checkInput($obj){
 		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
 		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
 		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+		console.log($obj.children(":first").css("float"));
+		if($obj.children(":first").css("float")==="left"){
+			$input.find("input[name=" + "float" + "]").val("horizontal");
+		}
+		else{
+			$input.find("input[name=" + "float" + "]").val("vertical");
+		}
 	}
 }
 
@@ -1069,7 +1096,7 @@ $( "#trash").sortable({
 }).disableSelection();
 
 $("#item_box").sortable({
-	connectWith: ".LinearLayout,.RelativeLayout",scroll:false,
+	connectWith: ".layout_vertical,.layout_horizontal,.RelativeLayout,.FrameLayout",scroll:false,
 	revert: true
 }).disableSelection();
 
@@ -1139,6 +1166,7 @@ $(trash).on('click mousedown mouseup', function(){
      	var gravity = $("#input").find("input[name="+"text_align"+"]").val();
      	var textColor = $("#input").find("input[name="+"color"+"]").val();
      	var textSize = $("#input").find("input[name="+"font_size"+"]").val();
+     	var Float = $("#input").find("input[name="+"float"+"]").val();
 
 
 
@@ -1185,6 +1213,14 @@ $(trash).on('click mousedown mouseup', function(){
 	     	$('#' + id).css("text-align",gravity);
 	     	$('#' + id).css("color",textColor);
 	     	$('#' + id).css("font-size",textSize);
+	     	if(_class.search("LinearLayout")!==-1){
+	     		if(Float==="vertical"){
+	     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical");
+	     		}
+	     		else{
+	     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal");
+	     		}
+	     	}
 	}
 
      
