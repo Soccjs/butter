@@ -895,32 +895,25 @@ socket.on("push_response", function(data) {
 	});
 
 
-////////////////////////////////////////graphical layout/////////////////
+///////////////변수 선언///declare//////////////////////graphical layout/////////////////
 	var t_v_cnt=0;//textview count
 
 	var btn_cnt=0;//button count
 	var e_t_cnt=0;//EditText count
-	var c_b_cnt=0;
-	var r_b_cnt=0;
-	var r_l_cnt=0;
+	var c_b_cnt=0;//Checkbox count
+	var r_b_cnt=0;//radiobutton count
+	var r_l_cnt=0;//relativelayout count
 	var l_l_cnt=0;//LenearLayout count
 	var f_l_cnt=0;//FrameLayout count
-  //   $( ".TextView" )
-		// .draggable({
-		// 	connectToSortable: "#trash",
-		// 	helper: "clone",
-		// 	revert: "invalid",
-		// 	scroll:false
-		// })
 
-var $current = $("#current");
-var $widget = $( "#widget" ),
-$layout = $( "#layout"),
-$trash = $( "#trash"),
-$input = $( "#input");
+	var $widget = $("#widget" );
+	var $layout = $("#layout");
+	var $trash = $("#trash");
+	var $input = $("#input");
 
-var click_cnt = true;
+	var click_cnt = true;
 
+//////////////메뉴에서 선택////select component in menu///////////////////////////////////
 $( "li", $widget ).click(function( event){
 	var $li_target = $(event.target);
 	var selected_item = $li_target.text();
@@ -940,6 +933,7 @@ $( "li", $layout ).click(function(event){
 
 	goto_item_box(selected_item);
 });	
+////item_box 로 이동 ////when selecting a component in menu, go to the item_box////////////
 function goto_item_box(selected){
 	console.log("[goto_item_box] : " + selected);
 	switch(selected) {
@@ -970,6 +964,7 @@ function goto_item_box(selected){
 		default:
 		break;
 	}
+	/////////클래스 부여 //////////////allow class ////////////////////////////////
 	console.log("[resizable]");
 	switch(selected){
 		case "TextView" : case "Button": case"CheckBox": case"RadioButton":
@@ -1001,7 +996,7 @@ function goto_item_box(selected){
 				maxWidth: 360,
 				minHeight: 30,
 				minWidth: 50,
-				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
 			})
 			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
 	 			break;
@@ -1011,12 +1006,14 @@ function goto_item_box(selected){
 				maxWidth: 360,
 				minHeight: 30,
 				minWidth: 50,
-				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
 			}).sortable({connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"})
 			.disableSelection()
 			.children().draggable({connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"});
 	 			
 	 			break;
+
+
  		case"FrameLayout":	
  			$("#item_box").children().resizable({
 				maxHeight: 360,
@@ -1029,9 +1026,9 @@ function goto_item_box(selected){
  		default:break;
 	}
 	checkInput($("#item_box").children());
-
 }
 
+///////////컴퍼넌트 속성 읽어오기 //////read attributes into #input/////////////////////////////////////////////////
 function checkInput($obj){
 	console.log("[checkInput]");
 	var _class = $obj.attr("class");
@@ -1091,7 +1088,7 @@ function checkInput($obj){
 	}
 }
 
-
+///////////기본 특성 /////Basic func/////////////////////////////////////////////////////////////////////
 $( "#trash").sortable({
 		connectWith: ".layout_vertical,.layout_horizontal,.RelativeLayout,.FrameLayout",scroll:false,
 
@@ -1103,7 +1100,98 @@ $("#item_box").sortable({
 	revert: true
 }).disableSelection();
 
+$("#input").draggable();
+//////////////make layout class////////////////////////////////////////////////////////////////////////////
+	$(".layout_vertical").sortable({
+		revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+	}).disableSelection();
+	$(".layout_horizontal").sortable({
+		revert:false,axis:"x",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+	}).disableSelection();
 
+///////////////input delete, complete///////////////////////////////////////////////////////////////////////////////
+     $("#delete").click(function() { //object delete
+     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+     	$('#' + id).remove();
+     });	
+
+     $("#complete").click(function() {
+     	console.log("[complete click]");
+     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+     	var _class = $('#' + id).attr("class");
+
+     	var background = $("#input").find("input[name=" + "background" + "]").val();
+     	var width = $("#input").find("input[name="+"width"+"]").val();
+     	var height = $("#input").find("input[name="+"height"+"]").val();
+     	var text = $("#input").find("input[name="+"text"+"]").val();
+     	var gravity = $("#input").find("input[name="+"text_align"+"]").val();
+     	var textColor = $("#input").find("input[name="+"color"+"]").val();
+     	var textSize = $("#input").find("input[name="+"font_size"+"]").val();
+     	var Float = $("#input").find("input[name="+"float"+"]").val();
+
+
+
+		if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
+		 	$('#' + id).css("background",background);
+		 	$('#' + id).css("width",width);
+		 	$('#' + id).css("height",height);
+		 	$('#' + id).css("line-height",height);
+		 	$('#' + id).css("text-align",gravity);
+		 	$('#' + id).css("color",textColor);
+		 	$('#' + id).css("font-size",textSize);
+		 	$('#' + id).text(text);
+		 }
+		 else if(_class.search("inputType")!==-1){
+			$obj=$obj.children();
+			_class=$obj.attr("class");
+			if(_class.search("EditText")!==-1){
+				$('#' + id).css("background",background);
+		     	$('#' + id).css("width",width);
+		     	$('#' + id).css("height",height);
+		     	$('#' + id).css("line-height",height);
+		     	$('#' + id).css("text-align",gravity);
+		     	$('#' + id).css("color",textColor);
+		     	$('#' + id).css("font-size",textSize);
+			    $('#' + id).attr("value",text);
+			}
+			else{//radio,check
+				$obj=$obj.parent();
+				$('#' + id).css("background",background);
+		     	$('#' + id).css("width",width);
+		     	$('#' + id).css("height",height);
+		     	$('#' + id).css("line-height",height);
+		     	$('#' + id).css("text-align",gravity);
+		     	$('#' + id).css("color",textColor);
+		     	$('#' + id).css("font-size",textSize);
+				//$input.find("input[name=" + "text" + "]").val($obj.text());
+			}
+		}
+		else if(_class.search("Layout")!==-1||_class.search("layout")!==-1){
+			if(_class.search("layout")!==-1){
+
+			}
+				$('#' + id).css("background",background);
+		     	$('#' + id).css("width",width);
+		     	$('#' + id).css("height",height);
+		     	//$('#' + id).css("line-height",height);
+		     	$('#' + id).css("text-align",gravity);
+		     	$('#' + id).css("color",textColor);
+		     	$('#' + id).css("font-size",textSize);
+		     	if(_class.search("LinearLayout")!==-1){
+		     		console.log("float= " + Float);
+		     		if(Float==="vertical"){
+		     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical")
+		     			.sortable( "option", "axis", "y" );
+		     		}
+		     		else{
+		     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal")
+		     			.sortable( "option", "axis", "x" );
+		     		}
+		     	}
+		}
+			
+	});	
+/////////////trash on click///////////////////////////////////////////////////////////////
 
 $(trash).on('click mousedown mouseup', function(){
 	//var $target = $( this ),
@@ -1136,7 +1224,9 @@ $(trash).on('click mousedown mouseup', function(){
 			console.log("4");
 			checkInput($obj);
 		}
-		else{checkInput($obj);
+		else{
+			console.log("6");
+			checkInput($obj.parent());
 
 		}
 		//$target.end();
@@ -1149,87 +1239,7 @@ $(trash).on('click mousedown mouseup', function(){
 });
 
 
-
-	$("#input").draggable();
-
-     $("#delete").click(function() { //object delete
-     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
-     	$('#' + id).remove();
-     });	
-
-     $("#complete").click(function() {
-     	console.log("[complete click]");
-     	var id = $("#input").find("input[name="+"obj_id"+"]").val();
-     	var _class = $('#' + id).attr("class");
-
-     	var background = $("#input").find("input[name=" + "background" + "]").val();
-     	var width = $("#input").find("input[name="+"width"+"]").val();
-     	var height = $("#input").find("input[name="+"height"+"]").val();
-     	var text = $("#input").find("input[name="+"text"+"]").val();
-     	var gravity = $("#input").find("input[name="+"text_align"+"]").val();
-     	var textColor = $("#input").find("input[name="+"color"+"]").val();
-     	var textSize = $("#input").find("input[name="+"font_size"+"]").val();
-     	var Float = $("#input").find("input[name="+"float"+"]").val();
-
-
-
-	if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
-     	$('#' + id).css("background",background);
-     	$('#' + id).css("width",width);
-     	$('#' + id).css("height",height);
-     	$('#' + id).css("line-height",height);
-     	$('#' + id).css("text-align",gravity);
-     	$('#' + id).css("color",textColor);
-     	$('#' + id).css("font-size",textSize);
-     	$('#' + id).text(text);
-     }
-     else if(_class.search("inputType")!==-1){
-		$obj=$obj.children();
-		_class=$obj.attr("class");
-		if(_class.search("EditText")!==-1){
-			$('#' + id).css("background",background);
-	     	$('#' + id).css("width",width);
-	     	$('#' + id).css("height",height);
-	     	$('#' + id).css("line-height",height);
-	     	$('#' + id).css("text-align",gravity);
-	     	$('#' + id).css("color",textColor);
-	     	$('#' + id).css("font-size",textSize);
- 	     	$('#' + id).attr("value",text);
-		}
-		else{//radio,check
-			$obj=$obj.parent();
-			$('#' + id).css("background",background);
-	     	$('#' + id).css("width",width);
-	     	$('#' + id).css("height",height);
-	     	$('#' + id).css("line-height",height);
-	     	$('#' + id).css("text-align",gravity);
-	     	$('#' + id).css("color",textColor);
-	     	$('#' + id).css("font-size",textSize);
-			//$input.find("input[name=" + "text" + "]").val($obj.text());
-		}
-	}
-	else if(_class.search("Layout")!==-1){
-			$('#' + id).css("background",background);
-	     	$('#' + id).css("width",width);
-	     	$('#' + id).css("height",height);
-	     	$('#' + id).css("line-height",height);
-	     	$('#' + id).css("text-align",gravity);
-	     	$('#' + id).css("color",textColor);
-	     	$('#' + id).css("font-size",textSize);
-	     	if(_class.search("LinearLayout")!==-1){
-	     		if(Float==="vertical"){
-	     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical");
-	     		}
-	     		else{
-	     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal");
-	     		}
-	     	}
-	}
-
-     
- 	
- });	
-
+//////////////////////////////////////////////////////////////////////////////
 
 
 

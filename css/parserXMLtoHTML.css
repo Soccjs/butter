@@ -15,8 +15,6 @@
 .layout_vertical{
  	background: #000000;
 	-webkit-padding-start: 0px;
-	min-height: 30px;
-	min-width: 80px;
 }
 
 .layout_horizontal{
@@ -36,15 +34,15 @@
 .layout_vertical  {
 	float:none;
 }
-.layout_vertical div:first-child {
+.layout_vertical div {
 	display: block;
 }
 
 .layout_horizontal {
 	float:left;
 }
-.layout_horizontal div:first-child{
-	display: inline;
+.layout_horizontal div{
+	display: inline-block;
 }
 .LinearLayout {
 	background: #000000;
@@ -97,10 +95,6 @@
 	color:#FFFFFF;
 	background-color:#000000;
 }
-.CheckBox {
-	color:#FFFFFF;
-	background-color:#000000;
-}
 
 .Button {
 	color:#FFFFFF;
@@ -125,11 +119,18 @@
 	min-height: 30px;
 	min-width: 80px;
 }
+.TextView span{
+	height:100%;
+	width:100%;
+	text-align: center;
+	max-width: 360px;
+	max-height: 360px;
+	min-height: 30px;
+	min-width: 80px;
+}
 
 .inputType{
-	height:30px;
-	width:160px;
-
+	
 	padding:5px;
 	max-width: 360px;
 	max-height: 360px;
