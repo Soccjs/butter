@@ -1002,7 +1002,8 @@ function goto_item_box(selected){
 				minHeight: 30,
 				minWidth: 50,
 				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
-			}).sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
+			})
+			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
 	 			break;
  		case"RelativeLayout": 
  			$("#item_box").children().resizable({
@@ -1092,11 +1093,13 @@ function checkInput($obj){
 
 
 $( "#trash").sortable({
+		connectWith: ".layout_vertical,.layout_horizontal,.RelativeLayout,.FrameLayout",scroll:false,
+
 	scroll:false
 }).disableSelection();
 
 $("#item_box").sortable({
-	connectWith: ".layout_vertical,.layout_horizontal,.RelativeLayout,.FrameLayout",scroll:false,
+	connectWith: "#trash,.layout_vertical,.layout_horizontal,.RelativeLayout,.FrameLayout",scroll:false,
 	revert: true
 }).disableSelection();
 
@@ -1283,7 +1286,7 @@ function getCss1($obj){
 	function checkLayout($obj,_class){
 		console.log(_class);
 		switch(_class.split(" ")[0]){
-			case "LinearLayout" : $obj.sortable({revert:false,axis:"y",connectWith:".LinearLayout"}).disableSelection(); break;
+			//case "LinearLayout" : $obj.sortable({revert:false,axis:"y",connectWith:".LinearLayout"}).disableSelection(); break;
 			case "RelativeLayout" : $obj.sortable({}).disableSelection();break;
 			case "FrameLayout" : break;
 			default:break;

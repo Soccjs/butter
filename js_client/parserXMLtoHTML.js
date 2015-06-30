@@ -63,9 +63,13 @@ $(document).ready(function()
 
    function setSortable()
    {
-      $( ".layout_vertical,.layout_horizontal,.layout_frame" ).sortable({
+      $( ".layout_vertical" ).sortable({
             revert:false,axis:"y",//containment:"parent",
             connectWith:".layout_vertical,.layout_horizontal,.layout_frame,.layout_relative"}).disableSelection();
+      $( ".layout_horizontal" ).sortable({
+            revert:false,axis:"x",//containment:"parent",
+            connectWith:".layout_vertical,.layout_horizontal,.layout_frame,.layout_relative"}).disableSelection();
+   
    }
 
    directParser = function(){
