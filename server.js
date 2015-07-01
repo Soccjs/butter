@@ -900,7 +900,7 @@ app.post('/file_save', function(req, res){
 					_ParseLog+=("   line   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; " + _tmp[3][1] + "<br/><br/>");
 					//res.send(_ParseLog);
 				}
-				else{
+				else{//layout.xml error
 					var start = stdout.search("task3");
 					stdout = stdout.substring(start,stdout.length);
 					console.log(stdout);
@@ -908,8 +908,13 @@ app.post('/file_save', function(req, res){
 					stdout = stdout.replace(/(\r\n|\r|\n|\^)/gm,"");
 					stdout = stdout.replace(/(\s{2,})/g,' ');	
 					var _LOG = stdout.split("[aapt] ");
+					// console.log("1=" + _LOG[0]);
+					// console.log("2=" + _LOG[1]);
+					// console.log("3=" + _LOG[2]);
+					// console.log("4=" + _LOG[3]);
+
 					var _ParseLog="";
-					var _tmp=_LOG[_LOG.length-2].split(":");
+					var _tmp=_LOG[3].split(":");
 
 
 					_ParseLog+=(  "statments &nbsp;:&nbsp;" + _tmp[3] +"</br>");
