@@ -964,8 +964,11 @@ function goto_item_box(selected){
 		default:
 		break;
 	}
-	/////////클래스 부여 //////////////allow class ////////////////////////////////
+	/////////left ,top0 ////////////// ////////////////////////////////
+
+	/////////클래스 부여 //////////////allow class /////////////////////////////////
 	console.log("[resizable]");
+
 	switch(selected){
 		case "TextView" : case "Button": case"CheckBox": case"RadioButton":
 		$("#item_box").children().resizable({
@@ -998,7 +1001,9 @@ function goto_item_box(selected){
 				minWidth: 50,
 				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
 			})
-			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
+			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+				
+			}).disableSelection();
 	 			break;
  		case"RelativeLayout": 
  			$("#item_box").children().resizable({
@@ -1007,10 +1012,20 @@ function goto_item_box(selected){
 				minHeight: 30,
 				minWidth: 50,
 				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
-			}).sortable({connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"})
-			.disableSelection()
-			.children().draggable({connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"});
-	 			
+			})
+			.children().sortable({revert:false,connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+				,receive: function(event, ui){
+					console.log("stop"+ ui.item.attr("id"));
+					var _class = ui.item.parent().attr("class");
+					if(_class.search("relative")!==-1){
+						ui.item.draggable({
+							connectToSortable:".layout_relative,.layout_vertical,.layout_horizontal,.layout_frame"
+						});
+					}else{ui.item.draggable("destroy");}
+				}
+			})
+			.disableSelection();
+				
 	 			break;
 
 
@@ -1090,13 +1105,13 @@ function checkInput($obj){
 
 ///////////기본 특성 /////Basic func/////////////////////////////////////////////////////////////////////
 $( "#trash").sortable({
-		connectWith: ".layout_vertical,.layout_horizontal,.RelativeLayout,.FrameLayout",scroll:false,
+		connectWith: ".layout_vertical,.layout_horizontal,.layout_relative,.FrameLayout",scroll:false,
 
 	scroll:false
 }).disableSelection();
 
 $("#item_box").sortable({
-	connectWith: "#trash,.layout_vertical,.layout_horizontal,.RelativeLayout,.FrameLayout",scroll:false,
+	connectWith: "#trash,.layout_vertical,.layout_horizontal,.layout_relative,.FrameLayout",scroll:false,
 	revert: true
 }).disableSelection();
 
