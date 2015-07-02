@@ -248,7 +248,7 @@ $.post('openFile', {path : _GLOBAL.file}, function(data) {
 					} else {
 						alert("수정 가능한 파일입니다.");
 					}
-					make_editor(data, file_path, 0, _work_flag);
+					make_editor(data, file_path, 0, _work_flag);    
 
 				}
 			});
@@ -1019,9 +1019,10 @@ function goto_item_box(selected){
 					var _class = ui.item.parent().attr("class");
 					if(_class.search("relative")!==-1){
 						ui.item.draggable({
-							connectToSortable:".layout_relative,.layout_vertical,.layout_horizontal,.layout_frame"
+							containment:"#trash",
+							connectToSortable:".layout_vertical,.layout_horizontal,.layout_frame"
 						});
-					}else{ui.item.draggable("destroy");}
+					}else{ui.item.draggable("disable");}
 				}
 			})
 			.disableSelection();
@@ -1105,9 +1106,7 @@ function checkInput($obj){
 
 ///////////기본 특성 /////Basic func/////////////////////////////////////////////////////////////////////
 $( "#trash").sortable({
-		connectWith: ".layout_vertical,.layout_horizontal,.layout_relative,.FrameLayout",scroll:false,
-
-	scroll:false
+		connectWith: ".layout_vertical,.layout_horizontal,.layout_relative,.FrameLayout",scroll:false
 }).disableSelection();
 
 $("#item_box").sortable({
@@ -1185,7 +1184,7 @@ $("#input").draggable();
 			if(_class.search("layout")!==-1){
 
 			}
-				$('#' + id).css("background",background);
+				$('#' + id).children().css("background",background);
 		     	$('#' + id).css("width",width);
 		     	$('#' + id).css("height",height);
 		     	//$('#' + id).css("line-height",height);
