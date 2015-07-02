@@ -142,6 +142,8 @@ $(document).ready(function()
    {
       //DefaultLayout생성
       var viewHTML = makeDefaultLayout(xml, "RelativeLayout");
+      //RELATIVE MARGIN생성
+      viewHTML += getRelativeMargin(xml);
       //Orientation생성
       viewHTML += "<ul class=\"layout_relative\" style=\""+defaultOrientation+"\">";
       return viewHTML;
@@ -344,8 +346,6 @@ $(document).ready(function()
       viewHTML += getHeight(xml);
       //MARGIN생성
       viewHTML += getMargin(xml);
-      //RELATIVE MARGIN생성
-      viewHTML += getRelativeMargin(xml);
       //TEXTSIZE생성
       viewHTML += getTextSize(xml);
       //TEXTSTYLE생성
@@ -494,10 +494,30 @@ $(document).ready(function()
    function getMargin(xml)
    {
       var xmlMargin = xml.attr("android:layout_margin");
+
       if(xmlMargin == null)
-         return "";
+      {
+         var xmlMargin = "";
+         var xmlMarginLeft = xml.attr("android:layout_marginLeft");
+         var xmlMarginRight = xml.attr("android:layout_marginRight");
+         var xmlMarginBottom = xml.attr("android:layout_marginBottom");
+         var xmlMarginTop = xml.attr("android:layout_marginTop");
+
+         if(xmlMarginTop != null)
+            xmlMargin += "margin-top:"+xmlMarginTop+";";
+         if(xmlMarginRight != null)
+            xmlMargin += "margin-right:"+xmlMarginRight+";";
+         if(xmlMarginBottom != null)
+            xmlMargin += "margin-bottom:"+xmlMarginBottom+";";
+         if(xmlMarginLeft != null)
+            xmlMargin += "margin-left:"+xmlMarginLeft+";";
+
+         return xmlMargin;
+      }
       else
+      {
          return "margin:"+xmlMargin+";";
+      }
    }
 
    // XML Relative Margin값 추출
