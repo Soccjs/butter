@@ -911,8 +911,9 @@ socket.on("push_response", function(data) {
 	var $trash = $("#trash");
 	var $input = $("#input");
 
-	var click_cnt = true;
-
+	var clickFlag = true;
+	var sortableFlag = true;
+	var $tmp,$before,$after;
 //////////////메뉴에서 선택////select component in menu///////////////////////////////////
 $( "li", $widget ).click(function( event){
 	var $li_target = $(event.target);
@@ -976,7 +977,7 @@ function goto_item_box(selected){
 			maxWidth: 360,
 			minHeight: 30,
 			minWidth: 50,
-			containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
+			containment:"#item_box" , autoHide:true, handles:"e,s"
 		});
 		break;
 		case "EditText" :
@@ -999,7 +1000,7 @@ function goto_item_box(selected){
 				maxWidth: 360,
 				minHeight: 30,
 				minWidth: 50,
-				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
+				containment:"#parent" , autoHide:true, handles:"e,s"
 			})
 			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
 				
@@ -1013,20 +1014,15 @@ function goto_item_box(selected){
 				minWidth: 50,
 				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
 			})
-			.children().sortable({revert:false,connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
-				,receive: function(event, ui){
-					console.log("stop"+ ui.item.attr("id"));
-					var _class = ui.item.parent().attr("class");
-					if(_class.search("relative")!==-1){
-						ui.item.draggable({
-							containment:"#trash",
-							connectToSortable:".layout_vertical,.layout_horizontal,.layout_frame"
-						});
-					}else{ui.item.draggable("disable");}
+			.draggable({
+				connectToSortable:".layout_vertical,.layout_horizontal,#trash",
+				//containment:"parent",
+				scroll:false,
+				placeholder: "ui-state-highlight",
+				start: function(event, ui){
+					sortableFlag=false;
 				}
-			})
-			.disableSelection();
-				
+			});
 	 			break;
 
 
@@ -1130,9 +1126,15 @@ $("#input").draggable();
 //////////////make layout class////////////////////////////////////////////////////////////////////////////
 	$(".layout_vertical").sortable({
 		revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+		,start: function(event, ui){
+				sortableFlag=false;
+			}
 	}).disableSelection();
 	$(".layout_horizontal").sortable({
 		revert:false,axis:"x",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+		,start: function(event, ui){
+				sortableFlag=false;
+			}
 	}).disableSelection();
 
 ///////////////input delete, complete///////////////////////////////////////////////////////////////////////////////
@@ -1250,34 +1252,77 @@ $(trash).on('click mousedown mouseup', function(){
 
 		if(typeof _class ==="undefined"){//TextView, Button
 			console.log("1");
-			checkInput($obj.parent());
+			$obj = $obj.parent();
+			checkInput($obj);
 		}
 		else if(_class.search("EditText") !==-1){
 			console.log("5");
-			checkInput($obj.parent());
-		}
+			$obj = $obj.parent();
+			checkInput($obj);		}
 		else if(_class.search("inputType") !==-1){
 			console.log("3");
 			checkInput($obj);
 		}
 		else if(_class.search("RadioButton") !==-1||_class.search("CheckBox")!==-1){
 			console.log("2");
-			checkInput($obj.parent());
-		}
+			$obj = $obj.parent();
+			checkInput($obj);		}
 		else if(_class.search("Layout")!==-1){
 			console.log("4");
 			checkInput($obj);
 		}
 		else{
 			console.log("6");
-			checkInput($obj.parent());
-
+			$obj = $obj.parent();
+			checkInput($obj);		}
+		///////////////////////////
+		if(sortableFlag===false){ 
+			sortableFlag=true
+			return;
 		}
+		if(clickFlag){//안누른상태
+			clickFlag=false;
+			$before=$obj;
+			console.log("before = " + $before.attr("class"));
+			$before.css("opacity", "0.3");
+		}
+		else{
+			$after = $obj.children();
+			var _class=$after.attr("class");
+			console.log("after = " + _class);
+			if(_class==="undefined"){
+				clickFlag=true;
+				return;
+			}
+			if(_class.search("layout_vertical")!==-1||_class.search("layout_relative")!==-1){
+				if($before.attr("class")===$after.parent().attr("class")){
+					console.log("같은 레이아웃");
+					$before.css("opacity",1);
+					clickFlag=true;
+					return;
+				}
+				else{
+					if(_class.search("layout_vertical")!==-1||_class.search("layout_horizontal")!==-1){
+						$before.draggable("disable");
+					}
+					else if(_class.search("layout_relative")!==-1){
+						$before.draggable({containment:"parent"});
+					}
+				}
+				console.log("ok");	
+				$before.appendTo(($after).parent().find("ul"));
+				$before.css("opacity",1);
+				clickFlag = true;
+
+			}
+			else{
+				console.log("that's nono");
+				$before.css("opacity",1);
+				clickFlag=true;
+			}
 		//$target.end();
 		$obj.end();
-	}
-	else if(event.type ==="mouseup"){
-	
+		}
 	}
 	
 });
