@@ -142,8 +142,6 @@ $(document).ready(function()
    {
       //DefaultLayout생성
       var viewHTML = makeDefaultLayout(xml, "RelativeLayout");
-      //RELATIVE MARGIN생성
-      viewHTML += getRelativeMargin(xml);
       //Orientation생성
       viewHTML += "<ul class=\"layout_relative\" style=\""+defaultOrientation+"\">";
       return viewHTML;
@@ -184,6 +182,8 @@ $(document).ready(function()
       viewHTML += getLayoutWidth(xml);
       //HEIGHT생성
       viewHTML += getLayoutHeight(xml);
+      //MARGIN생성
+      viewHTML += getMargin(xml);
       //BACKGROUND생성
       viewHTML += getBackground(xml);
       //Orientation생성
@@ -523,27 +523,27 @@ $(document).ready(function()
    // XML Relative Margin값 추출
    function getRelativeMargin(xml)
    {
-      var xmlMarginLeft = xml.attr("android:layout_marginLeft");
-      var xmlMarginRight = xml.attr("android:layout_marginRight");
-      var xmlMarginBottom = xml.attr("android:layout_marginBottom");
-      var xmlMarginTop = xml.attr("android:layout_marginTop");
+      var xmlToRightOf = xml.attr("android:layout_toRightOf");
+      var xmlToLeftOf = xml.attr("android:layout_toLeftOf");
+      var xmlBelow = xml.attr("android:layout_below");
+      var xmlAlignParentRight = xml.attr("android:layout_alignParentRight");
 
-      if(xmlMarginLeft == null && xmlMarginRight == null && 
-         xmlMarginBottom == null && xmlMarginTop == null)
+      if(xmlToRightOf == null && xmlToLeftOf == null && 
+         xmlBelow == null && xmlAlignParentRight == null)
       {
          return "";
       }
       else
       {
          var xmlRelativeMargin = "";
-         if(xmlMarginLeft != null)
-            xmlRelativeMargin += "left:"+xmlMarginLeft+";";
-         if(xmlMarginRight != null)
-            xmlRelativeMargin += "right:"+xmlMarginRight+";";
-         if(xmlMarginBottom != null)
-            xmlRelativeMargin += "bottom:"+xmlMarginBottom+";";
-         if(xmlMarginTop != null)
-            xmlRelativeMargin += "top:"+xmlMarginTop+";";
+         if(xmlToRightOf != null)
+            xmlRelativeMargin += "left:"+xmlRelativeMargin+";";
+         if(xmlToLeftOf != null)
+            xmlRelativeMargin += "right:"+xmlRelativeMargin+";";
+         if(xmlBelow != null)
+            xmlRelativeMargin += "bottom:"+xmlRelativeMargin+";";
+         if(xmlAlignParentRight != null)
+            xmlRelativeMargin += "top:"+xmlRelativeMargin+";";
          return xmlRelativeMargin;
       }
    }
