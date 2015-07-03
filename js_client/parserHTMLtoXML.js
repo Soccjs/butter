@@ -16,6 +16,10 @@ $(document).ready(function()
 		editor.setValue(makeParser(), 1);
 	});
 
+	 directParser1 = function(){
+		editor = ace.edit("right_editor_inner");
+		editor.setValue(makeParser(), 1);
+    }
 	// HTML parser
 	function makeParser()
 	{
@@ -384,10 +388,10 @@ $(document).ready(function()
 	// XML Relative Margin값 추출
    function getRelativeMargin(html)
    {
-      var htmlMarginLeft = getStyleValue(html, "left");
-      var htmlMarginRight = getStyleValue(html, "right");
-      var htmlMarginBottom = getStyleValue(html, "bottom");
-      var htmlMarginTop = getStyleValue(html, "top");
+      var htmlMarginLeft = getStyleValue(html, "margin-left");
+      var htmlMarginRight = getStyleValue(html, "margin-right");
+      var htmlMarginBottom = getStyleValue(html, "margin-bottom");
+      var htmlMarginTop = getStyleValue(html, "margin-top");
 
       if(htmlMarginLeft == null && htmlMarginRight == null && 
          htmlMarginBottom == null && htmlMarginTop == null)

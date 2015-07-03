@@ -1060,6 +1060,14 @@ function checkInput($obj){
 		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
 		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
 		$input.find("input[name=" + "text" + "]").val($obj.children().text());
+
+		$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+
+		$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
+		$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
+		$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
+		$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+
 	}
 	else if(_class.search("inputType")!==-1){
 		$obj=$obj.children();
@@ -1106,7 +1114,11 @@ function checkInput($obj){
 
 ///////////기본 특성 /////Basic func/////////////////////////////////////////////////////////////////////
 $( "#trash").sortable({
-		connectWith: ".layout_vertical,.layout_horizontal,.layout_relative,.FrameLayout",scroll:false
+		connectWith: ".layout_vertical,.layout_horizontal,.layout_relative,.FrameLayout"
+		,scroll:false
+		,receive:function(event, ui){
+		//	directParser1();
+		}
 }).disableSelection();
 
 $("#item_box").sortable({
@@ -1143,7 +1155,12 @@ $("#input").draggable();
      	var textSize = $("#input").find("input[name="+"font_size"+"]").val();
      	var Float = $("#input").find("input[name="+"float"+"]").val();
 
-
+     	var Layout_margin = $("#input").find("input[name="+"layout_margin"+"]").val();
+		var Layout_marginLeft = $("#input").find("input[name="+"margin_left"+"]").val();
+     	var Layout_marginRight = $("#input").find("input[name="+"margin_right"+"]").val();
+     	var Layout_marginTop = $("#input").find("input[name="+"margin_top"+"]").val();
+     	var Layout_marginBottom = $("#input").find("input[name="+"margin_bottom"+"]").val();
+     	
 
 		if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
 		 	$('#' + id).css("background",background);
@@ -1153,7 +1170,20 @@ $("#input").draggable();
 		 	$('#' + id).css("text-align",gravity);
 		 	$('#' + id).css("color",textColor);
 		 	$('#' + id).css("font-size",textSize);
-		 	$('#' + id).text(text);
+		 	
+		 	if(Layout_margin!=="0px"){
+		 		$('#' + id).css("margin",Layout_margin);
+		 	}
+		 	else{
+			 	$('#' + id).css("margin-left",Layout_marginLeft);
+			 	$('#' + id).css("margin-right",Layout_marginRight);
+			 	$('#' + id).css("margin-top",Layout_marginTop);
+			 	$('#' + id).css("margin-bottom",Layout_marginBottom);
+		 	}
+		 	$('#' + id).children().text(text);
+		 	
+		 	
+
 		 }
 		 else if(_class.search("inputType")!==-1){
 			$obj=$obj.children();

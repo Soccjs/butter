@@ -195,9 +195,7 @@ $(document).ready(function()
    function makeTextView(xml)
    {
       //DIV생성
-      var viewHTML = "<div>";
-      //SPAN생성
-      viewHTML += "<span ";
+      var viewHTML = "<div ";
       //ID생성
       viewHTML += getId(xml, "TextView");
       //TextView Class 생성
@@ -208,6 +206,8 @@ $(document).ready(function()
       viewHTML += makeDefaultView(xml);
       //END DIV생성
       viewHTML += "\">";
+      //SPAN생성
+      viewHTML += "<span>";
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
       viewHTML += getText(xml)+"</span></div>";
       return viewHTML;
@@ -217,9 +217,7 @@ $(document).ready(function()
    function makeButton(xml)
    {
       //DIV생성
-      var viewHTML = "<div>";
-      //SPAN생성
-      viewHTML += "<span ";
+      var viewHTML = "<div ";
       //ID생성
       viewHTML += getId(xml, "Button");
       //TextView Class 생성
@@ -230,6 +228,8 @@ $(document).ready(function()
       viewHTML += makeDefaultView(xml);
       //END DIV생성
       viewHTML += "\">";
+        //SPAN생성
+      viewHTML += "<span>";
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
       viewHTML += getText(xml)+"</span></div>";
       return viewHTML;
@@ -502,7 +502,7 @@ $(document).ready(function()
          var xmlMarginRight = xml.attr("android:layout_marginRight");
          var xmlMarginBottom = xml.attr("android:layout_marginBottom");
          var xmlMarginTop = xml.attr("android:layout_marginTop");
-
+         
          if(xmlMarginTop != null)
             xmlMargin += "margin-top:"+xmlMarginTop+";";
          if(xmlMarginRight != null)
