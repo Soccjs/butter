@@ -470,7 +470,7 @@ $(document).ready(function()
    function getBackground(xml)
    {
       var xmlBackground = xml.attr("android:src");
-      if(null != xmlBackground) // 안드로이드드 select 기능을 위해 src와 background가 구분 뒤어 있지만 View 상에서 무의미(역파싱 고려)
+      if(null == xmlBackground) // 안드로이드드 select 기능을 위해 src와 background가 구분 뒤어 있지만 View 상에서 무의미(역파싱 고려)
          xmlBackground = xml.attr("android:background");
 
       if(null != xmlBackground)
