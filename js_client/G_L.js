@@ -1146,7 +1146,15 @@ $("#input").draggable();
 ///////////////input delete, complete///////////////////////////////////////////////////////////////////////////////
      $("#delete").click(function() { //object delete
      	var id = $("#input").find("input[name="+"obj_id"+"]").val();
-     	$('#' + id).remove();
+		if( $('#' + id).attr("class").search("RadioButton") !== -1 || $('#' + id).attr("class").search("CheckBox") !== -1 ){
+			
+			$('#' + id).parent().remove();
+
+		}else{
+
+			$('#' + id).remove();
+		}
+     	
      });	
 
      $("#complete").click(function() {
