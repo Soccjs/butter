@@ -476,8 +476,8 @@ $(document).ready(function()
       if(null != xmlBackground)
       {
          // XML Path 경로 추가 -------+-------+-------+-------
-         var filePath = "";
-         xmlBackground = "background:url('"+filePath+"/"+xmlBackground+"');background-size:cover;background-repeat:no-repeat;"
+         //var filePath = "";
+         xmlBackground = "background-color:"+xmlBackground+";background-size:cover;background-repeat:no-repeat;"
          if(getWidth(xml) == "width:100%;")
          {
             xmlBackground += "display:inline-block;";
