@@ -308,11 +308,17 @@ $(document).ready(function()
       viewHTML += setClass("inputType");
       //STYLE생성
       viewHTML += "style=\""+defaultOrientation;
-      //MARGIN생성
-      viewHTML += getMargin(xml);
-      //WIDTH생성
-      viewHTML += getWidth(xml);
+      // //MARGIN생성
+      // viewHTML += getMargin(xml);
+      // //WIDTH생성
+      // viewHTML += getWidth(xml);
+       // // 기본 Default View 속성 생성
+      viewHTML += makeDefaultView(xml);
+      //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
+      
+
       //END STYLE생성
+
       viewHTML += "\">";
       //INPUT생성
       viewHTML += "<input ";
@@ -323,11 +329,12 @@ $(document).ready(function()
          case "radio" : viewHTML += setClass("RadioButton"); viewHTML += getId(xml, "RadioButton"); break;
          case "checkbox" : viewHTML += setClass("CheckBox"); viewHTML += getId(xml, "CheckBox"); break;
       }
-      //SPAN STYLE생성
-      viewHTML += "style=\"";
-      // 기본 Default View 속성 생성
-      viewHTML += makeDefaultView(xml);
-      //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
+         // //SPAN STYLE생성
+         // viewHTML += "style=\"";
+     // 1    // // 기본 Default View 속성 생성
+     //     viewHTML += makeDefaultView(xml);
+     //     //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
+      
       if(type == "text")
          viewHTML += "\" value=\""+getText(xml)+"\" type=\""+type+"\"></input>";
       else
@@ -470,14 +477,14 @@ $(document).ready(function()
    function getBackground(xml)
    {
       var xmlBackground = xml.attr("android:src");
-      if(null != xmlBackground) // 안드로이드드 select 기능을 위해 src와 background가 구분 뒤어 있지만 View 상에서 무의미(역파싱 고려)
+      if(null == xmlBackground) // 안드로이드드 select 기능을 위해 src와 background가 구분 뒤어 있지만 View 상에서 무의미(역파싱 고려)
          xmlBackground = xml.attr("android:background");
 
       if(null != xmlBackground)
       {
          // XML Path 경로 추가 -------+-------+-------+-------
-         var filePath = "";
-         xmlBackground = "background:url('"+filePath+"/"+xmlBackground+"');background-size:cover;background-repeat:no-repeat;"
+         //var filePath = "";
+         xmlBackground = "background-color:"+xmlBackground+";background-size:cover;background-repeat:no-repeat;"
          if(getWidth(xml) == "width:100%;")
          {
             xmlBackground += "display:inline-block;";

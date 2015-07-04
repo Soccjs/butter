@@ -61,10 +61,7 @@
 			if(event.type==="click"){
 				console.log("hi");
 				console.log("event click");
-				if(sortableFlag===false){
-					sortableFlag=true;
-					return;
-				}
+				
 				if(clickFlag){//안누른 상태 
 					clickFlag=false;
 					$tmp=$(event.target);

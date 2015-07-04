@@ -914,6 +914,7 @@ socket.on("push_response", function(data) {
 	var clickFlag = true;
 	var sortableFlag = true;
 	var $tmp,$before,$after;
+	var beforeClass, afterClass;
 //////////////메뉴에서 선택////select component in menu///////////////////////////////////
 $( "li", $widget ).click(function( event){
 	var $li_target = $(event.target);
@@ -1018,7 +1019,6 @@ function goto_item_box(selected){
 				connectToSortable:".layout_vertical,.layout_horizontal,#trash",
 				//containment:"parent",
 				scroll:false,
-				placeholder: "ui-state-highlight",
 				start: function(event, ui){
 					sortableFlag=false;
 				}
@@ -1163,6 +1163,7 @@ $("#input").draggable();
      	var Layout_marginTop = $("#input").find("input[name="+"margin_top"+"]").val();
      	var Layout_marginBottom = $("#input").find("input[name="+"margin_bottom"+"]").val();
      	
+     	console.log("id class" + id + " jdj" + _class);
 
 		if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
 		 	$('#' + id).css("background",background);
@@ -1187,30 +1188,28 @@ $("#input").draggable();
 		 	
 
 		 }
-		 else if(_class.search("inputType")!==-1){
-			$obj=$obj.children();
-			_class=$obj.attr("class");
-			if(_class.search("EditText")!==-1){
-				$('#' + id).css("background",background);
-		     	$('#' + id).css("width",width);
-		     	$('#' + id).css("height",height);
-		     	$('#' + id).css("line-height",height);
-		     	$('#' + id).css("text-align",gravity);
-		     	$('#' + id).css("color",textColor);
-		     	$('#' + id).css("font-size",textSize);
+		 else if(_class.search("EditText")!==-1){
+				$('#' + id).parent().css("background",background);
+		     	$('#' + id).parent().css("width",width);
+		     	$('#' + id).parent().css("height",height);
+		     	$('#' + id).parent().css("line-height",height);
+		     	$('#' + id).parent().css("text-align",gravity);
+		     	$('#' + id).parent().css("color",textColor);
+		     	$('#' + id).parent().css("font-size",textSize);
 			    $('#' + id).attr("value",text);
-			}
-			else{//radio,check
-				$obj=$obj.parent();
-				$('#' + id).css("background",background);
-		     	$('#' + id).css("width",width);
-		     	$('#' + id).css("height",height);
-		     	$('#' + id).css("line-height",height);
-		     	$('#' + id).css("text-align",gravity);
-		     	$('#' + id).css("color",textColor);
-		     	$('#' + id).css("font-size",textSize);
+		}
+		else if(_class.search("CheckBox")!==-1||_class.search("RadioButton")!==-1){//radio,check
+				console.log("this is check")
+				console.log($('#'+id));
+				$('#' + id).parent().css("background",background);
+		     	$('#' + id).parent().css("width",width);
+		     	$('#' + id).parent().css("height",height);
+		     	$('#' + id).parent().css("line-height",height);
+		     	$('#' + id).parent().css("text-align",gravity);
+		     	$('#' + id).parent().css("color",textColor);
+		     	$('#' + id).parent().css("font-size",textSize);
 				//$input.find("input[name=" + "text" + "]").val($obj.text());
-			}
+			
 		}
 		else if(_class.search("Layout")!==-1||_class.search("layout")!==-1){
 			if(_class.search("layout")!==-1){
@@ -1241,10 +1240,10 @@ $("#input").draggable();
 
 $(trash).on('click mousedown mouseup', function(){
 	//var $target = $( this ),
-	$obj = $( event.target );
-	console.log(event.target);
+	var $obj = $( event.target );
+	//console.log(event.target);
 	var _class = $obj.attr("class");
-	console.log("class= " + _class);
+	//console.log("class= " + _class);
 
 	if(event.type==="click"){
 
@@ -1271,60 +1270,114 @@ $(trash).on('click mousedown mouseup', function(){
 			console.log("4");
 			checkInput($obj);
 		}
+		else if(_class.search("header")!==-1){
+			console.log("5");
+		}
 		else{
 			console.log("6");
 			$obj = $obj.parent();
-			checkInput($obj);		}
-		///////////////////////////
-		if(sortableFlag===false){ 
-			sortableFlag=true
-			return;
+			checkInput($obj);		
 		}
+		
+		///////////////////////////
+		// if(sortableFlag===false){ 
+		// 	sortableFlag=true;
+		// 	return;
+		// }
 		if(clickFlag){//안누른상태
 			clickFlag=false;
 			$before=$obj;
-			console.log("before = " + $before.attr("class"));
+			beforeClass = $before.attr("class");
+
+			if(beforeClass.search("header")!==-1){
+				console.log("before = trash");
+				clickFlag = true;
+				$before.end();
+				return;
+			}
+
+			console.log("before = " + beforeClass);
 			$before.css("opacity", "0.3");
 		}
 		else{
-			$after = $obj.children();
-			var _class=$after.attr("class");
-			console.log("after = " + _class);
-			if(_class==="undefined"){
+			$after = $obj;
+			var afterClass=$after.attr("class");
+			console.log("after = " + afterClass);
+			
+			if($before[0] === $after[0]){
+				console.log("same before after");
+				$before.css("opacity","1");
+				$before.end();
+				$after.end();
 				clickFlag=true;
 				return;
 			}
-			if(_class.search("layout_vertical")!==-1||_class.search("layout_relative")!==-1){
-				if($before.attr("class")===$after.parent().attr("class")){
-					console.log("같은 레이아웃");
-					$before.css("opacity",1);
-					clickFlag=true;
-					return;
+						
+			var afterUlClass = $after.children().attr("class");
+			if(afterClass.search("Layout")!==-1){
+				if(afterClass.search("Linear")!==-1){	//into Linearlayout
+					console.log("into linear");
+				 	
+				 	if($('#' + $before.attr("id") + ' #' + $after.attr("id")).length){//before>after
+				 		console.log("before > after");
+				 		$before.css("opacity", "1");
+				 		$before.end();
+				 		$after.end();
+				 		clickFlag=true;
+				 		return;
+				 	}  
+                    else{
+                    	console.log("[move]" + $before.attr("id")+" -> "+$after.attr("id"));
+                    	console.log(afterUlClass);
+                    	if(afterUlClass.search("vertical")){	//vertical 
+                    		$before.css("display", "block");
+                    	}
+                    	else{									//horizontal
+                    		$before.css("display", "inline-block");
+                    	}
+                    	$before.css("opacity","1");
+	        			$before.css("left",0).css("top",0);
+	                    $before.appendTo($after.find("ul:eq(0)"));
+						$before.end();
+						$after.end();
+						clickFlag=true;	
+                    }
 				}
-				else{
-					if(_class.search("layout_vertical")!==-1||_class.search("layout_horizontal")!==-1){
-						$before.draggable("disable");
-					}
-					else if(_class.search("layout_relative")!==-1){
-						$before.draggable({containment:"parent"});
-					}
+				else if(afterClass.search("Relative")!==-1){//into LinearLayout
+					console.log("into Relative");
+					if($('#' + $before.attr("id") + ' #' + $after.attr("id")).length){//before>after
+				 		console.log("before > after");
+				 		$before.css("opacity", "1");
+				 		$before.end();
+				 		$after.end();
+				 		clickFlag=true;
+			 			return;
+				 	}  
+                    else{
+                    	console.log("move");
+ 						$before.css("opacity","1");
+ 						$before.css("left",0).css("top",0);
+	                    $before.appendTo($after.find("ul:eq(0)"));
+						$before.end();
+						$after.end();
+						clickFlag=true;	
+                    }
 				}
-				console.log("ok");	
-				$before.appendTo(($after).parent().find("ul"));
-				$before.css("opacity",1);
-				clickFlag = true;
-
 			}
 			else{
-				console.log("that's nono");
-				$before.css("opacity",1);
-				clickFlag=true;
+				console.log("not layout")
+				$before.css("opacity", "1");
+		 		$before.end();
+		 		$after.end();
+		 		clickFlag=true;
+	 			return; 	
 			}
-		//$target.end();
-		$obj.end();
+
 		}
+
+		$obj.end();
+		
 	}
-	
 });
 
 
