@@ -912,7 +912,6 @@ socket.on("push_response", function(data) {
 	var $input = $("#input");
 
 	var clickFlag = true;
-	var sortableFlag = true;
 	var $tmp,$before,$after;
 	var beforeClass, afterClass;
 //////////////메뉴에서 선택////select component in menu///////////////////////////////////
@@ -1004,11 +1003,16 @@ function goto_item_box(selected){
 				containment:"#parent" , autoHide:true, handles:"e,s"
 			})
 			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
-				
+			,receive: function(event, ui){
+				console.log("receive "+ ui.item.attr("id"));
+				var axis = $( event.target ).sortable( "option", "axis" );
+				console.log(axis);
+			}	
 			}).disableSelection();
 	 			break;
  		case"RelativeLayout": 
- 			$("#item_box").children().resizable({
+ 			$("#item_box").children()
+ 			.resizable({
 				maxHeight: 360,
 				maxWidth: 360,
 				minHeight: 30,
@@ -1016,11 +1020,9 @@ function goto_item_box(selected){
 				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
 			})
 			.draggable({
-				connectToSortable:".layout_vertical,.layout_horizontal,#trash",
-				//containment:"parent",
+				connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,#trash",
 				scroll:false,
 				start: function(event, ui){
-					sortableFlag=false;
 				}
 			});
 	 			break;
@@ -1126,15 +1128,19 @@ $("#input").draggable();
 //////////////make layout class////////////////////////////////////////////////////////////////////////////
 	$(".layout_vertical").sortable({
 		revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
-		,start: function(event, ui){
-				sortableFlag=false;
-			}
+			,receive: function(event, ui){
+				console.log("receive "+ ui.item.attr("id"));
+				var axis = $( event.target ).sortable( "option", "axis" );
+				console.log(axis);
+			}	
 	}).disableSelection();
 	$(".layout_horizontal").sortable({
-		revert:false,axis:"x",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
-		,start: function(event, ui){
-				sortableFlag=false;
-			}
+		revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+		,receive: function(event, ui){
+		console.log("receive "+ ui.item.attr("id"));
+		var axis = $( event.target ).sortable( "option", "axis" );
+		console.log(axis);
+		}	
 	}).disableSelection();
 
 ///////////////input delete, complete///////////////////////////////////////////////////////////////////////////////
@@ -1163,7 +1169,6 @@ $("#input").draggable();
      	var Layout_marginTop = $("#input").find("input[name="+"margin_top"+"]").val();
      	var Layout_marginBottom = $("#input").find("input[name="+"margin_bottom"+"]").val();
      	
-     	console.log("id class" + id + " jdj" + _class);
 
 		if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
 		 	$('#' + id).css("background",background);
@@ -1236,6 +1241,46 @@ $("#input").draggable();
 		}
 			
 	});	
+
+/////////////input on click//////////////////////////////////////////////////////////////
+$("#item_box").on('click', function(){
+	var $obj = $( event.target );
+	//console.log(event.target);
+	var _class = $obj.attr("class");
+	//console.log("class= " + _class);
+
+	console.log(event.type+ " " + $obj.attr('id') +"  " + $obj.attr('class'));
+
+	if(typeof _class ==="undefined"){//TextView, Button
+		console.log("1");
+		$obj = $obj.parent();
+		checkInput($obj);
+	}
+	else if(_class.search("EditText") !==-1){
+		console.log("5");
+		$obj = $obj.parent();
+		checkInput($obj);		}
+	else if(_class.search("inputType") !==-1){
+		console.log("3");
+		checkInput($obj);
+	}
+	else if(_class.search("RadioButton") !==-1||_class.search("CheckBox")!==-1){
+		console.log("2");
+		$obj = $obj.parent();
+		checkInput($obj);		}
+	else if(_class.search("Layout")!==-1){
+		console.log("4");
+		checkInput($obj);
+	}
+	else if(_class.search("header")!==-1){
+		console.log("5");
+	}
+	else{
+		console.log("6");
+		$obj = $obj.parent();
+		checkInput($obj);		
+	}
+});
 /////////////trash on click///////////////////////////////////////////////////////////////
 
 $(trash).on('click mousedown mouseup', function(){
@@ -1280,10 +1325,7 @@ $(trash).on('click mousedown mouseup', function(){
 		}
 		
 		///////////////////////////
-		// if(sortableFlag===false){ 
-		// 	sortableFlag=true;
-		// 	return;
-		// }
+		
 		if(clickFlag){//안누른상태
 			clickFlag=false;
 			$before=$obj;
@@ -1331,6 +1373,8 @@ $(trash).on('click mousedown mouseup', function(){
                     	console.log(afterUlClass);
                     	if(afterUlClass.search("vertical")){	//vertical 
                     		$before.css("display", "block");
+                            $before.draggable({connectToSortable:".layout_vertical,.layout_horizontal"});
+
                     	}
                     	else{									//horizontal
                     		$before.css("display", "inline-block");
@@ -1358,6 +1402,7 @@ $(trash).on('click mousedown mouseup', function(){
  						$before.css("opacity","1");
  						$before.css("left",0).css("top",0);
 	                    $before.appendTo($after.find("ul:eq(0)"));
+	                    $before.draggable({containment:"parent",connectToSortable:false});
 						$before.end();
 						$after.end();
 						clickFlag=true;	
