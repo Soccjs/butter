@@ -105,9 +105,17 @@ $(document).ready(function()
 		{
 			case "TextView" : eachXML += makeTextView(htmlDoc); break;
 			case "Button" : eachXML += makeButton(htmlDoc); break;
-			case "EditText" : eachXML += makeEditText(htmlDoc); break;
-			case "RadioButton" : eachXML += makeRadioButton(htmlDoc); break;
-			case "CheckBox" : eachXML += makeCheckBox(htmlDoc); break;
+			case "inputType" :
+			{
+				var subType = htmlDoc.attr("type");
+				switch(subType)
+				{
+					case "text" : eachXML += makeEditText(htmlDoc); break;
+					case "radio" : eachXML += makeRadioButton(htmlDoc); break;
+					case "checkbox" : eachXML += makeCheckBox(htmlDoc); break;
+				}
+			}
+			break;
 			case "WebView" : eachXML += makeWebView(htmlDoc); break;
 			case "ImageView" : eachXML += makeImageView(htmlDoc); break;
 			case "ScrollView" : eachXML += makeScrollView(htmlDoc); break;
@@ -453,7 +461,7 @@ $(document).ready(function()
 	// HTML Value Text값 추출
 	function getValueText(html)
 	{
-		return "android:text=\""+html.attr("value")+"\"\n";
+		return "android:text=\""+html.attr("text")+"\"\n";
 	}
 
 	// HTML Gravity 추출
