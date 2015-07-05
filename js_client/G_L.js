@@ -961,10 +961,10 @@ function goto_item_box(selected){
 		$("<div class=\"inputType\" ><input type=\"text\" class=\"EditText\" id=\"edittext"+(e_t_cnt++)+"\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
 		break;
 		case "CheckBox" :
-		$("<div class=\"inputType\" ><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox"+(c_b_cnt++)+"\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
+		$("<div class=\"inputType\"  style=\"display:block;\" text=\"CheckBox\" type=\"checkbox\"><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox"+(c_b_cnt++)+"\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
 		break;
 		case "RadioButton" :
-		$("<div class=\"inputType\" ><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton"+(r_b_cnt++)+"\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
+		$("<div class=\"inputType\"  style=\"display:block;\" text=\"RadioButton\" type=\"radio\"><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton"+(r_b_cnt++)+"\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
 		break;
 		case "LinearLayout" :
 		$("<div class=\"LinearLayout\" id=\"linearlayout"+(l_l_cnt++)+"\" ><ul class=\"layout_vertical\"></ul></div>").appendTo("#item_box");
@@ -992,13 +992,7 @@ function goto_item_box(selected){
 
 	switch(selected){
 		case "TextView" : case "Button": case"CheckBox": case"RadioButton":
-		$("#item_box").children().resizable({
-			maxHeight: 360,
-			maxWidth: 360,
-			minHeight: 30,
-			minWidth: 50,
-			containment:"#item_box" , autoHide:true, handles:"e,s"
-		});
+		$("#item_box").children();
 		break;
 		case "EditText" :
 		$("#item_box").find(".EditText").parent().resizable({
