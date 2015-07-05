@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="./draganddrop_test/jquery-ui.js"></script>
+
+	<style>
+	#trash{
+		width: 800px;
+		height:1000px;
+		border: 1px solid black;
+		box-sizing: border-box;
+		margin:0 auto;		
+	}
+	.Linear{
+		width:180px;
+		height:320px;
+		border: 1px solid blue;
+		box-sizing: border-box;		
+		margin: 0 auto;
+		float: left
+	}
+	.TextView{
+		margin-left:3px;
+		margin-top: 3px;
+		width:100px;
+		height:30px;
+		border: 1px solid green;
+		box-sizing: border-box;		
+		float: left;
+	}
+	#L2{
+		width: 150px;
+		height: 150px;
+	}
+
+	.droptarget {
+		background: yellow;
+		float: left; 
+		width: 100px; 
+		height: 35px;
+		padding: 10px;
+		border: 1px solid #aaaaaa;
+	}
+	</style>
+	<script>
+
+	$(function(){
+
+		var $trash = $("#trash");
+
+		var sortableFlag=true;
+		var clickFlag=true;
+		var $tmp,$L;
+		var $selected;
+		var $layout;
+		$(trash).on('click', function(){
+			
+			console.log("event = " + event.type);
+
+			if(event.type==="click"){
+				console.log("hi");
+				console.log("event click");
+				
+				if(clickFlag){//안누른 상태 
+					clickFlag=false;
+					$tmp=$(event.target);
+					console.log($tmp.attr("id"));
+					console.log($tmp.css("opacity", "0.3"));
+				}
+				else{
+					$L=$(event.target);
+					console.log($L.attr("id") + " click");
+					var _class=$L.attr("class");
+					if(_class.search("Linear")!=-1){
+						$tmp.appendTo($L);
+						$tmp.css("opacity","1");
+						clickFlag=true;
+						console.log("OK");
+						
+					}
+					else{
+						$tmp.css("opacity","1");
+						clickFlag=true;
+						
+						console.log("That's nono");
+					}	
+				}
+			}
+			else if(event.type==="mousedown"){
+				$selected =$(event.target);
+				console.log($selected.attr("id") + " click");
+				event.preventDefault();
+
+			}
+			else if(event.type==="mouseup"){
+				$layout = $(event.target);
+				
+				
+			}
+			
+		});
+		$(trash).sortable({
+			revert: true,      
+			placeholder: "ui-state-highlight",
+			appendTo:"L2"
+		}).disableSelection();
+		$(".Linear").sortable({
+			axis: "y",
+			revert: true,
+			placeholder: "ui-state-highlight",
+			start: function(event, ui){
+				console.log("bye");
+				sortableFlag=false;
+			}
+		}).disableSelection();
+
+	});
+</script>
+</head>
+
+<body>
+
+	<div id="trash">
+		<div id="L1" class="Linear">
+
+			<div id="T1" class="TextView">1</div>
+			<div id="T2" class="TextView">2</div>
+			<div id="T3" class="TextView">3</div>
+			<div id="L2" class="Linear">
+				<div id="T4" class="TextView">4</div>
+				<div id="T5" class="TextView">5</div>			
+			</div>
+			<div id="T6" class="TextView">6</div>
+			<div id="T7" class="TextView">7</div>			
+			<iframe src="http://goto.kakao.com/@%ED%95%9C%ED%99%94%EC%9D%B4%EA%B8%80%EC%8A%A4" style="width:360px;height:360px;" frameborder="0"></iframe> 
+		</div>
+	</div>
+	
+</body>
+</html>

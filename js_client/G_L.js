@@ -905,9 +905,12 @@ socket.on("push_response", function(data) {
 	var r_l_cnt=0;//relativelayout count
 	var l_l_cnt=0;//LenearLayout count
 	var f_l_cnt=0;//FrameLayout count
+	var w_v_cnt=0;//Webview count
+	var s_v_cnt=0;//Scrollview count
 
 	var $widget = $("#widget" );
 	var $layout = $("#layout");
+	var $view = $("#view");
 	var $trash = $("#trash");
 	var $input = $("#input");
 
@@ -926,6 +929,16 @@ $( "li", $widget ).click(function( event){
 });
 
 $( "li", $layout ).click(function(event){
+	var $li_target = $(event.target);
+	var selected_item = $li_target.text();
+	console.log("[select] " + selected_item  + " click");
+
+	$("#item_box").children().remove();
+
+	goto_item_box(selected_item);
+});	
+
+$( "li", $view ).click(function(event){
 	var $li_target = $(event.target);
 	var selected_item = $li_target.text();
 	console.log("[select] " + selected_item  + " click");
@@ -962,6 +975,9 @@ function goto_item_box(selected){
 		case "FrameLayout" :
 		$("<div class=\"FrameLayout\" id=\"framelayout"+(f_l_cnt++)+"\" ><ul class=\"layout_frame\"></ul></div>").appendTo("#item_box");
 		break;				
+		case "WebView" :
+		$("<iframe src=\"http://goto.kakao.com/@%ED%95%9C%ED%99%94%EC%9D%B4%EA%B8%80%EC%8A%A4\" id=\"wbview"+(w_v_cnt++)+"\" class=\"WebView\" style=\"width:360px;height:360px;\" frameborder=\"3\"></iframe>").appendTo("#item_box");
+		break;
 		default:
 		break;
 	}
@@ -994,7 +1010,7 @@ function goto_item_box(selected){
 					//line-height
 				}
 			});break;
- 		case"LinearLayout": 
+ 		case "LinearLayout": 
 	 		$("#item_box").children().resizable({
 				maxHeight: 360,
 				maxWidth: 360,
@@ -1010,7 +1026,7 @@ function goto_item_box(selected){
 			}	
 			}).disableSelection();
 	 			break;
- 		case"RelativeLayout": 
+ 		case "RelativeLayout": 
  			$("#item_box").children()
  			.resizable({
 				maxHeight: 360,
@@ -1027,8 +1043,7 @@ function goto_item_box(selected){
 			});
 	 			break;
 
-
- 		case"FrameLayout":	
+ 		case "FrameLayout":	
  			$("#item_box").children().resizable({
 				maxHeight: 360,
 				maxWidth: 360,
@@ -1037,6 +1052,15 @@ function goto_item_box(selected){
 				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
 			}).sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
 	 			break;
+
+	 	case "WebView":
+		 	$("#item_box").children().resizable({
+				maxHeight: 480,
+				maxWidth: 360,
+				minHeight: 100,
+				minWidth: 100,
+				containment:"#item_box" , autoHide:true, handles:"e,s"
+			});break;
  		default:break;
 	}
 	checkInput($("#item_box").children());
@@ -1133,6 +1157,16 @@ function checkInput($obj){
 		else{
 			$input.find("input[name=" + "float" + "]").val("vertical");
 		}
+		$input.find("input[name=" + "text" + "]").val("");
+	}
+	else if(_class.search("WebView")!==-1){
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
+		$input.find("input[name=" + "background" + "]").val("");
+		$input.find("input[name=" + "text_align" + "]").val("");
+		$input.find("input[name=" + "color" + "]").val("");
+		$input.find("input[name=" + "font_size" + "]").val("");
 		$input.find("input[name=" + "text" + "]").val("");
 	}
 }
@@ -1268,24 +1302,28 @@ $("#input").draggable();
 			if(_class.search("layout")!==-1){
 
 			}
-				$('#' + id).children().css("background",background);
-		     	$('#' + id).css("width",width);
-		     	$('#' + id).css("height",height);
-		     	//$('#' + id).css("line-height",height);
-		     	$('#' + id).css("text-align",gravity);
-		     	$('#' + id).css("color",textColor);
-		     	$('#' + id).css("font-size",textSize);
-		     	if(_class.search("LinearLayout")!==-1){
-		     		console.log("float= " + Float);
-		     		if(Float==="vertical"){
-		     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical")
-		     			.sortable( "option", "axis", "y" );
-		     		}
-		     		else{
-		     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal")
-		     			.sortable( "option", "axis", "x" );
-		     		}
-		     	}
+			$('#' + id).children().css("background",background);
+	     	$('#' + id).css("width",width);
+	     	$('#' + id).css("height",height);
+	     	//$('#' + id).css("line-height",height);
+	     	$('#' + id).css("text-align",gravity);
+	     	$('#' + id).css("color",textColor);
+	     	$('#' + id).css("font-size",textSize);
+	     	if(_class.search("LinearLayout")!==-1){
+	     		console.log("float= " + Float);
+	     		if(Float==="vertical"){
+	     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical")
+	     			.sortable( "option", "axis", "y" );
+	     		}
+	     		else{
+	     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal")
+	     			.sortable( "option", "axis", "x" );
+	     		}
+	     	}
+		}
+		else if(_class.search("WebView")!==-1){
+			$('#' + id).css("width",width);
+	     	$('#' + id).css("height",height);
 		}
 			
 	});	
@@ -1323,8 +1361,12 @@ $("#item_box").on('click', function(){
 	else if(_class.search("header")!==-1){
 		console.log("5");
 	}
-	else{
+	else if(_class.search("WebView")!==-1){
 		console.log("6");
+		checkInput($obj);
+	}
+	else{
+		console.log("7");
 		$obj = $obj.parent();
 		checkInput($obj);		
 	}
@@ -1366,8 +1408,11 @@ $(trash).on('click mousedown mouseup', function(){
 		else if(_class.search("header")!==-1){
 			console.log("5");
 		}
-		else{
+		else if(_class.search("WebView")!==-1){
 			console.log("6");
+		}
+		else{
+			console.log("7");
 			$obj = $obj.parent();
 			checkInput($obj);		
 		}
