@@ -978,6 +978,10 @@ function goto_item_box(selected){
 		case "WebView" :
 		$("<iframe src=\"http://goto.kakao.com/@%ED%95%9C%ED%99%94%EC%9D%B4%EA%B8%80%EC%8A%A4\" id=\"wbview"+(w_v_cnt++)+"\" class=\"WebView\" style=\"width:360px;height:360px;\" frameborder=\"3\"></iframe>").appendTo("#item_box");
 		break;
+		case "ScrollView" :
+		$("<div class=\"ScrollView\" id=\"scrollview"+(s_v_cnt++)+"\" style=\"\" >").appendTo("#item_box");
+		break;
+		
 		default:
 		break;
 	}
@@ -1023,6 +1027,12 @@ function goto_item_box(selected){
 				console.log("receive "+ ui.item.attr("id"));
 				var axis = $( event.target ).sortable( "option", "axis" );
 				console.log(axis);
+				if(axis==='y'){
+					$(ui.item).css("display","block");
+				}
+				else{
+					$(ui.item).css("display","inline-block");
+				}
 			}	
 			}).disableSelection();
 	 			break;
@@ -1061,6 +1071,15 @@ function goto_item_box(selected){
 				minWidth: 100,
 				containment:"#item_box" , autoHide:true, handles:"e,s"
 			});break;
+		case "ScrollView":
+		 	$("#item_box").children().resizable({
+				maxHeight: 640,
+				maxWidth: 360,
+				minHeight: 100,
+				minWidth: 100,
+				containment:"#item_box" , autoHide:true, handles:"e,s"
+			});break; 	
+
  		default:break;
 	}
 	checkInput($("#item_box").children());
@@ -1171,6 +1190,17 @@ function checkInput($obj){
 		$input.find("input[name=" + "color" + "]").val("");
 		$input.find("input[name=" + "font_size" + "]").val("");
 		$input.find("input[name=" + "text" + "]").val("");
+	}
+	else if(_class.search("ScrollView")!==-1){
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
+		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
+		$input.find("input[name=" + "text_align" + "]").val("");
+		$input.find("input[name=" + "color" + "]").val("");
+		$input.find("input[name=" + "font_size" + "]").val("");
+		$input.find("input[name=" + "text" + "]").val("");
+		
 	}
 }
 
@@ -1328,8 +1358,13 @@ $("#input").draggable();
 			$('#' + id).css("width",width);
 	     	$('#' + id).css("height",height);
 		}
-			
-	});	
+		else if(_class.search("ScrollView")!==-1){
+	     	$('#' + id).css("width",width);
+	     	$('#' + id).css("height",height);
+			$('#' + id).css("background",background);
+		}
+	}	
+});	
 
 /////////////input on click//////////////////////////////////////////////////////////////
 $("#item_box").on('click', function(){
@@ -1413,9 +1448,14 @@ $(trash).on('click mousedown mouseup', function(){
 		}
 		else if(_class.search("WebView")!==-1){
 			console.log("6");
+			checkInput($obj);
+		}
+		else if(_class.search("ScrollView")!==-1){
+			console.log("7");
+			checkInput($obj);
 		}
 		else{
-			console.log("7");
+			console.log("8");
 			$obj = $obj.parent();
 			checkInput($obj);		
 		}
