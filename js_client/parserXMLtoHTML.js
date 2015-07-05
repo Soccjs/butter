@@ -22,6 +22,28 @@ $(document).ready(function()
 		console.log(cur_contents);
 		makeParser(cur_contents);
 	});
+      ////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
+   function rgb2hex(rgb){
+    
+      if(rgb[0]=='r' && rgb[1]=='g' && rgb[2]=='b' && rgb[3]=='a'){
+         rgb = rgb.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)$/);
+         return "#" +      
+           ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+           ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+           ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) +
+           ("0" + parseInt(rgb[4],10).toString(16)).slice(-2); 
+
+      }else{
+         rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+          return "#" +  
+           ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+           ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+           ("0" + parseInt(rgb[3],10).toString(16)).slice(-2); 
+      }
+           //this.style.backgroundColor = "rgba(" + [match[1],match[2],match[3],a].join(',') +")";
+   }
+
+
    
 	// XML parser
 	function makeParser(cur_contents)

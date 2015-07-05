@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="css/jquery.contextMenu.css" />
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 	<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
@@ -211,6 +212,10 @@
 			<input type="button" value="delete" id="delete" class="teal" style="width:49%;"/>
 			</div>
 		</div>
+
+	<div id="searchID" class="teal"><ul id="searchlist"></ul>
+ 	</div>
+	
 	<div id="left">
 		<div id = "item_dialog">
 		<div id = "item_box" > </div>
@@ -220,19 +225,12 @@
 			<div id="trash" class="ui-widget-header"></div>
 		</div>
 		
-		
-
-		  <div class="input-field col s12" style="  position: absolute;margin-left: 500px;margin-top: 700px;">
-		    <select >
-		      <option value="" disabled selected>Find Object</option>
-		      <option value="1">Option 1</option>
-		      <option value="2">Option 2</option>
-		      <option value="3">Option 3</option>
-		    </select>
-		    <label>Select</label>
-		  </div>
-
+		<div id="findID" class="teal" style="position: absolute;margin-left: 77%;margin-top: 64%;border-radius: 35%;">
+	      <i class="medium material-icons">search</i>
+ 		</div>	
+ 	
 	</div>
+
 
 	<div id="right">
 		<ul id="right_topbar_sortable">
@@ -242,7 +240,6 @@
 		</ul>
 
 		<div id="right_editor"></div>
-
 
 	</div>
 	<div id="right_drag"></div>

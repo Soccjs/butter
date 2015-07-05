@@ -1322,7 +1322,6 @@ $("#input").draggable();
      	console.log("[complete click] " + id);
    		
      	var _class = $('#' + id).attr("class");
-     	console.log(_class);
      	var ul_class;
 
      	var background = $("#input").find("input[name=" + "background" + "]").val();
@@ -1340,13 +1339,12 @@ $("#input").draggable();
      	var Layout_marginTop = $("#input").find("input[name="+"margin_top"+"]").val();
      	var Layout_marginBottom = $("#input").find("input[name="+"margin_bottom"+"]").val();
      	
-
-		if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
+		if(_class.search("TextView")!==-1 || _class.search("Button") ===0 ){
 		 	
 		 	ul_class = $('#' + id).parent().attr("class");
 		 	console.log("ul_class "+ ul_class);
 		 	console.log("layout_margin = "+Layout_margin.length);
-		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+		 	if((ul_class.search("vertical")!==-1)||(ul_class.search("horizontal")!==-1)||(ul_class.search("frame")!==-1)){//margin-left
 		 	 	if(Layout_margin==="0px"){
 		 		 	$('#' + id).css("margin-left",Layout_marginLeft);
 				 	$('#' + id).css("margin-right",Layout_marginRight);
@@ -1428,7 +1426,8 @@ $("#input").draggable();
 
 
 		}
-		else if(_class.search("CheckBox")!==-1||_class.search("RadioButton")!==-1){//radio,check
+		else if((_class.search("CheckBox")!==-1)||(_class.search("RadioButton")!==-1)){//radio,check
+			console.log("RB");
 		 	ul_class = $('#' + id).parent().parent().attr("class");
 		 	console.log("ul_class "+ ul_class);
 		 	console.log("layout_margin = "+Layout_margin.length);
@@ -1458,7 +1457,7 @@ $("#input").draggable();
 		 	}
 
 
-				console.log($('#'+id));
+				console.log("123132321"+$('#'+id).parent());
 				$('#' + id).parent().css("background",background);
 		     	$('#' + id).parent().css("width",width);
 		     	$('#' + id).parent().css("height",height);
@@ -1470,7 +1469,7 @@ $("#input").draggable();
 			
 		}
 		else if(_class.search("Layout")!==-1||_class.search("layout")!==-1){
-			if(_class.search("layout")!==-1){
+			//if(_class.search("layout")!==-1){
 				$('#' + id).children().css("background",background);
 		     	$('#' + id).css("width",width);
 		     	$('#' + id).css("height",height);
@@ -1483,13 +1482,15 @@ $("#input").draggable();
 		     		if(Float==="vertical"){
 		     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical")
 		     			.sortable( "option", "axis", "y" );
+		     			$('#' + id).children(":first").children().css("display","block");
 		     		}
-		     		else{
+		     		else if(Float==="horizontal"){
 		     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal")
 		     			.sortable( "option", "axis", "x" );
+		     			$('#' + id).children(":first").children().css("display","inline-block");
 		     		}
 		     	}
-			}
+			//}
 		}
 		else if(_class.search("WebView")!==-1){
 			ul_class = $('#' + id).parent().attr("class");
@@ -1635,10 +1636,10 @@ $(trash).on('click mousedown mouseup', function(){
 		}
 		///////////////////////////
 
-		$("#item_box").children().remove();
-		if($obj.css("opacity")==="1"){
-			$obj.clone(true).appendTo("#item_box");
-		}
+		// $("#item_box").children().remove();
+		// if($obj.css("opacity")==="1"){
+		// 	$obj.clone(true).appendTo("#item_box");
+		// }
 		// ///////////////////////////
 		
 		if(clickFlag){//안누른상태
@@ -1762,13 +1763,37 @@ $(trash).on('click mousedown mouseup', function(){
 });
 
 $("#confirm").click(function(){
-	$( "<option value=\"4\">Option 4</option>").appendTo(".dropdown-content select-dropdown");
+	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+
+	console.log($("#trash").find('#'+id).css("style"));
+	console.log($("#item_box").find('#'+id).css("style"));
+	$("#trash").find('#'+id).attr("style",$("#item_box").find('#'+id).attr("style"));
 });
 
+$("#findID").on("click", function(){
+	var html = $("#trash").html();
+	var ids = html.split("id=\"");
+	$("#searchlist").children().remove();
 
+
+	for(var i=1;i<ids.length;i++){
+		$("<li>"+ids[i].split("\"")[0]+"</li>").appendTo($("#searchlist"));
+	}
+	$("#searchID").css("visibility","visible");
+});
 	
 
+$("#searchlist").on('click', function(){
+    var selected_item = $(event.target).text();
+    console.log("[select] " + selected_item  + " click");
+    $("#item_box").children().remove();
+    $('#'+selected_item).clone(false).appendTo("#item_box")
+
+	$("#searchID").css("visibility","hidden");
+
+});
 //////////////////////////////////////////////////////////////////////////////
+
 
 
 

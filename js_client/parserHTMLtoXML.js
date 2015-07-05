@@ -15,7 +15,34 @@ $(document).ready(function()
 		editor = ace.edit("right_editor_inner");
 		editor.setValue(makeParser(), 1);
 	});
+	   ////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
+	function rgb2hex(rgb){
+	   if(rgb ===null){
+	   	return null;
+	   }
+	   if(rgb.search("#")!==-1){
+	   	return rgb;
+	   }
 
+	   if(rgb[0]=='r' && rgb[1]=='g' && rgb[2]=='b' && rgb[3]=='a'){
+	      rgb = rgb.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)$/);
+	      return "#" +      
+	        ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+	        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+	        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) +
+	        ("0" + parseInt(rgb[4],10).toString(16)).slice(-2); 
+
+	   }else{
+	      rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	       return "#" +  
+	        ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+	        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+	        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2); 
+	   }
+	        //this.style.backgroundColor = "rgba(" + [match[1],match[2],match[3],a].join(',') +")";
+	}
+
+	////////////////////////////////////////////////
 	 directParser1 = function(){
 		editor = ace.edit("right_editor_inner");
 		editor.setValue(makeParser(), 1);
@@ -30,7 +57,7 @@ $(document).ready(function()
 		$html = $(htmlDoc);
 		console.log("################after parseHTML() : " + $html.html()); 
 
-		var fullHtml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+		var fullHtml="";// = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 		fullHtml += makeChildeNode(htmlDoc);
 		return fullHtml;
 	}
@@ -409,7 +436,10 @@ $(document).ready(function()
 			//불필요한 태그 정보 삭제
 			htmlBackground = htmlBackground.replace("url('@drawable/", "");
 			htmlBackground = htmlBackground.replace("')", "");
-		
+			if(htmlBackground.search("rgb")!==-1){
+				htmlBackground=rgb2hex(htmlBackground);
+				return "android:background=\""+htmlBackground+"\"\n";
+			}
 			return "android:background=\"@drawable/"+htmlBackground+"\"\n";
 		}
 	}
@@ -500,8 +530,9 @@ $(document).ready(function()
 
 	// HTML TextColor값 추출
 	function getTextColor(html)
-	{
-		var htmlTextColor = getStyleValue(html, "color");
+	{	
+		var htmlTextColor = rgb2hex(getStyleValue(html, "color"));
+		console.log("hihihi: "+htmlTextColor);
 		if(htmlTextColor == null)
 			return "";
 		else

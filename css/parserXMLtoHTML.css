@@ -43,6 +43,8 @@
 	display: inline-block;
 }
 .LinearLayout {
+	margin:0px;
+	
 	background: #000000;
 	width: 360px;
 	height: 360px;
@@ -57,6 +59,8 @@
 	height: 100%;
 }
 .RelativeLayout{
+	margin:0px;
+
 	background: #000000;
 	width: 360px;
 	height: 360px;
@@ -71,6 +75,8 @@
 	height: 100%;
 }
 .FrameLayout{
+	margin:0px;
+
 	background: #000000;
 	width: 360px;
 	height: 360px;
@@ -95,11 +101,14 @@
 }
 
 .CheckBox {
+
 	color:#FFFFFF;
 	background-color:#000000;
 }
 
 .Button {
+	margin:0px;
+
 	color:#FFFFFF;
 	background-color:#BBBBBB;
 	height:25px;
@@ -112,6 +121,7 @@
 }
 
 .TextView {
+	margin:0px;
 	height:30px;
 	width:100px;
 	color:#FFFFFF;
@@ -133,6 +143,7 @@
 }
 
 .inputType{
+	margin:0px;
 	
 	padding:5px;
 	max-width: 360px;
@@ -142,6 +153,8 @@
 	color:#FFFFFF;
 }
 .ScrollView{
+	margin:0px;
+
 	width:100%;
 	height:100%;
 	min-height:100px;
