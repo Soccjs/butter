@@ -1197,13 +1197,13 @@ $("#input").draggable();
 
 		 }
 		 else if(_class.search("EditText")!==-1){
-				$('#' + id).parent().css("background",background);
-		     	$('#' + id).parent().css("width",width);
-		     	$('#' + id).parent().css("height",height);
-		     	$('#' + id).parent().css("line-height",height);
-		     	$('#' + id).parent().css("text-align",gravity);
-		     	$('#' + id).parent().css("color",textColor);
-		     	$('#' + id).parent().css("font-size",textSize);
+				$('#' + id).css("background",background);
+		     	$('#' + id).css("width",width);
+		     	$('#' + id).css("height",height);
+		     	$('#' + id).css("line-height",height);
+		     	$('#' + id).css("text-align",gravity);
+		     	$('#' + id).css("color",textColor);
+		     	$('#' + id).css("font-size",textSize);
 			    $('#' + id).attr("value",text);
 		}
 		else if(_class.search("CheckBox")!==-1||_class.search("RadioButton")!==-1){//radio,check
