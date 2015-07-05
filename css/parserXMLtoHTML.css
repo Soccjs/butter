@@ -21,25 +21,25 @@
 	
 }
 
-.layout_frame div{
+.layout_frame >div{
   	position: absolute;
 }
 
-.layout_relative div{
+.layout_relative >div{
   	position: relative;
 }
 
 .layout_vertical  {
 	float:none;
 }
-.layout_vertical div {
+.layout_vertical >div {
 	display: block;
 }
 
 .layout_horizontal {
 	float:left;
 }
-.layout_horizontal div{
+.layout_horizontal >div{
 	display: inline-block;
 }
 .LinearLayout {
@@ -122,7 +122,7 @@
 	min-height: 30px;
 	min-width: 80px;
 }
-.TextView span{
+.TextView >span{
 	height:100%;
 	width:100%;
 	text-align: center;
@@ -150,6 +150,5 @@
 	max-height:640px;
 }
 .ScrollView:hover{
-	background-color: yellow;
 	opacity:0.3;
 }
