@@ -1067,14 +1067,30 @@ function goto_item_box(selected){
 }
 /////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
 function rgb2hex(rgb){
-console.log("rgb :: " + rgb);
- rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
- console.log("rgb :: " + rgb);
+ 
+ if(rgb[0]=='r' && rgb[1]=='g' && rgb[2]=='b' && rgb[3]=='a'){
+	console.log("rgba :: " + rgb);
+	rgb = rgb.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)$/);
+ 	console.log("rgba :: " + rgb);
+	return "#" +		
+	  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+	  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+  	  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) +
+	  ("0" + parseInt(rgb[4],10).toString(16)).slice(-2);	
 
- return "#" +
-  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+ }else{
+	console.log("rgb :: " + rgb);
+ 	rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ 	console.log("rgb :: " + rgb);
+	 return "#" +	
+	  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+	  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+	  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);	
+ }
+ 		
+        
+        //this.style.backgroundColor = "rgba(" + [match[1],match[2],match[3],a].join(',') +")";
+ 
 }
 
 ///////////컴퍼넌트 속성 읽어오기 //////read attributes into #input/////////////////////////////////////////////////
@@ -1133,7 +1149,7 @@ function checkInput($obj){
 			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
 			$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
 		}
-		else{
+		else{ //checkbox, radiobutton
 			$obj=$obj.parent();
 			$input.find("input[name=" + "obj_id" + "]").val( $obj.children().attr("id"));
 			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
@@ -1328,8 +1344,9 @@ $("#input").draggable();
 			$('#' + id).css("width",width);
 	     	$('#' + id).css("height",height);
 		}
+		}
 			
-	});	
+});	
 
 /////////////input on click//////////////////////////////////////////////////////////////
 $("#item_box").on('click', function(){
