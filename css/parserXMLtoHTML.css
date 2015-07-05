@@ -149,7 +149,7 @@
 	max-width:360px;
 	max-height:640px;
 }
-.ScrollView  :hover{
+.ScrollView:hover{
 	background-color: yellow;
 	opacity:0.3;
 }

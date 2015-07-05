@@ -283,6 +283,7 @@ $(document).ready(function()
 	{
 		var styleValue = null;
 		if(html.attr("style")!=="undefined"){
+			console.log("html ::::" + html.attr("style") + "id ::" +html.attr("id") );
 			var stylesBox = html.attr("style").split(";");
 		
 			for (var x = 0; x < stylesBox.length; x++) 
