@@ -976,8 +976,12 @@ function goto_item_box(selected){
 		$("<div class=\"FrameLayout\" id=\"framelayout"+(f_l_cnt++)+"\" ><ul class=\"layout_frame\"></ul></div>").appendTo("#item_box");
 		break;				
 		case "WebView" :
-		$("<iframe src=\"http://goto.kakao.com/@%ED%95%9C%ED%99%94%EC%9D%B4%EA%B8%80%EC%8A%A4\" id=\"wbview"+(w_v_cnt++)+"\" class=\"WebView\" style=\"width:360px;height:360px;\" frameborder=\"3\"></iframe>").appendTo("#item_box");
+		$("<iframe src=\"http://goto.kakao.com/@%ED%95%9C%ED%99%94%EC%9D%B4%EA%B8%80%EC%8A%A4\" id=\"webview"+(w_v_cnt++)+"\" class=\"WebView\" style=\"width:360px;height:360px;\" frameborder=\"3\"></iframe>").appendTo("#item_box");
 		break;
+		case "ScrollView" :
+		$("<div class=\"ScrollView\" id=\"scrollview"+(s_v_cnt++)+"\" style=\"\" >").appendTo("#item_box");
+		break;
+		
 		default:
 		break;
 	}
@@ -1023,6 +1027,12 @@ function goto_item_box(selected){
 				console.log("receive "+ ui.item.attr("id"));
 				var axis = $( event.target ).sortable( "option", "axis" );
 				console.log(axis);
+				if(axis==='y'){
+					$(ui.item).css("display","block");
+				}
+				else{
+					$(ui.item).css("display","inline-block");
+				}
 			}	
 			}).disableSelection();
 	 			break;
@@ -1036,7 +1046,7 @@ function goto_item_box(selected){
 				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
 			})
 			.draggable({
-				connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,#trash",
+				connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame,#trash",
 				scroll:false,
 				start: function(event, ui){
 				}
@@ -1044,15 +1054,21 @@ function goto_item_box(selected){
 	 			break;
 
  		case "FrameLayout":	
- 			$("#item_box").children().resizable({
+ 			$("#item_box").children()
+ 			.resizable({
 				maxHeight: 360,
 				maxWidth: 360,
 				minHeight: 30,
 				minWidth: 50,
-				containment:"#item_box" , autoHide:true, handles:"n,e,s,w"
-			}).sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"}).disableSelection();
+				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
+			})
+			.draggable({
+				connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame,#trash",
+				scroll:false,
+				start: function(event, ui){
+				}
+			});
 	 			break;
-
 	 	case "WebView":
 		 	$("#item_box").children().resizable({
 				maxHeight: 480,
@@ -1061,6 +1077,15 @@ function goto_item_box(selected){
 				minWidth: 100,
 				containment:"#item_box" , autoHide:true, handles:"e,s"
 			});break;
+		case "ScrollView":
+		 	$("#item_box").children().resizable({
+				maxHeight: 640,
+				maxWidth: 360,
+				minHeight: 100,
+				minWidth: 100,
+				containment:"#item_box" , autoHide:true, handles:"e,s"
+			});break; 	
+
  		default:break;
 	}
 	checkInput($("#item_box").children());
@@ -1068,29 +1093,22 @@ function goto_item_box(selected){
 /////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
 function rgb2hex(rgb){
  
- if(rgb[0]=='r' && rgb[1]=='g' && rgb[2]=='b' && rgb[3]=='a'){
-	console.log("rgba :: " + rgb);
-	rgb = rgb.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)$/);
- 	console.log("rgba :: " + rgb);
-	return "#" +		
-	  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-	  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-  	  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) +
-	  ("0" + parseInt(rgb[4],10).toString(16)).slice(-2);	
+	if(rgb[0]=='r' && rgb[1]=='g' && rgb[2]=='b' && rgb[3]=='a'){
+		rgb = rgb.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)$/);
+		return "#" +		
+		  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+		  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+	  	  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) +
+		  ("0" + parseInt(rgb[4],10).toString(16)).slice(-2);	
 
- }else{
-	console.log("rgb :: " + rgb);
- 	rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
- 	console.log("rgb :: " + rgb);
-	 return "#" +	
-	  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-	  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-	  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);	
- }
- 		
-        
+	}else{
+	 	rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		 return "#" +	
+		  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+		  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+		  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);	
+	}
         //this.style.backgroundColor = "rgba(" + [match[1],match[2],match[3],a].join(',') +")";
- 
 }
 
 ///////////컴퍼넌트 속성 읽어오기 //////read attributes into #input/////////////////////////////////////////////////
@@ -1102,7 +1120,7 @@ function checkInput($obj){
 	if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
 		ul_class = $obj.parent().attr("class");
 
-	 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1){//margin-left
+	 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
 	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
 
 	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
@@ -1111,6 +1129,8 @@ function checkInput($obj){
 			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
 		}
 	 	else{																//relativelayout //left
+			$input.find("input[name=" + "layout_margin" + "]").val("");
+	 	 	
 	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
 			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
 			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
@@ -1137,6 +1157,24 @@ function checkInput($obj){
 
 	}
 	else if(_class.search("inputType")!==-1){
+		ul_class = $obj.parent().attr("class");
+
+	 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+		}
+	 	else{																//relativelayout //left
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
+		}
+
+
 		$obj=$obj.children();
 		_class=$obj.attr("class");
 		if(_class.search("EditText")!==-1){
@@ -1179,6 +1217,24 @@ function checkInput($obj){
 		$input.find("input[name=" + "text" + "]").val("");
 	}
 	else if(_class.search("WebView")!==-1){
+		ul_class = $obj.parent().attr("class");
+
+		if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+		}
+	 	else{																//relativelayout //left
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
+		}
+		
+
 		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
 		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
 		$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
@@ -1187,6 +1243,34 @@ function checkInput($obj){
 		$input.find("input[name=" + "color" + "]").val("");
 		$input.find("input[name=" + "font_size" + "]").val("");
 		$input.find("input[name=" + "text" + "]").val("");
+	}
+	else if(_class.search("ScrollView")!==-1){
+		ul_class = $obj.parent().attr("class");
+
+		if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+		}
+	 	else{																//relativelayout //left
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
+		}
+
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
+		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
+		$input.find("input[name=" + "text_align" + "]").val("");
+		$input.find("input[name=" + "color" + "]").val("");
+		$input.find("input[name=" + "font_size" + "]").val("");
+		$input.find("input[name=" + "text" + "]").val("");
+		
 	}
 }
 
@@ -1226,6 +1310,8 @@ $("#input").draggable();
 ///////////////input delete, complete///////////////////////////////////////////////////////////////////////////////
      $("#delete").click(function() { //object delete
      	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+     	console.log("[delete click] " + id);
+		
 		if( $('#' + id).attr("class").search("RadioButton") !== -1 || $('#' + id).attr("class").search("CheckBox") !== -1 ){
 			
 			$('#' + id).parent().remove();
@@ -1238,9 +1324,11 @@ $("#input").draggable();
      });	
 
      $("#complete").click(function() {
-     	console.log("[complete click]");
      	var id = $("#input").find("input[name="+"obj_id"+"]").val();
+     	console.log("[complete click] " + id);
+   		
      	var _class = $('#' + id).attr("class");
+     	console.log(_class);
      	var ul_class;
 
      	var background = $("#input").find("input[name=" + "background" + "]").val();
@@ -1262,18 +1350,27 @@ $("#input").draggable();
 		if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
 		 	
 		 	ul_class = $('#' + id).parent().attr("class");
-		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1){//margin-left
-		 	 	if(Layout_margin!=="0px"){
-		 			$('#' + id).css("margin",Layout_margin);
-		 		}
-		 		else{
-				 	$('#' + id).css("margin-left",Layout_marginLeft);
+		 	console.log("ul_class "+ ul_class);
+		 	console.log("layout_margin = "+Layout_margin.length);
+		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+		 	 	if(Layout_margin==="0px"){
+		 		 	$('#' + id).css("margin-left",Layout_marginLeft);
 				 	$('#' + id).css("margin-right",Layout_marginRight);
 				 	$('#' + id).css("margin-top",Layout_marginTop);
 				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
 		 		}
+		 		else if(Layout_margin.length===0){
+	 	 		 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
+		 		}
+		 		else{
+		 	 		$('#' + id).css("margin",Layout_margin);
+				}
 		 	}
 		 	else{																//relativelayout //left
+		 	 		console.log("3");
 			 	$('#' + id).css("left",Layout_marginLeft);
 			 	$('#' + id).css("right",Layout_marginRight);
 			 	$('#' + id).css("top",Layout_marginTop);
@@ -1295,6 +1392,36 @@ $("#input").draggable();
 
 		 }
 		 else if(_class.search("EditText")!==-1){
+
+		 	ul_class = $('#' + id).parent().parent().attr("class");
+		 	console.log("ul_class "+ ul_class);
+		 	console.log("layout_margin = "+Layout_margin.length);
+		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+		 	 	if(Layout_margin==="0px"){
+		 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
+				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
+				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
+				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+		 		}
+		 		else if(Layout_margin.length===0){
+	 	 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
+				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
+				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
+				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+		 		}
+		 		else{
+		 	 		$('#' + id).parent().css("margin",Layout_margin);
+				}
+		 	}
+		 	else{																//relativelayout //left
+		 	 		console.log("3");
+			 	$('#' + id).parent().css("left",Layout_marginLeft);
+			 	$('#' + id).parent().css("right",Layout_marginRight);
+			 	$('#' + id).parent().css("top",Layout_marginTop);
+			 	$('#' + id).parent().css("bottom",Layout_marginBottom);
+		 	}
+
+
 				$('#' + id).css("background",background);
 		     	$('#' + id).css("width",width);
 		     	$('#' + id).css("height",height);
@@ -1303,9 +1430,39 @@ $("#input").draggable();
 		     	$('#' + id).css("color",textColor);
 		     	$('#' + id).css("font-size",textSize);
 			    $('#' + id).attr("value",text);
+
+
 		}
 		else if(_class.search("CheckBox")!==-1||_class.search("RadioButton")!==-1){//radio,check
-				console.log("this is check")
+		 	ul_class = $('#' + id).parent().parent().attr("class");
+		 	console.log("ul_class "+ ul_class);
+		 	console.log("layout_margin = "+Layout_margin.length);
+		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+		 	 	if(Layout_margin==="0px"){
+		 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
+				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
+				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
+				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+		 		}
+		 		else if(Layout_margin.length===0){
+	 	 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
+				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
+				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
+				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+		 		}
+		 		else{
+		 	 		$('#' + id).parent().css("margin",Layout_margin);
+				}
+		 	}
+		 	else{																//relativelayout //left
+		 	 		console.log("3");
+			 	$('#' + id).parent().css("left",Layout_marginLeft);
+			 	$('#' + id).parent().css("right",Layout_marginRight);
+			 	$('#' + id).parent().css("top",Layout_marginTop);
+			 	$('#' + id).parent().css("bottom",Layout_marginBottom);
+		 	}
+
+
 				console.log($('#'+id));
 				$('#' + id).parent().css("background",background);
 		     	$('#' + id).parent().css("width",width);
@@ -1319,81 +1476,121 @@ $("#input").draggable();
 		}
 		else if(_class.search("Layout")!==-1||_class.search("layout")!==-1){
 			if(_class.search("layout")!==-1){
-
-
-			$('#' + id).children().css("background",background);
-	     	$('#' + id).css("width",width);
-	     	$('#' + id).css("height",height);
-	     	//$('#' + id).css("line-height",height);
-	     	$('#' + id).css("text-align",gravity);
-	     	$('#' + id).css("color",textColor);
-	     	$('#' + id).css("font-size",textSize);
-	     	if(_class.search("LinearLayout")!==-1){
-	     		console.log("float= " + Float);
-	     		if(Float==="vertical"){
-	     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical")
-	     			.sortable( "option", "axis", "y" );
-	     		}
-	     		else{
-	     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal")
-	     			.sortable( "option", "axis", "x" );
-	     		}
-	     	}
+				$('#' + id).children().css("background",background);
+		     	$('#' + id).css("width",width);
+		     	$('#' + id).css("height",height);
+		     	//$('#' + id).css("line-height",height);
+		     	$('#' + id).css("text-align",gravity);
+		     	$('#' + id).css("color",textColor);
+		     	$('#' + id).css("font-size",textSize);
+		     	if(_class.search("LinearLayout")!==-1){
+		     		console.log("float= " + Float);
+		     		if(Float==="vertical"){
+		     			$('#' + id).children(":first").removeClass("layout_horizontal").addClass("layout_vertical")
+		     			.sortable( "option", "axis", "y" );
+		     		}
+		     		else{
+		     			$('#' + id).children(":first").removeClass("layout_vertical").addClass("layout_horizontal")
+		     			.sortable( "option", "axis", "x" );
+		     		}
+		     	}
+			}
 		}
 		else if(_class.search("WebView")!==-1){
+			ul_class = $('#' + id).parent().attr("class");
+		 	console.log("ul_class "+ ul_class);
+		 	console.log("layout_margin = "+Layout_margin.length);
+		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+		 	 	if(Layout_margin==="0px"){
+		 		 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
+		 		}
+		 		else if(Layout_margin.length===0){
+	 	 		 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
+		 		}
+		 		else{
+		 	 		$('#' + id).css("margin",Layout_margin);
+				}
+		 	}
+		 	else{																//relativelayout //left
+		 	 		console.log("3");
+			 	$('#' + id).css("left",Layout_marginLeft);
+			 	$('#' + id).css("right",Layout_marginRight);
+			 	$('#' + id).css("top",Layout_marginTop);
+			 	$('#' + id).css("bottom",Layout_marginBottom);
+		 	}
+
 			$('#' + id).css("width",width);
 	     	$('#' + id).css("height",height);
 		}
+		else if(_class.search("ScrollView")!==-1){
+			console.log("this is Scrollview");
+	     	$('#' + id).css("width",width);
+	     	$('#' + id).css("height",height);
+			$('#' + id).css("background-color",background);
 		}
+		else{
+		}
+		
 			
 });	
 
 /////////////input on click//////////////////////////////////////////////////////////////
 $("#item_box").on('click', function(){
+	console.log("[item_box on click]");
 	var $obj = $( event.target );
 	//console.log(event.target);
 	var _class = $obj.attr("class");
 	//console.log("class= " + _class);
-
-	console.log(event.type+ " " + $obj.attr('id') +"  " + $obj.attr('class'));
+	//console.log(event.type+ " " + $obj.attr('id') +"  " + $obj.attr('class'));
 
 	if(typeof _class ==="undefined"){//TextView, Button
-		console.log("1");
 		$obj = $obj.parent();
+		console.log($obj.attr("id"));
 		checkInput($obj);
 	}
 	else if(_class.search("EditText") !==-1){
-		console.log("5");
+		console.log($obj.attr("id"));
 		$obj = $obj.parent();
 		checkInput($obj);		}
 	else if(_class.search("inputType") !==-1){
-		console.log("3");
+		console.log($obj.children().attr("id"));
 		checkInput($obj);
 	}
 	else if(_class.search("RadioButton") !==-1||_class.search("CheckBox")!==-1){
-		console.log("2");
+		console.log("input click : " + $obj.attr("id"));
 		$obj = $obj.parent();
 		checkInput($obj);		}
 	else if(_class.search("Layout")!==-1){
-		console.log("4");
+		console.log($obj.children().attr("id"));
 		checkInput($obj);
 	}
 	else if(_class.search("header")!==-1){
-		console.log("5");
+		console.log("[trash]");
 	}
 	else if(_class.search("WebView")!==-1){
-		console.log("6");
+		console.log($obj.attr("id"));
 		checkInput($obj);
 	}
-	else{
-		console.log("7");
+	else if(_class.search("Scrollview")!==-1){
+		console.log($obj.attr("id"));
+		checkInput($obj);
+	}
+	else{//layout
 		$obj = $obj.parent();
+		console.log($obj.attr("id"));
 		checkInput($obj);		
 	}
 });
 /////////////trash on click///////////////////////////////////////////////////////////////
 
 $(trash).on('click mousedown mouseup', function(){
+	console.log("[trash on click]");
 	//var $target = $( this ),
 	var $obj = $( event.target );
 	//console.log(event.target);
@@ -1402,38 +1599,43 @@ $(trash).on('click mousedown mouseup', function(){
 
 	if(event.type==="click"){
 
-		console.log(event.type+ " " + $obj.attr('id') +"  " + $obj.attr('class'));
+		//console.log(event.type+ " " + $obj.attr('id') +"  " + $obj.attr('class'));
 
 		if(typeof _class ==="undefined"){//TextView, Button
-			console.log("1");
 			$obj = $obj.parent();
+			console.log($obj.attr("id"));
 			checkInput($obj);
 		}
 		else if(_class.search("EditText") !==-1){
-			console.log("5");
+			console.log($obj.attr("id"));
 			$obj = $obj.parent();
 			checkInput($obj);		}
 		else if(_class.search("inputType") !==-1){
-			console.log("3");
+			console.log($obj.children().attr("id"));
 			checkInput($obj);
 		}
 		else if(_class.search("RadioButton") !==-1||_class.search("CheckBox")!==-1){
-			console.log("2");
+			console.log("input click : " + $obj.attr("id"));
 			$obj = $obj.parent();
 			checkInput($obj);		}
 		else if(_class.search("Layout")!==-1){
-			console.log("4");
+			console.log($obj.children().attr("id"));
 			checkInput($obj);
 		}
 		else if(_class.search("header")!==-1){
-			console.log("5");
+			console.log("[trash]");
 		}
 		else if(_class.search("WebView")!==-1){
-			console.log("6");
+			console.log($obj.attr("id"));
+			checkInput($obj);
 		}
-		else{
-			console.log("7");
+		else if(_class.search("Scrollview")!==-1){
+			console.log($obj.attr("id"));
+			checkInput($obj);
+		}
+		else{//layout
 			$obj = $obj.parent();
+			console.log($obj.attr("id"));
 			checkInput($obj);		
 		}
 		
