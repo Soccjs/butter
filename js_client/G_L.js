@@ -1043,7 +1043,10 @@ function goto_item_box(selected){
 }
 /////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
 function rgb2hex(rgb){
+console.log("rgb :: " + rgb);
  rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ console.log("rgb :: " + rgb);
+
  return "#" +
   ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
   ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
@@ -1286,6 +1289,7 @@ $("#input").draggable();
 		     			.sortable( "option", "axis", "x" );
 		     		}
 		     	}
+
 		}
 			
 	});	

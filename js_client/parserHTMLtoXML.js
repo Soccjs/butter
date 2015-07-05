@@ -26,8 +26,8 @@ $(document).ready(function()
 		var html = $("#trash").html();
 		var	htmlDoc = $.parseHTML(html);
 		$html = $(htmlDoc);
-
-		var fullHtml = makeChildeNode(htmlDoc);
+		var fullHtml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+		fullHtml += makeChildeNode(htmlDoc);
 		return fullHtml;
 	}
 
@@ -35,6 +35,7 @@ $(document).ready(function()
 	function makeChildeNode(htmlDoc)
 	{
 		var childHtml = "";
+
 		$(htmlDoc).each(function() {
 			var type = getClass($(this));
 			childHtml += makeView($(this), type);
@@ -48,9 +49,13 @@ $(document).ready(function()
 	function makeInChildeNode(parent)
 	{
 		var childHtml = "";
+
 		parent.children().each(function(index){
+			
 			var type = getClass($(this));
+			
 			childHtml += makeView($(this), type);
+			childHtml += "\n";
 			if($(this).children().length >= 1)
 			{
 				childHtml += makeInChildeNode($(this));
@@ -80,6 +85,7 @@ $(document).ready(function()
 	function makeView(htmlDoc, type)
 	{
 		var eachXML = "";
+
 		switch(type)
 		{
 			case "TextView" : eachXML += makeTextView(htmlDoc); break;
@@ -244,6 +250,7 @@ $(document).ready(function()
 	// 기본 View 속성 추출
 	function makeDefaultView(html)
 	{
+		console.log("yes");
 		var viewXML = "";
 		//ID생성
 		viewXML += getId(html);
@@ -267,6 +274,7 @@ $(document).ready(function()
 		viewXML += getEllipsize(html);
 		//BACKGROUND생성
 		viewXML += getBackground(html);
+		console.log("yes");
 		return viewXML;
 	}
 
@@ -343,7 +351,7 @@ $(document).ready(function()
 		if(htmlWidth == null || htmlWidth == "0%")
 			return "android:layout_width=\"wrap_content\"\n";
 		else if(htmlWidth == "100%")
-			return "android:layout_width=\"match_parent\"\n";
+			return "android:layout_width=\"fill_parent\"\n";
 		else
 			return "android:layout_width=\""+htmlWidth+"\"\n";
 	}
