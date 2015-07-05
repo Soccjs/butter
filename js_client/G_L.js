@@ -912,7 +912,6 @@ socket.on("push_response", function(data) {
 	var $input = $("#input");
 
 	var clickFlag = true;
-	var sortableFlag = true;
 	var $tmp,$before,$after;
 	var beforeClass, afterClass;
 //////////////메뉴에서 선택////select component in menu///////////////////////////////////
@@ -1004,11 +1003,16 @@ function goto_item_box(selected){
 				containment:"#parent" , autoHide:true, handles:"e,s"
 			})
 			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
-				
+			,receive: function(event, ui){
+				console.log("receive "+ ui.item.attr("id"));
+				var axis = $( event.target ).sortable( "option", "axis" );
+				console.log(axis);
+			}	
 			}).disableSelection();
 	 			break;
  		case"RelativeLayout": 
- 			$("#item_box").children().resizable({
+ 			$("#item_box").children()
+ 			.resizable({
 				maxHeight: 360,
 				maxWidth: 360,
 				minHeight: 30,
@@ -1016,11 +1020,9 @@ function goto_item_box(selected){
 				containment:"#parent" , autoHide:true, handles:"n,e,s,w"
 			})
 			.draggable({
-				connectToSortable:".layout_vertical,.layout_horizontal,#trash",
-				//containment:"parent",
+				connectToSortable:".layout_vertical,.layout_horizontal,.layout_relative,#trash",
 				scroll:false,
 				start: function(event, ui){
-					sortableFlag=false;
 				}
 			});
 	 			break;
@@ -1039,30 +1041,56 @@ function goto_item_box(selected){
 	}
 	checkInput($("#item_box").children());
 }
+/////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
+function rgb2hex(rgb){
+ rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ return "#" +
+  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+}
 
 ///////////컴퍼넌트 속성 읽어오기 //////read attributes into #input/////////////////////////////////////////////////
 function checkInput($obj){
 	console.log("[checkInput]");
 	var _class = $obj.attr("class");
-
+	var ul_class;
 
 	if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
+		ul_class = $obj.parent().attr("class");
+
+	 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1){//margin-left
+	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+		}
+	 	else{																//relativelayout //left
+	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
+			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
+			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
+			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
+		}
+
 
 		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
 		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
 		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-		$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
 		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+		$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
 		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
 		$input.find("input[name=" + "text" + "]").val($obj.children().text());
 
-		$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
 
-		$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
-		$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
-		$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
-		$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+		//$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+
+		// $input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
+		// $input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
+		// $input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
+		// $input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
 
 	}
 	else if(_class.search("inputType")!==-1){
@@ -1072,9 +1100,9 @@ function checkInput($obj){
 			$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
 			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
 			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-			$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+			$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
 			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-			$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+			$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
 			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
 			$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
 		}
@@ -1083,9 +1111,9 @@ function checkInput($obj){
 			$input.find("input[name=" + "obj_id" + "]").val( $obj.children().attr("id"));
 			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
 			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-			$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+			$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
 			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-			$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+			$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
 			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
 			$input.find("input[name=" + "text" + "]").val($obj.text());
 		}
@@ -1094,9 +1122,9 @@ function checkInput($obj){
 		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
 		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
 		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-		$input.find("input[name=" + "background" + "]").val($obj.css("background"));
+		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
 		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-		$input.find("input[name=" + "color" + "]").val($obj.css("color"));
+		$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
 		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
 		console.log($obj.children(":first").css("float"));
 		if($obj.children(":first").css("float")==="left"){
@@ -1105,6 +1133,7 @@ function checkInput($obj){
 		else{
 			$input.find("input[name=" + "float" + "]").val("vertical");
 		}
+		$input.find("input[name=" + "text" + "]").val("");
 	}
 }
 
@@ -1126,15 +1155,19 @@ $("#input").draggable();
 //////////////make layout class////////////////////////////////////////////////////////////////////////////
 	$(".layout_vertical").sortable({
 		revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
-		,start: function(event, ui){
-				sortableFlag=false;
-			}
+			,receive: function(event, ui){
+				console.log("receive "+ ui.item.attr("id"));
+				var axis = $( event.target ).sortable( "option", "axis" );
+				console.log(axis);
+			}	
 	}).disableSelection();
 	$(".layout_horizontal").sortable({
-		revert:false,axis:"x",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
-		,start: function(event, ui){
-				sortableFlag=false;
-			}
+		revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
+		,receive: function(event, ui){
+		console.log("receive "+ ui.item.attr("id"));
+		var axis = $( event.target ).sortable( "option", "axis" );
+		console.log(axis);
+		}	
 	}).disableSelection();
 
 ///////////////input delete, complete///////////////////////////////////////////////////////////////////////////////
@@ -1155,6 +1188,7 @@ $("#input").draggable();
      	console.log("[complete click]");
      	var id = $("#input").find("input[name="+"obj_id"+"]").val();
      	var _class = $('#' + id).attr("class");
+     	var ul_class;
 
      	var background = $("#input").find("input[name=" + "background" + "]").val();
      	var width = $("#input").find("input[name="+"width"+"]").val();
@@ -1171,9 +1205,28 @@ $("#input").draggable();
      	var Layout_marginTop = $("#input").find("input[name="+"margin_top"+"]").val();
      	var Layout_marginBottom = $("#input").find("input[name="+"margin_bottom"+"]").val();
      	
-     	console.log("id class" + id + " jdj" + _class);
 
 		if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
+		 	
+		 	ul_class = $('#' + id).parent().attr("class");
+		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1){//margin-left
+		 	 	if(Layout_margin!=="0px"){
+		 			$('#' + id).css("margin",Layout_margin);
+		 		}
+		 		else{
+				 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
+		 		}
+		 	}
+		 	else{																//relativelayout //left
+			 	$('#' + id).css("left",Layout_marginLeft);
+			 	$('#' + id).css("right",Layout_marginRight);
+			 	$('#' + id).css("top",Layout_marginTop);
+			 	$('#' + id).css("bottom",Layout_marginBottom);
+		 	}
+
 		 	$('#' + id).css("background",background);
 		 	$('#' + id).css("width",width);
 		 	$('#' + id).css("height",height);
@@ -1182,15 +1235,7 @@ $("#input").draggable();
 		 	$('#' + id).css("color",textColor);
 		 	$('#' + id).css("font-size",textSize);
 		 	
-		 	if(Layout_margin!=="0px"){
-		 		$('#' + id).css("margin",Layout_margin);
-		 	}
-		 	else{
-			 	$('#' + id).css("margin-left",Layout_marginLeft);
-			 	$('#' + id).css("margin-right",Layout_marginRight);
-			 	$('#' + id).css("margin-top",Layout_marginTop);
-			 	$('#' + id).css("margin-bottom",Layout_marginBottom);
-		 	}
+		
 		 	$('#' + id).children().text(text);
 		 	
 		 	
@@ -1244,6 +1289,46 @@ $("#input").draggable();
 		}
 			
 	});	
+
+/////////////input on click//////////////////////////////////////////////////////////////
+$("#item_box").on('click', function(){
+	var $obj = $( event.target );
+	//console.log(event.target);
+	var _class = $obj.attr("class");
+	//console.log("class= " + _class);
+
+	console.log(event.type+ " " + $obj.attr('id') +"  " + $obj.attr('class'));
+
+	if(typeof _class ==="undefined"){//TextView, Button
+		console.log("1");
+		$obj = $obj.parent();
+		checkInput($obj);
+	}
+	else if(_class.search("EditText") !==-1){
+		console.log("5");
+		$obj = $obj.parent();
+		checkInput($obj);		}
+	else if(_class.search("inputType") !==-1){
+		console.log("3");
+		checkInput($obj);
+	}
+	else if(_class.search("RadioButton") !==-1||_class.search("CheckBox")!==-1){
+		console.log("2");
+		$obj = $obj.parent();
+		checkInput($obj);		}
+	else if(_class.search("Layout")!==-1){
+		console.log("4");
+		checkInput($obj);
+	}
+	else if(_class.search("header")!==-1){
+		console.log("5");
+	}
+	else{
+		console.log("6");
+		$obj = $obj.parent();
+		checkInput($obj);		
+	}
+});
 /////////////trash on click///////////////////////////////////////////////////////////////
 
 $(trash).on('click mousedown mouseup', function(){
@@ -1288,10 +1373,7 @@ $(trash).on('click mousedown mouseup', function(){
 		}
 		
 		///////////////////////////
-		// if(sortableFlag===false){ 
-		// 	sortableFlag=true;
-		// 	return;
-		// }
+		
 		if(clickFlag){//안누른상태
 			clickFlag=false;
 			$before=$obj;
@@ -1339,6 +1421,8 @@ $(trash).on('click mousedown mouseup', function(){
                     	console.log(afterUlClass);
                     	if(afterUlClass.search("vertical")){	//vertical 
                     		$before.css("display", "block");
+                            $before.draggable({connectToSortable:".layout_vertical,.layout_horizontal"});
+
                     	}
                     	else{									//horizontal
                     		$before.css("display", "inline-block");
@@ -1366,6 +1450,7 @@ $(trash).on('click mousedown mouseup', function(){
  						$before.css("opacity","1");
  						$before.css("left",0).css("top",0);
 	                    $before.appendTo($after.find("ul:eq(0)"));
+	                    $before.draggable({containment:"parent",connectToSortable:false});
 						$before.end();
 						$after.end();
 						clickFlag=true;	
