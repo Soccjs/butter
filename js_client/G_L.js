@@ -1387,6 +1387,8 @@ $("#input").draggable();
 		 	
 		 	console.log("text " + text);
 		 	$('#' + id).find("span:eq(0)").text(text);
+		
+		 	
 		 	
 
 		 }

@@ -314,12 +314,12 @@ $(document).ready(function()
       // viewHTML += getWidth(xml);
        // // 기본 Default View 속성 생성
       viewHTML += makeDefaultView(xml);
+      //TEXT생성
+      viewHTML += "\" text=\""+getText(xml)+"\"";
+      //TYPE생성
+      viewHTML += "type=\""+type+"\">";
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
       
-
-      //END STYLE생성
-
-      viewHTML += "\">";
       //INPUT생성
       viewHTML += "<input ";
       //SPAN CLASS & ID 생성

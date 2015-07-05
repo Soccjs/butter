@@ -24,8 +24,12 @@ $(document).ready(function()
 	function makeParser()
 	{
 		var html = $("#trash").html();
-		var	htmlDoc = $.parseHTML(html);
+		console.log("################trash : " + html);
+
+		var	htmlDoc = $.parseHTML(html); //맨 바깥쪽 div를 하나 자른다
 		$html = $(htmlDoc);
+		console.log("################after parseHTML() : " + $html.html()); 
+
 		var fullHtml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 		fullHtml += makeChildeNode(htmlDoc);
 		return fullHtml;
@@ -35,13 +39,17 @@ $(document).ready(function()
 	function makeChildeNode(htmlDoc)
 	{
 		var childHtml = "";
-
-		$(htmlDoc).each(function() {
+		$(htmlDoc).each(function(){
+			console.log("***********for each htmlDoc**************");
 			var type = getClass($(this));
-			childHtml += makeView($(this), type);
-			childHtml += makeInChildeNode($(this));
-			childHtml += "</"+type+">"; // Child 노드가 있을 경우 재귀 종료시 Close
+			childHtml += makeView($(this), type);	//Layout 
+			console.log("***after makeView() : " + childHtml );
+			childHtml += makeInChildeNode($(this)); //button/textview/.../
+			
+			childHtml += "</"+type+">"; // Child 노드가 있을 경우 재귀 종료시 Close //Layout close
+			console.log("****childHtml final : " + childHtml );
 		});
+			console.log("**************child end*****************");
 		return childHtml;
 	}
 
@@ -49,20 +57,27 @@ $(document).ready(function()
 	function makeInChildeNode(parent)
 	{
 		var childHtml = "";
+		console.log("============<makeInChildeNode>==============");
+		console.log("parent.html() :::: " + parent.html());
+		console.log("==========================================");
 
 		parent.children().each(function(index){
 			
 			var type = getClass($(this));
-			
+			console.log("childHtml :::: " + $(this).html());
 			childHtml += makeView($(this), type);
 			childHtml += "\n";
+			
 			if($(this).children().length >= 1)
 			{
 				childHtml += makeInChildeNode($(this));
 				if(type !== null && validationView(type) === true)
 					childHtml += "</"+type+">"; // Child 노드가 있을 경우 재귀 종료시 Close
 			}
+			
 		});	
+
+		console.log("==========================================");
 		return childHtml;
 	}
 
@@ -85,14 +100,22 @@ $(document).ready(function()
 	function makeView(htmlDoc, type)
 	{
 		var eachXML = "";
-
+		console.log("================================type ::::: " + type);
 		switch(type)
 		{
 			case "TextView" : eachXML += makeTextView(htmlDoc); break;
 			case "Button" : eachXML += makeButton(htmlDoc); break;
-			case "EditText" : eachXML += makeEditText(htmlDoc); break;
-			case "RadioButton" : eachXML += makeRadioButton(htmlDoc); break;
-			case "CheckBox" : eachXML += makeCheckBox(htmlDoc); break;
+			case "inputType" :
+			{
+				var subType = htmlDoc.attr("type");
+				switch(subType)
+				{
+					case "text" : eachXML += makeEditText(htmlDoc); break;
+					case "radio" : eachXML += makeRadioButton(htmlDoc); break;
+					case "checkbox" : eachXML += makeCheckBox(htmlDoc); break;
+				}
+			}
+			break;
 			case "WebView" : eachXML += makeWebView(htmlDoc); break;
 			case "ImageView" : eachXML += makeImageView(htmlDoc); break;
 			case "ScrollView" : eachXML += makeScrollView(htmlDoc); break;
@@ -250,7 +273,12 @@ $(document).ready(function()
 	// 기본 View 속성 추출
 	function makeDefaultView(html)
 	{
-		console.log("yes");
+	/*	console.log("*********************************************************");
+		console.log("********in makeDefaultView*****************************");
+		console.log("html : " + $html.html());
+		console.log("*********************************************************");
+		console.log("*********************************************************");
+	*/
 		var viewXML = "";
 		//ID생성
 		viewXML += getId(html);
@@ -274,7 +302,9 @@ $(document).ready(function()
 		viewXML += getEllipsize(html);
 		//BACKGROUND생성
 		viewXML += getBackground(html);
-		console.log("yes");
+
+	//	console.log("*********************************************************");
+	//	console.log("*********************************************************");
 		return viewXML;
 	}
 
@@ -283,9 +313,9 @@ $(document).ready(function()
 	{
 		var styleValue = null;
 		if(html.attr("style")!=="undefined"){
-			console.log("html ::::" + html.attr("style") + "id ::" +html.attr("id") );
+			//console.log("html ::::" + $html.parent().attr("style") + "id ::" +$html.attr("id") );
 			var stylesBox = html.attr("style").split(";");
-		
+			
 			for (var x = 0; x < stylesBox.length; x++) 
 			{
 			    var cmpKey = stylesBox[x].split(':');
@@ -364,7 +394,7 @@ $(document).ready(function()
 		if(htmlHeight == null || htmlHeight == "0%")
 			return "android:layout_height=\"wrap_content\"\n";
 		else if(htmlHeight == "100%")
-			return "android:layout_height=\"match_parent\"\n";
+			return "android:layout_height=\"fill_parent\"\n";
 		else
 			return "android:layout_height=\""+htmlHeight+"\"\n";
 	}
@@ -431,7 +461,7 @@ $(document).ready(function()
 	// HTML Value Text값 추출
 	function getValueText(html)
 	{
-		return "android:text=\""+html.attr("value")+"\"\n";
+		return "android:text=\""+html.attr("text")+"\"\n";
 	}
 
 	// HTML Gravity 추출
