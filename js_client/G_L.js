@@ -1289,7 +1289,7 @@ $("#input").draggable();
 		 	$('#' + id).css("font-size",textSize);
 		 	
 		
-		 	$('#' + id).children().text(text);
+		 	$('#' + id).children().find("span:eq(0)").text(text);
 		 	
 		 	
 
