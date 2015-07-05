@@ -279,7 +279,7 @@ $(document).ready(function()
    }
 
    // WebView 속성 추출
-   function makeWebView(xml)
+   function makeWebView(xml)//<iframe src="" + id +class +style(orientation width +height) + frameborder="0"></iframe> 
    {
       //init 생성
       var viewHTML = "<iframe src=\""+defaultWebViewUrl+"\" "; 
