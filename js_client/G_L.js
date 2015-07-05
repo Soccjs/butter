@@ -1014,7 +1014,7 @@ function goto_item_box(selected){
 				maxWidth: 360,
 				minHeight: 30,
 				minWidth: 50,
-				containment:"#parent" , autoHide:true, handles:"e,s"
+				containment:"parent" , autoHide:true, handles:"e,s"
 			})
 			.children().sortable({revert:false,axis:"y",connectWith:".layout_vertical,.layout_horizontal,.layout_relative,.layout_frame"
 			,receive: function(event, ui){
@@ -1379,8 +1379,9 @@ $("#input").draggable();
 		 	$('#' + id).css("color",textColor);
 		 	$('#' + id).css("font-size",textSize);
 		 	
+		 	console.log("text " + text);
+		 	$('#' + id).find("span:eq(0)").text(text);
 		
-		 	$('#' + id).children().find("span:eq(0)").text(text);
 		 	
 		 	
 
@@ -1632,8 +1633,13 @@ $(trash).on('click mousedown mouseup', function(){
 			console.log($obj.attr("id"));
 			checkInput($obj);		
 		}
-		
 		///////////////////////////
+
+		$("#item_box").children().remove();
+		if($obj.css("opacity")==="1"){
+			$obj.clone(true).appendTo("#item_box");
+		}
+		// ///////////////////////////
 		
 		if(clickFlag){//안누른상태
 			clickFlag=false;
@@ -1696,7 +1702,7 @@ $(trash).on('click mousedown mouseup', function(){
 						clickFlag=true;	
                     }
 				}
-				else if(afterClass.search("Relative")!==-1){//into LinearLayout
+				else if(afterClass.search("Relative")!==-1){//into RelativeLayout
 					console.log("into Relative");
 					if($('#' + $before.attr("id") + ' #' + $after.attr("id")).length){//before>after
 				 		console.log("before > after");
@@ -1717,6 +1723,27 @@ $(trash).on('click mousedown mouseup', function(){
 						clickFlag=true;	
                     }
 				}
+				else if(afterClass.search("Frame")!==-1){//into FrameLayout
+					console.log("into Frame");
+					if($('#' + $before.attr("id") + ' #' + $after.attr("id")).length){//before>after
+				 		console.log("before > after");
+				 		$before.css("opacity", "1");
+				 		$before.end();
+				 		$after.end();
+				 		clickFlag=true;
+			 			return;
+				 	}  
+                    else{
+                    	console.log("move");
+ 						$before.css("opacity","1");
+ 						$before.css("left",0).css("top",0).css("position","absolute");
+	                    $before.appendTo($after.find("ul:eq(0)"));
+	                    $before.draggable({containment:"parent",connectToSortable:false});
+						$before.end();
+						$after.end();
+						clickFlag=true;	
+                    }				
+                }
 			}
 			else{
 				console.log("not layout")
@@ -1734,6 +1761,12 @@ $(trash).on('click mousedown mouseup', function(){
 	}
 });
 
+$("#confirm").click(function(){
+	$( "<option value=\"4\">Option 4</option>").appendTo(".dropdown-content select-dropdown");
+});
+
+
+	
 
 //////////////////////////////////////////////////////////////////////////////
 
