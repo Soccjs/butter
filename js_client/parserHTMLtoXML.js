@@ -408,24 +408,29 @@ $(document).ready(function()
 	function getWidth(html)
 	{
 		var htmlWidth = getStyleValue(html, "width");
+		console.log("***********************htmlWidth : "+htmlWidth );
 		if(htmlWidth == null || htmlWidth == "0%")
 			return "android:layout_width=\"wrap_content\"\n";
 		else if(htmlWidth == "100%")
 			return "android:layout_width=\"fill_parent\"\n";
 		else
-			return "android:layout_width=\""+htmlWidth+"\"\n";
+			return "android:layout_width=\""+htmlWidth.replace("px","dp")+"\"\n";
+		
 	}
 
 	// HTML Height값 추출
 	function getHeight(html)
 	{
 		var htmlHeight = getStyleValue(html, "height");
+		console.log("htmlTextSize : "+ htmlHeight); 
+
+		console.log("***********************htmlWidth : "+htmlHeight );
 		if(htmlHeight == null || htmlHeight == "0%")
 			return "android:layout_height=\"wrap_content\"\n";
 		else if(htmlHeight == "100%")
 			return "android:layout_height=\"fill_parent\"\n";
 		else
-			return "android:layout_height=\""+htmlHeight+"\"\n";
+			return "android:layout_height=\""+htmlHeight.replace("px","dp")+"\"\n";
 	}
 
 	// HTML Background값 추출
@@ -525,6 +530,9 @@ $(document).ready(function()
 	function getTextSize(html)
 	{
 		var htmlTextSize = getStyleValue(html, "font-size");
+		console.log("htmlTextSize : "+htmlTextSize); 
+		htmlTextSize.replace("px","dp");
+
 		if(htmlTextSize == null)
 			return "";
 		else
