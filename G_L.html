@@ -55,7 +55,7 @@
 <script type="text/javascript" src="./materialize/js/materialize.min.js"></script>
 <script src="./materialize/js/init.js"></script>
 
-
+	
 <script>
 
 	$('.button-collapse').sideNav({
@@ -69,7 +69,8 @@
 		$( "#a" ).draggable({containment:"#trash",scroll:false});
 
 		$('select').material_select();
-
+		$('#confirm,#findID,#leftToright,#rightToleft').tooltip({delay: 50});
+		$('.git_btn_container').leanModal();
 	});
 
 
@@ -134,8 +135,8 @@
 	</div>
 </div>
 <div id="parserBox">
-<div id="leftToright"><img  src="./images/leftToright.png" alt="htmltoxml" width="80" height="80" ></div>
-<div id="rightToleft"><img  src="./images/rightToleft.png" alt="xmltohtml" width="80" height="80" ></div>
+<div id="leftToright" data-position="left" data-delay="50" data-tooltip="Html to Xml" ><img  src="./images/leftToright.png" alt="htmltoxml" width="80" height="80" ></div>
+<div id="rightToleft" data-position="right" data-delay="50" data-tooltip="Xml to Html" ><img  src="./images/rightToleft.png" alt="xmltohtml" width="80" height="80" ></div>
 </div>
 <div id="container">
 	<div id="right_topbar"></div>
@@ -219,21 +220,20 @@
 		</div>
 
 	<div id="searchID" class="blue-grey darken-3 z-depth-4 waves-effect waves-light"><ul id="searchlist"></ul></div>
-	<div id="findID" class="blue-grey darken-3 z-depth-4 waves-effect waves-light" style="position: absolute;margin-left: 37%;margin-top: 33%;border-radius: 35%;  z-index: 201;">
+	<div id="findID" class="blue-grey darken-3 z-depth-4 waves-effect waves-light" style="position: absolute;margin-left: 37%;margin-top: 33%;border-radius: 35%;  z-index: 201;"data-position="bottom" data-delay="50" data-tooltip="Find ObjectID " href="#">
 	      <i class="medium material-icons">search</i></div>
 
 	<div id="left" class="z-depth-3">
 		<div id = "item_dialog">
-		<div id = "item_box" class="z-depth-4" > </div>
-		<a id="confirm" class="blue-grey darken-3 z-depth-4 waves-effect waves-light btn-large" style="	width:97%;height:50px;margin-top:0px;font-size:20px;  font-family: 'Bree Serif' !important;font-style: normal;font-weight: 400;" href="#">confirm</a>
-		
+		<div id = "item_box" class="z-depth-2" > </div>
+		<a id="confirm" class="blue-grey darken-3 z-depth-4 waves-effect waves-light btn-large" style="	width:97%;height:50px;margin-top:0px;font-size:20px;  font-family: 'Bree Serif' !important;font-style: normal;font-weight: 400;"  data-position="bottom" data-delay="50" data-tooltip="Clone style " href="#">confirm</a>
 		</div>
+
 		<div id="left_img">
-			<div id="trash" class="ui-widget-header z-depth-4"></div>
+			<div id="trash" class="ui-widget-header z-depth-2"></div>
 		</div>
 		
 		
- 	
 	</div>
 
 
@@ -246,6 +246,7 @@
 
 		<div id="right_editor"></div>
 
+	
 	</div>
 	<div id="right_drag"></div>
 	<div id="right_log">
@@ -254,7 +255,21 @@
 	</div>
 
 
-	<div class="git_btn_container" style="z-index: 9999999">
+		  <div id="modal1" class="modal" style="width:300px;color:gray;font-size:30px;">
+		    <div class="modal-content">
+		      <h4 style="color:black;">Join ShareJS</h4>
+		      <p>JS</p>
+		      <p>MACH</p>
+		      <p>JHJ</p>
+		      <p>LEEDH</p>
+		    
+		    </div>
+		    <div class="modal-footer">
+		      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+		    </div>
+		  </div>
+
+	<div class="git_btn_container" style="z-index: 9999999" href="#modal1">
 		<figure class="git_button">
 			<img  src="img/git.png"/>
 		</figure>
