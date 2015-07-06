@@ -458,6 +458,8 @@ $(document).ready(function()
    function getLayoutWidth(xml)
    {
       var xmlWidth = xml.attr("android:layout_width");
+      console.log("{{{{{{{{{{{{{{{{getLayoutWidth : "+xmlWidth); 
+
       if(xmlWidth == "wrap_content")
          return "width:0%;";
       else if(xmlWidth == "fill_parent" || xmlWidth == "match_parent")
@@ -470,6 +472,8 @@ $(document).ready(function()
    function getLayoutHeight(xml)
    {
       var xmlHeight = xml.attr("android:layout_height");
+       console.log("{{{{{{{{{{{{{{{{getLayoutHeight : "+xmlHeight); 
+
       if(xmlHeight == "wrap_content")
          return "height:0%;";
       else if(xmlHeight == "fill_parent" || xmlHeight == "match_parent")
@@ -482,24 +486,28 @@ $(document).ready(function()
    function getWidth(xml)
    {
       var xmlWidth = xml.attr("android:layout_width");
+       console.log("{{{{{{{{{{{{{{{{getxmlHeight : "+xmlWidth); 
+
       if(xmlWidth == "wrap_content")
          return "";
       else if(xmlWidth == "fill_parent" || xmlWidth == "match_parent")
          return "width:100%;";
       else
-         return "width:"+xmlWidth+";";
+         return "width:"+xmlWidth.replace("dp","px")+";";
    }
 
    // XML Height값 추출
    function getHeight(xml)
    {
       var xmlHeight = xml.attr("android:layout_height");
+      console.log("{{{{{{{{{{{{{{{{getHeight : "+xmlHeight); 
+
       if(xmlHeight == "wrap_content")
          return "";
       else if(xmlHeight == "fill_parent" || xmlHeight == "match_parent")
          return "height:100%;";
       else
-         return "height:"+xmlHeight+";";
+         return "height:"+xmlHeight.replace("dp","px")+";";
    }
 
    // XML Background값 추출
@@ -623,10 +631,12 @@ $(document).ready(function()
    function getTextSize(xml)
    {
       var xmlTextSize = xml.attr("android:textSize");
+      console.log("{{{{{{{{{{{{{{{{getTextSize : "+);
+
       if(xmlTextSize == null)
          return "";
       else
-         return "font-size:"+xmlTextSize+";";
+         return "font-size:"+xmlTextSize.replace("dp","px")+";";
    }
 
    // XML TextStyle값 추출
