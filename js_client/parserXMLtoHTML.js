@@ -12,6 +12,14 @@ var editor;
 var undefinedViewCnt=0;//textview count
 var undefinedViewPrefix="UndefinedID";//textview count
 
+var _GLOBAL = {};
+function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 $(document).ready(function() 
 {
    $("#rightToleft").click(function() {
@@ -22,7 +30,8 @@ $(document).ready(function()
 		console.log(cur_contents);
 		makeParser(cur_contents);
 	});
-      ////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
+   
+   ////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
    function rgb2hex(rgb){
     
       if(rgb[0]=='r' && rgb[1]=='g' && rgb[2]=='b' && rgb[3]=='a'){
@@ -42,8 +51,6 @@ $(document).ready(function()
       }
            //this.style.backgroundColor = "rgba(" + [match[1],match[2],match[3],a].join(',') +")";
    }
-
-
    
 	// XML parser
 	function makeParser(cur_contents)
@@ -328,6 +335,13 @@ $(document).ready(function()
       var viewHTML = "<div ";
       //inputType Class 생성
       viewHTML += setClass("inputType");
+      //ID 생성
+      switch(type)
+      {
+         case "text" : viewHTML += getId(xml, "EditText"); break;
+         case "radio" : viewHTML += getId(xml, "RadioButton"); break;
+         case "checkbox" : viewHTML += getId(xml, "CheckBox"); break;
+      }
       //STYLE생성
       viewHTML += "style=\""+defaultOrientation;
       // //MARGIN생성
@@ -339,23 +353,16 @@ $(document).ready(function()
       //TEXT생성
       viewHTML += "\" text=\""+getText(xml)+"\"";
       //TYPE생성
-      viewHTML += "type=\""+type+"\">";
+      viewHTML += "type=\""+type+"\">";   
       //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
       
       //INPUT생성
       viewHTML += "<input ";
-      //SPAN CLASS & ID 생성
-      switch(type)
-      {
-         case "text" : viewHTML += setClass("EditText"); viewHTML += getId(xml, "EditText"); break;
-         case "radio" : viewHTML += setClass("RadioButton"); viewHTML += getId(xml, "RadioButton"); break;
-         case "checkbox" : viewHTML += setClass("CheckBox"); viewHTML += getId(xml, "CheckBox"); break;
-      }
          // //SPAN STYLE생성
          // viewHTML += "style=\"";
-     // 1    // // 기본 Default View 속성 생성
-     //     viewHTML += makeDefaultView(xml);
-     //     //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
+      // 1    // // 기본 Default View 속성 생성
+      //     viewHTML += makeDefaultView(xml);
+      //     //TEXT생성:텍스트는 가장 마지막에 추가 하고 종료한다.
       
       if(type == "text")
          viewHTML += "\" value=\""+getText(xml)+"\" type=\""+type+"\"></input>";
@@ -505,8 +512,17 @@ $(document).ready(function()
       if(null != xmlBackground)
       {
          // XML Path 경로 추가 -------+-------+-------+-------
-         //var filePath = "";
-         xmlBackground = "background-color:"+xmlBackground+";background-size:cover;background-repeat:no-repeat;"
+         if(xmlBackground.search("@drawable")!==-1)
+         {
+            var filePath = getParameterByName('path');
+            xmlBackground = xmlBackground.replace("@drawable/", "");
+            xmlBackground = "background:url('"+filePath+"/"+xmlBackground+"');background-size:cover;background-repeat:no-repeat;"
+         }
+         else
+         {
+            xmlBackground = "background-color:"+xmlBackground+";background-size:cover;background-repeat:no-repeat;"
+         }
+
          if(getWidth(xml) == "width:100%;")
          {
             xmlBackground += "display:inline-block;";

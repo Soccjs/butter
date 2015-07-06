@@ -15,7 +15,8 @@ $(document).ready(function()
 		editor = ace.edit("right_editor_inner");
 		editor.setValue(makeParser(), 1);
 	});
-	   ////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
+
+	////rgb to hex ////////////////////////////////////////////////////////////////////////////////////////
 	function rgb2hex(rgb){
 	   if(rgb ===null){
 	   	return null;
@@ -47,6 +48,7 @@ $(document).ready(function()
 		editor = ace.edit("right_editor_inner");
 		editor.setValue(makeParser(), 1);
     }
+
 	// HTML parser
 	function makeParser()
 	{
@@ -431,15 +433,26 @@ $(document).ready(function()
 	{
 		var htmlBackground = getStyleValue(html, "background");
 		if(htmlBackground == null)
-			return "";
+		{
+			htmlBackground = getStyleValue(html, "background-color");
+			if(htmlBackground == null)
+			{
+				return "";
+			}
+			else
+			{
+				if(htmlBackground.search("rgb")!==-1)
+				{
+					htmlBackground=rgb2hex(htmlBackground);
+				}
+				return "android:background=\""+htmlBackground+"\"\n";
+			}
+		}
 		else{
 			//불필요한 태그 정보 삭제
 			htmlBackground = htmlBackground.replace("url('@drawable/", "");
 			htmlBackground = htmlBackground.replace("')", "");
-			if(htmlBackground.search("rgb")!==-1){
-				htmlBackground=rgb2hex(htmlBackground);
-				return "android:background=\""+htmlBackground+"\"\n";
-			}
+			
 			return "android:background=\"@drawable/"+htmlBackground+"\"\n";
 		}
 	}
