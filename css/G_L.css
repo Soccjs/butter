@@ -5,16 +5,35 @@ html, body {
 	height: 100%;
 	overflow: hidden;
 	font-family: GillSans, Calibri, Trebuchet, sans-serif;
-	
+	background: #31373B;
 	font-size: 15px;
 	text-decoration: none;
 }
 ul{
 	margin: 0px;
 }
+#buzzer {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 20px;
+  border: none;
 
+  font: normal 35px "Monoton", Helvetica, sans-serif;
+  color: rgba(255,255,255,1);
+  text-align: center;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 10px rgb(255,255,255) , 0 0 20px rgb(255,255,255) , 0 0 30px rgb(255,255,255) , 0 0 40px rgba(255,255,0,1) , 0 0 70px rgba(255,255,0,1) , 0 0 80px rgb(255,17,119) , 0 0 100px rgb(255,17,119) , 0 0 150px rgb(255,17,119) ;
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+}
 
-
+#buzzer:hover {
+  text-shadow: 0 0 5px rgb(255,255,255) , 0 0 10px rgb(255,255,255) , 0 0 15px rgb(255,255,255) , 0 0 20px rgba(255,255,0,0.7) , 0 0 35px rgba(255,255,0,0.7) , 0 0 40px rgba(255,255,0,0.7) , 0 0 50px rgba(255,255,0,0.7) , 0 0 75px rgba(255,255,0,0.7) ;
+}
 #container {
 	color: #fff;
 	margin: 0;
@@ -37,7 +56,7 @@ ul{
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
-	background: #ddd;
+	background: #686868;
 	width: 45%;
 	left: 0;
 	overflow: hidden;
@@ -66,7 +85,6 @@ ul{
 		width: 330px;
 		margin-left:6%;
 		margin-top:11%;
-		border: 5px solid #018dc4;
 		-webkit-border-radius: 5px;
 		border-radius: 15px;
 		position:absolute;
@@ -85,7 +103,6 @@ ul{
 		width: 330px;
 		margin-left:52%;
 		margin-top:11%;
-		border: 5px solid #018dc4;
 		-webkit-border-radius: 5px;
 		border-radius: 15px;
 		position:absolute;
@@ -188,6 +205,9 @@ ul{
 			padding:0px 5px;
 
 		}
+		#table_dialog td:first-child{
+		    background: -webkit-linear-gradient(left top, black , #1F1F1F); /* For Safari 5.1 to 6.0 */
+		}
 
 		#complete {
 			height:30px;
@@ -201,7 +221,7 @@ ul{
 			margin-top: 1%;
 			margin-left: 45%;
 			position: fixed;
-
+			background: #474747;
 			height: 100%;
 			width:40%;
 			float:right;
@@ -756,7 +776,7 @@ ul{
 	}
 	.ui-resizable-helper { border: 2px dotted #00F; }
 #searchID{
-	z-index: 1;width: 270px;height: 200px;position: absolute;margin-left: 24.5%;margin-top: 33%;border-radius: 10%;text-align:center;font-size:25px;overflow-y: auto;
+	z-index: 1;width: 270px;height: 200px;position: absolute;margin-left: 22.5%;margin-top: 33%;border-radius: 10%;text-align:center;font-size:25px;overflow-y: auto;
 	visibility: hidden;
 }
 #searchID ul{
@@ -767,3 +787,7 @@ ul{
 #searchlist li:hover{
 	color: #ff1744;
 }
+
+#confirm{
+	background: #37474f;
+} 	
