@@ -533,7 +533,7 @@ $(document).ready(function()
          }
          else
          {
-            xmlBackground = "background-color:"+xmlBackground+";background-size:cover;background-repeat:no-repeat;"
+            xmlBackground = "background:"+xmlBackground+";background-size:cover;background-repeat:no-repeat;"
          }
 
          if(getWidth(xml) == "width:100%;")

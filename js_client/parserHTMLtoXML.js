@@ -452,12 +452,24 @@ $(document).ready(function()
 				return "android:background=\""+htmlBackground+"\"\n";
 			}
 		}
-		else{
+		else
+		{
 			//불필요한 태그 정보 삭제
-			htmlBackground = htmlBackground.replace("url('@drawable/", "");
-			htmlBackground = htmlBackground.replace("')", "");
-			
-			return "android:background=\"@drawable/"+htmlBackground+"\"\n";
+			if(htmlBackground.search("rgb")!==-1)
+			{
+				htmlBackground = rgb2hex(htmlBackground);
+				return "android:background=\""+htmlBackground+"\"\n";
+			}
+			else if(htmlBackground.search("@drawable")!==-1)
+			{
+				htmlBackground = htmlBackground.replace("url('@drawable/", "");
+				htmlBackground = htmlBackground.replace("')", "");
+				return "android:background=\"@drawable/"+htmlBackground+"\"\n";
+			}
+			else
+			{
+				return "android:background=\""+htmlBackground+"\"\n";
+			}
 		}
 	}
 
