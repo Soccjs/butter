@@ -62,10 +62,10 @@ ul{
 	}  .gallery.custom-state-active { background: #eee; }
 	#item_dialog{
 		position: absolute;
-		height: 650px;
-		width: 370px;
-		margin-left:4%;
-		margin-top:7%;
+		height: 530px;
+		width: 330px;
+		margin-left:6%;
+		margin-top:11%;
 		border: 5px solid #018dc4;
 		-webkit-border-radius: 5px;
 		border-radius: 15px;
@@ -74,17 +74,17 @@ ul{
 	#item_box{
 		z-index: 200;
 		background: #FFF;
-		height: 640px;
-		width: 360px;
+		height: 520px;
+		width: 320px;
 		max-width: 360px;
 		max-height: 640px;
 	}
 
 	#left_img{
-		height: 650px;
-		width: 370px;
-		margin-left:50%;
-		margin-top:7%;
+		height: 530px;
+		width: 330px;
+		margin-left:52%;
+		margin-top:11%;
 		border: 5px solid #018dc4;
 		-webkit-border-radius: 5px;
 		border-radius: 15px;
@@ -96,8 +96,8 @@ ul{
 		position: absolute;
 		z-index: 200;
 		background: #FFF;
-		height: 640px;
-		width: 360px;
+		height: 520px;
+		width: 320px;
 		max-width: 360px;
 		max-height: 640px;
 		}  #trash h4 {  }
@@ -152,7 +152,7 @@ ul{
 		}
 		#input {
 			background: #1f1f1f;
-			margin-top: 30%;
+			margin-top: 20%;
 			margin-left: -14%;
 			width: 250px;
 			height: 350px;
@@ -756,7 +756,7 @@ ul{
 	}
 	.ui-resizable-helper { border: 2px dotted #00F; }
 #searchID{
-	z-index: 1;width: 270px;height: 200px;position: absolute;margin-left: 23%;margin-top: 29%;border-radius: 10%;text-align:center;font-size:25px;overflow-y: auto;
+	z-index: 1;width: 270px;height: 200px;position: absolute;margin-left: 24.5%;margin-top: 33%;border-radius: 10%;text-align:center;font-size:25px;overflow-y: auto;
 	visibility: hidden;
 }
 #searchID ul{

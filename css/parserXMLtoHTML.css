@@ -89,9 +89,9 @@ ul{
 	min-height: 30px;
 	min-width: 80px;
 }
-.EditText {
-	height:30px;
-	width:100px;
+.EditText input[type=text] {
+	height:100%;
+	width:100%;
 	max-width: 360px;
 	max-height: 360px;
 	min-height: 30px;
@@ -167,5 +167,6 @@ ul{
 	max-height:640px;
 }
 .ScrollView:hover{
+	background: yellow;
 	opacity:0.3;
 }

@@ -958,13 +958,13 @@ function goto_item_box(selected){
 		$("<div id=\"button"+(btn_cnt++)+"\" class=\"Button\"><span>Button</span></div>").appendTo("#item_box");
 		break;
 		case "EditText" :
-		$("<div class=\"inputType\"  style=\"display:block;\" text=\"EditText\" type=\"Edittext\"><input type=\"text\" class=\"EditText\" id=\"edittext"+(e_t_cnt++)+"\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
+		$("<div class=\"inputType EditText\"  style=\"display:block;\" text=\"EditText\" type=\"text\"  id=\"edittext"+(e_t_cnt++)+"\"><input type=\"text\"  value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
 		break;
 		case "CheckBox" :
-		$("<div class=\"inputType\"  style=\"display:block;\" text=\"CheckBox\" type=\"checkbox\"><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox"+(c_b_cnt++)+"\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
+		$("<div class=\"inputType CheckBox\"  style=\"display:block;\" text=\"CheckBox\" type=\"checkbox\" id=\"checkbox"+(c_b_cnt++)+"\"><input type=\"checkbox\"   value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
 		break;
 		case "RadioButton" :
-		$("<div class=\"inputType\"  style=\"display:block;\" text=\"RadioButton\" type=\"radio\"><input type=\"radio\" class=\"RadioButton\" id=\"radiobutton"+(r_b_cnt++)+"\"  value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
+		$("<div class=\"inputType RadioButton\"  style=\"display:block;\" text=\"RadioButton\" type=\"radio\"  id=\"radiobutton"+(r_b_cnt++)+"\"><input type=\"radio\"   value=\"RadioButton\" >RadioButton</input></div>").appendTo("#item_box");
 		break;
 		case "LinearLayout" :
 		$("<div class=\"LinearLayout\" id=\"linearlayout"+(l_l_cnt++)+"\" ><ul class=\"layout_vertical\"></ul></div>").appendTo("#item_box");
@@ -1104,168 +1104,193 @@ function rgb2hex(rgb){
 	}
         //this.style.backgroundColor = "rgba(" + [match[1],match[2],match[3],a].join(',') +")";
 }
+function getMargin($obj,ul_class){
+	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
+	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+
+ 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
+		$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
+		$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
+		$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+	}
+ 	else{																//relativelayout //left
+		$input.find("input[name=" + "layout_margin" + "]").val("");
+ 	 	
+ 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
+		$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
+		$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
+		$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
+	}
+}
+
+
+function getTv_Btn($obj){
+	$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+	$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+	$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+	$input.find("input[name=" + "background" + "]").children().val(rgb2hex($obj.css("background-color")));
+	$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+	$input.find("input[name=" + "color" + "]").children().val(rgb2hex($obj.css("color")));
+	$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+	
+	$input.find("input[name=" + "text" + "]").val($obj.children().text());
+}
+function getInputType($obj,ul_class){
+	var getClass=$obj.attr("class");
+
+
+	if(getClass.search("RadioButton")!==-1||getClass.search("CheckBox")!==-1){
+		//$obj=$obj.parent();
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
+		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+		$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
+		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+		$input.find("input[name=" + "text" + "]").val($obj.text());
+	
+	}else if(getClass.search("EditText")!==-1){
+		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
+		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+		$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
+		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+		$input.find("input[name=" + "text" + "]").val($obj.children().attr("value"));
+		//$obj.children().attr("style", $obj.attr("style"));
+	}else{
+		console.log("class name error - getInputType()");
+	}
+}
+function getLayout($obj,ul_class){
+	$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+	$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+	$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
+	$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
+	$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
+	$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
+	$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
+	console.log($obj.children(":first").css("float"));
+	if($obj.children(":first").css("float")==="left"){
+		$input.find("input[name=" + "float" + "]").val("horizontal");
+	}
+	else{
+		$input.find("input[name=" + "float" + "]").val("vertical");
+	}
+	$input.find("input[name=" + "text" + "]").val("");
+}
+
+function getTextView($obj,ul_class){
+	getTv_Btn($obj);
+	getMargin($obj,ul_class);
+}
+function getButton($obj,ul_class){
+	getTv_Btn($obj);
+	getMargin($obj,ul_class);
+}
+function getEditText($obj,ul_class){
+	getInputType($obj,ul_class);
+	getMargin($obj,ul_class);
+
+}
+function getRadioButton($obj,ul_class){
+	getInputType($obj,ul_class);
+	getMargin($obj,ul_class);
+}
+function getCheckBox($obj,ul_class){
+	getInputType($obj,ul_class);
+	getMargin($obj,ul_class);
+}
+function getLinear($obj,ul_class){
+	getLayout($obj,ul_class);
+}
+function getRelative($obj,ul_class){
+	getLayout($obj,ul_class);
+}
+function getFrame($obj,ul_class){
+	getLayout($obj,ul_class);
+}
+function getWebView($obj,ul_class){
+
+	$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+	$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+	$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
+	$input.find("input[name=" + "background" + "]").val("");
+	$input.find("input[name=" + "text_align" + "]").val("");
+	$input.find("input[name=" + "color" + "]").val("");
+	$input.find("input[name=" + "font_size" + "]").val("");
+	$input.find("input[name=" + "text" + "]").val("");
+	getMargin($obj, ul_class);
+}
+
+function getScrollView($obj, ul_class){
+	$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
+	$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
+	$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
+	$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
+	$input.find("input[name=" + "text_align" + "]").val("");
+	$input.find("input[name=" + "color" + "]").val("");
+	$input.find("input[name=" + "font_size" + "]").val("");
+	$input.find("input[name=" + "text" + "]").val("");
+	getMargin($obj, ul_class);
+}
 
 ///////////컴퍼넌트 속성 읽어오기 //////read attributes into #input/////////////////////////////////////////////////
 function checkInput($obj){
 	console.log("[checkInput]");
 	var _class = $obj.attr("class");
+	console.log("_class : " + _class);
 	var ul_class;
+	ul_class = $obj.parent().attr("class");
+	console.log("search_class : " + _class.search("TextView"));
 
-	if(_class.search("TextView")!==-1 || _class.search("Button") !==-1 ){
-		ul_class = $obj.parent().attr("class");
+	if(_class.search("TextView")!==-1){
+		console.log("TextView");
+		getTextView($obj,ul_class);
+	} 
+	else if(_class.search("Button")===0){
+		console.log("Button");
+		getButton($obj,ul_class);
 
-	 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
-	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
+	}else if(_class.search("EditText")!==-1){
+		console.log("EditText");
+		getEditText($obj,ul_class);		
 
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
-		}
-	 	else{																//relativelayout //left
-			$input.find("input[name=" + "layout_margin" + "]").val("");
-	 	 	
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
-		}
-
-
-		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
-		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-		$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
-		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
-		$input.find("input[name=" + "text" + "]").val($obj.children().text());
-
-
-		//$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
-
-		// $input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
-		// $input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
-		// $input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
-		// $input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
+	}else if(_class.search("inputType RadioButton")!==-1){
+		console.log("RadioButton");
+		getRadioButton($obj,ul_class);
+		
+	}else if(_class.search("CheckBox")!==-1){
+		console.log("CheckBox");
+		getCheckBox($obj,ul_class);
 
 	}
-	else if(_class.search("inputType")!==-1){
-		ul_class = $obj.parent().attr("class");
-
-	 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
-	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
-
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
-		}
-	 	else{																//relativelayout //left
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
-		}
-
-
-		$obj=$obj.children();
-		_class=$obj.attr("class");
-		if(_class.search("EditText")!==-1){
-			$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-			$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
-			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-			$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
-			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
-			$input.find("input[name=" + "text" + "]").val($obj.attr("value"));
-		}
-		else{ //checkbox, radiobutton
-			$obj=$obj.parent();
-			$input.find("input[name=" + "obj_id" + "]").val( $obj.children().attr("id"));
-			$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-			$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-			$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
-			$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-			$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
-			$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
-			$input.find("input[name=" + "text" + "]").val($obj.text());
-		}
+	else if(_class.search("LinearLayout")!==-1){
+		console.log("Linear");
+		getLinear($obj,ul_class);
 	}
-	else if(_class.search("Layout")!==-1){
-		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-		$input.find("input[name=" + "height" + "]").val(  $obj.css("height"));
-		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
-		$input.find("input[name=" + "text_align" + "]").val($obj.css("text-align"));
-		$input.find("input[name=" + "color" + "]").val(rgb2hex($obj.css("color")));
-		$input.find("input[name=" + "font_size" + "]").val($obj.css("font-size"));
-		console.log($obj.children(":first").css("float"));
-		if($obj.children(":first").css("float")==="left"){
-			$input.find("input[name=" + "float" + "]").val("horizontal");
-		}
-		else{
-			$input.find("input[name=" + "float" + "]").val("vertical");
-		}
-		$input.find("input[name=" + "text" + "]").val("");
+	else if(_class.search("RelativeLayout")!==-1){
+		console.log("Relative");
+		getRelative($obj,ul_class);
+	}
+	else if(_class.search("FrameLayout")!==-1){
+		console.log("Frame");
+		getFrame($obj,ul_class);
 	}
 	else if(_class.search("WebView")!==-1){
-		ul_class = $obj.parent().attr("class");
-
-		if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
-	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
-
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
-		}
-	 	else{																//relativelayout //left
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
-		}
-		
-
-		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-		$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
-		$input.find("input[name=" + "background" + "]").val("");
-		$input.find("input[name=" + "text_align" + "]").val("");
-		$input.find("input[name=" + "color" + "]").val("");
-		$input.find("input[name=" + "font_size" + "]").val("");
-		$input.find("input[name=" + "text" + "]").val("");
+		console.log("WebView");
+		getWebView($obj,ul_class);
 	}
 	else if(_class.search("ScrollView")!==-1){
-		ul_class = $obj.parent().attr("class");
-
-		if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
-	 	 	$input.find("input[name=" + "layout_margin" + "]").val($obj.css("margin"));
-
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("margin-left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("margin-right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("margin-top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("margin-bottom"));
-		}
-	 	else{																//relativelayout //left
-	 	 	$input.find("input[name=" + "margin_left" + "]").val($obj.css("left"));
-			$input.find("input[name=" + "margin_right" + "]").val($obj.css("right"));
-			$input.find("input[name=" + "margin_top" + "]").val($obj.css("top"));
-			$input.find("input[name=" + "margin_bottom" + "]").val($obj.css("bottom"));
-		}
-
-		$input.find("input[name=" + "obj_id" + "]").val( $obj.attr("id"));
-		$input.find("input[name=" + "width" + "]").val( $obj.css("width"));
-		$input.find("input[name=" + "height" + "]").val( $obj.css("height"));
-		$input.find("input[name=" + "background" + "]").val(rgb2hex($obj.css("background-color")));
-		$input.find("input[name=" + "text_align" + "]").val("");
-		$input.find("input[name=" + "color" + "]").val("");
-		$input.find("input[name=" + "font_size" + "]").val("");
-		$input.find("input[name=" + "text" + "]").val("");
-		
+		console.log("ScrollView");
+		getScrollView($obj,ul_class);
 	}
+	else{
+		console.log("else - checkInput()");
+	}
+
 }
 
 ///////////기본 특성 /////Basic func/////////////////////////////////////////////////////////////////////
@@ -1316,7 +1341,7 @@ $("#input").draggable();
 		}
      	
      });	
-
+     
      $("#complete").click(function() {
      	var id = $("#input").find("input[name="+"obj_id"+"]").val();
      	console.log("[complete click] " + id);
@@ -1386,34 +1411,33 @@ $("#input").draggable();
 		 }
 		 else if(_class.search("EditText")!==-1){
 
-		 	ul_class = $('#' + id).parent().parent().attr("class");
+		 	ul_class = $('#' + id).parent().attr("class");
 		 	console.log("ul_class "+ ul_class);
 		 	console.log("layout_margin = "+Layout_margin.length);
 		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
 		 	 	if(Layout_margin==="0px"){
-		 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
-				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
-				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
-				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+		 		 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
 		 		}
 		 		else if(Layout_margin.length===0){
-	 	 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
-				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
-				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
-				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+	 	 		 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
 		 		}
 		 		else{
-		 	 		$('#' + id).parent().css("margin",Layout_margin);
+		 	 		$('#' + id).css("margin",Layout_margin);
 				}
 		 	}
 		 	else{																//relativelayout //left
 		 	 		console.log("3");
-			 	$('#' + id).parent().css("left",Layout_marginLeft);
-			 	$('#' + id).parent().css("right",Layout_marginRight);
-			 	$('#' + id).parent().css("top",Layout_marginTop);
-			 	$('#' + id).parent().css("bottom",Layout_marginBottom);
+			 	$('#' + id).css("left",Layout_marginLeft);
+			 	$('#' + id).css("right",Layout_marginRight);
+			 	$('#' + id).css("top",Layout_marginTop);
+			 	$('#' + id).css("bottom",Layout_marginBottom);
 		 	}
-
 
 				$('#' + id).css("background",background);
 		     	$('#' + id).css("width",width);
@@ -1424,47 +1448,46 @@ $("#input").draggable();
 		     	$('#' + id).css("font-size",textSize);
 			    $('#' + id).attr("value",text);
 
-
+			    $('#' + id).children().attr("style",$('#'+id).attr("style"));
+			    $('#' + id).children().css("border", "0").css("width","100%").css("height","100%");
 		}
 		else if((_class.search("CheckBox")!==-1)||(_class.search("RadioButton")!==-1)){//radio,check
-			console.log("RB");
-		 	ul_class = $('#' + id).parent().parent().attr("class");
+		 	ul_class = $('#' + id).parent().attr("class");
 		 	console.log("ul_class "+ ul_class);
 		 	console.log("layout_margin = "+Layout_margin.length);
 		 	if(ul_class.search("vertical")!==-1||ul_class.search("horizontal")!==-1||ul_class.search("frame")!==-1){//margin-left
 		 	 	if(Layout_margin==="0px"){
-		 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
-				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
-				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
-				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+		 		 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
 		 		}
 		 		else if(Layout_margin.length===0){
-	 	 		 	$('#' + id).parent().css("margin-left",Layout_marginLeft);
-				 	$('#' + id).parent().css("margin-right",Layout_marginRight);
-				 	$('#' + id).parent().css("margin-top",Layout_marginTop);
-				 	$('#' + id).parent().css("margin-bottom",Layout_marginBottom);
+	 	 		 	$('#' + id).css("margin-left",Layout_marginLeft);
+				 	$('#' + id).css("margin-right",Layout_marginRight);
+				 	$('#' + id).css("margin-top",Layout_marginTop);
+				 	$('#' + id).css("margin-bottom",Layout_marginBottom);
 		 		}
 		 		else{
-		 	 		$('#' + id).parent().css("margin",Layout_margin);
+		 	 		$('#' + id).css("margin",Layout_margin);
 				}
 		 	}
 		 	else{																//relativelayout //left
 		 	 		console.log("3");
-			 	$('#' + id).parent().css("left",Layout_marginLeft);
-			 	$('#' + id).parent().css("right",Layout_marginRight);
-			 	$('#' + id).parent().css("top",Layout_marginTop);
-			 	$('#' + id).parent().css("bottom",Layout_marginBottom);
+			 	$('#' + id).css("left",Layout_marginLeft);
+			 	$('#' + id).css("right",Layout_marginRight);
+			 	$('#' + id).css("top",Layout_marginTop);
+			 	$('#' + id).css("bottom",Layout_marginBottom);
 		 	}
 
 
-				console.log("123132321"+$('#'+id).parent());
-				$('#' + id).parent().css("background",background);
-		     	$('#' + id).parent().css("width",width);
-		     	$('#' + id).parent().css("height",height);
-		     	$('#' + id).parent().css("line-height",height);
-		     	$('#' + id).parent().css("text-align",gravity);
-		     	$('#' + id).parent().css("color",textColor);
-		     	$('#' + id).parent().css("font-size",textSize);
+				$('#' + id).css("background",background);
+		     	$('#' + id).css("width",width);
+		     	$('#' + id).css("height",height);
+		     	$('#' + id).css("line-height",height);
+		     	$('#' + id).css("text-align",gravity);
+		     	$('#' + id).css("color",textColor);
+		     	$('#' + id).css("font-size",textSize);
 				//$input.find("input[name=" + "text" + "]").val($obj.text());
 			
 		}
