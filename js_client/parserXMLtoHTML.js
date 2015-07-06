@@ -458,6 +458,7 @@ $(document).ready(function()
    function getLayoutWidth(xml)
    {
       var xmlWidth = xml.attr("android:layout_width");
+       xmlWidth = xmlWidth.replace("dp","px");
       console.log("{{{{{{{{{{{{{{{{getLayoutWidth : "+xmlWidth); 
 
       if(xmlWidth == "wrap_content")
@@ -472,6 +473,7 @@ $(document).ready(function()
    function getLayoutHeight(xml)
    {
       var xmlHeight = xml.attr("android:layout_height");
+       xmlHeight = xmlHeight.replace("dp","px");
        console.log("{{{{{{{{{{{{{{{{getLayoutHeight : "+xmlHeight); 
 
       if(xmlHeight == "wrap_content")
@@ -486,6 +488,8 @@ $(document).ready(function()
    function getWidth(xml)
    {
       var xmlWidth = xml.attr("android:layout_width");
+       
+       xmlWidth = xmlWidth.replace("dp","px");
        console.log("{{{{{{{{{{{{{{{{getxmlHeight : "+xmlWidth); 
 
       if(xmlWidth == "wrap_content")
@@ -500,6 +504,7 @@ $(document).ready(function()
    function getHeight(xml)
    {
       var xmlHeight = xml.attr("android:layout_height");
+      xmlHeight = xmlHeight.replace("dp","px");
       console.log("{{{{{{{{{{{{{{{{getHeight : "+xmlHeight); 
 
       if(xmlHeight == "wrap_content")
