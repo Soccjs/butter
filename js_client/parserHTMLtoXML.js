@@ -422,9 +422,8 @@ $(document).ready(function()
 	function getHeight(html)
 	{
 		var htmlHeight = getStyleValue(html, "height");
-		console.log("htmlTextSize : "+ htmlHeight); 
+		console.log("************htmlHeight : "+ htmlHeight); 
 
-		console.log("***********************htmlWidth : "+htmlHeight );
 		if(htmlHeight == null || htmlHeight == "0%")
 			return "android:layout_height=\"wrap_content\"\n";
 		else if(htmlHeight == "100%")
@@ -529,14 +528,13 @@ $(document).ready(function()
 	// HTML TextSize값 추출
 	function getTextSize(html)
 	{
-		var htmlTextSize = getStyleValue(html, "font-size");
-		console.log("htmlTextSize : "+htmlTextSize); 
-		htmlTextSize.replace("px","dp");
-
+		var htmlTextSize = getStyleValue(html, "font-size");		
+		console.log("*******************htmlTextSize : "+htmlTextSize); 
+		
 		if(htmlTextSize == null)
 			return "";
 		else
-			return "android:textSize=\""+htmlTextSize+"\"\n";
+			return "android:textSize=\""+htmlTextSize.replace("px","dp")+"\"\n";
 	}
 
 	// HTML TextStyle값 추출
