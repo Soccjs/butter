@@ -631,7 +631,7 @@ $(document).ready(function()
    function getTextSize(xml)
    {
       var xmlTextSize = xml.attr("android:textSize");
-      console.log("{{{{{{{{{{{{{{{{getTextSize : "+);
+      console.log("{{{{{{{{{{{{{{{{getTextSize : "+xmlTextSize);
 
       if(xmlTextSize == null)
          return "";
