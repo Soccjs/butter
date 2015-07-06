@@ -13,22 +13,18 @@ ul{
 	margin: 0px;
 }
 #buzzer {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-  padding: 20px;
-  border: none;
-
-  font: normal 35px "Monoton", Helvetica, sans-serif;
-  color: rgba(255,255,255,1);
+	  margin-top: 30px;
   text-align: center;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
-  text-shadow: 0 0 10px rgb(255,255,255) , 0 0 20px rgb(255,255,255) , 0 0 30px rgb(255,255,255) , 0 0 40px rgba(255,255,0,1) , 0 0 70px rgba(255,255,0,1) , 0 0 80px rgb(255,17,119) , 0 0 100px rgb(255,17,119) , 0 0 150px rgb(255,17,119) ;
-  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
-  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
-  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
-  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+	color: #fff;
+	box-shadow: none;
+	text-shadow: rgb(255, 255, 255) 0px 0px 10px, rgb(255, 255, 255) 0px 0px 20px, rgb(255, 255, 255) 0px 0px 30px, rgb(0, 255, 255) 0px 0px 40px, rgb(0, 255, 255) 0px 0px 70px, rgb(0, 255, 255) 0px 0px 80px, rgb(0, 255, 255) 0px 0px 100px;
+	transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+	-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+	-webkit-transform: none;
+	transform: none;
+	-webkit-transform-origin: 50% 50% 0px;
+	transform-origin: 50% 50% 0px;
+	font-size:40px;font-family: 'Bree Serif' !important;font-style: normal;font-weight: 400;
 }
 
 #buzzer:hover {
@@ -776,7 +772,8 @@ ul{
 	}
 	.ui-resizable-helper { border: 2px dotted #00F; }
 #searchID{
-	z-index: 1;width: 270px;height: 200px;position: absolute;margin-left: 22.5%;margin-top: 33%;border-radius: 10%;text-align:center;font-size:25px;overflow-y: auto;
+	z-index: 1;width: 270px;height: 200px;position: absolute;margin-left: 22.5%;margin-top: 33%;border-radius: 10%;text-align:center;font-size:25px;
+	overflow-y: auto;
 	visibility: hidden;
 }
 #searchID ul{
@@ -791,3 +788,20 @@ ul{
 #confirm{
 	background: #37474f;
 } 	
+
+.scroll {
+  float: left;
+  margin-left: 0px;
+}
+
+.scroll1::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+.scroll1::-webkit-scrollbar-track {
+  background: #ddd;
+}
+ 
+.scroll1::-webkit-scrollbar-thumb {
+  background: #666; 
+}
