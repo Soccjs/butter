@@ -958,7 +958,7 @@ function goto_item_box(selected){
 		$("<div id=\"button"+(btn_cnt++)+"\" class=\"Button\"><span>Button</span></div>").appendTo("#item_box");
 		break;
 		case "EditText" :
-		$("<div class=\"inputType\" ><input type=\"text\" class=\"EditText\" id=\"edittext"+(e_t_cnt++)+"\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
+		$("<div class=\"inputType\"  style=\"display:block;\" text=\"EditText\" type=\"Edittext\"><input type=\"text\" class=\"EditText\" id=\"edittext"+(e_t_cnt++)+"\" value=\"EditText\" style=\"color:black;\" /></input></div>").appendTo("#item_box");
 		break;
 		case "CheckBox" :
 		$("<div class=\"inputType\"  style=\"display:block;\" text=\"CheckBox\" type=\"checkbox\"><input type=\"checkbox\" class=\"CheckBox\"id=\"checkbox"+(c_b_cnt++)+"\"  value=\"CheckBox\" >CheckBox</input></div>").appendTo("#item_box");
