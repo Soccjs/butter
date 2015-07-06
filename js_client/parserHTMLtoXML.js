@@ -318,7 +318,7 @@ $(document).ready(function()
 		//MARGIN생성
 		viewXML += getMargin(html);
 	    //RELATIVE MARGIN생성
-	    viewXML += getRelativeMargin(html);
+	    //viewXML += getRelativeMargin(html);
 		//TEXTSIZE생성
 		viewXML += getTextSize(html);
 		//TEXTSTYLE생성
@@ -452,12 +452,24 @@ $(document).ready(function()
 				return "android:background=\""+htmlBackground+"\"\n";
 			}
 		}
-		else{
+		else
+		{
 			//불필요한 태그 정보 삭제
-			htmlBackground = htmlBackground.replace("url('@drawable/", "");
-			htmlBackground = htmlBackground.replace("')", "");
-			
-			return "android:background=\"@drawable/"+htmlBackground+"\"\n";
+			if(htmlBackground.search("rgb")!==-1)
+			{
+				htmlBackground = rgb2hex(htmlBackground);
+				return "android:background=\""+htmlBackground+"\"\n";
+			}
+			else if(htmlBackground.search("@drawable")!==-1)
+			{
+				htmlBackground = htmlBackground.replace("url('@drawable/", "");
+				htmlBackground = htmlBackground.replace("')", "");
+				return "android:background=\"@drawable/"+htmlBackground+"\"\n";
+			}
+			else
+			{
+				return "android:background=\""+htmlBackground+"\"\n";
+			}
 		}
 	}
 
@@ -466,7 +478,30 @@ $(document).ready(function()
 	{
 		var htmlMargin = getStyleValue(html, "margin");
 		if(htmlMargin == null)
-			return "";
+		{
+			var htmlMarginLeft = getStyleValue(html, "margin-left");
+	        var htmlMarginRight = getStyleValue(html, "margin-right");
+	        var htmlMarginBottom = getStyleValue(html, "margin-bottom");
+	        var htmlMarginTop = getStyleValue(html, "margin-top");
+			if(htmlMarginLeft == null && htmlMarginRight == null && 
+         	htmlMarginBottom == null && htmlMarginTop == null)
+	        {
+	        	return "";
+	        }
+	        else
+	        {
+		        var htmlEachMargin = "";
+		        if(htmlMarginLeft != null)
+		           htmlEachMargin += "android:layout_marginLeft=\""+htmlMarginLeft+"\"\n";
+		        if(htmlMarginRight != null)
+		           htmlEachMargin += "android:layout_marginRight=\""+htmlMarginRight+"\"\n";
+		        if(htmlMarginBottom != null)
+		           htmlEachMargin += "android:layout_marginBottom=\""+htmlMarginBottom+"\"\n";
+		        if(htmlMarginTop != null)
+		           htmlEachMargin += "android:layout_marginTop=\""+htmlMarginTop+"\"\n";
+		        return htmlEachMargin;
+	        }
+		}
 		else
 			return "android:layout_margin=\""+htmlMargin+"\"\n";
 	}
@@ -474,10 +509,10 @@ $(document).ready(function()
 	// XML Relative Margin값 추출
    function getRelativeMargin(html)
    {
-      var htmlMarginLeft = getStyleValue(html, "margin-left");
-      var htmlMarginRight = getStyleValue(html, "margin-right");
-      var htmlMarginBottom = getStyleValue(html, "margin-bottom");
-      var htmlMarginTop = getStyleValue(html, "margin-top");
+      var htmlMarginLeft = getStyleValue(html, "left");
+      var htmlMarginRight = getStyleValue(html, "right");
+      var htmlMarginBottom = getStyleValue(html, "bottom");
+      var htmlMarginTop = getStyleValue(html, "top");
 
       if(htmlMarginLeft == null && htmlMarginRight == null && 
          htmlMarginBottom == null && htmlMarginTop == null)
